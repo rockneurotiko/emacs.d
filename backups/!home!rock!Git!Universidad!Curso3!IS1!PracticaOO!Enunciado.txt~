@@ -1,0 +1,15 @@
+Hola,
+
+1) El enunciado de la práctica de objetos es el siguiente:
+
+Desarrollar un sistema software para la gestión de préstamos bibliotecarios (préstamos y devoluciones). El sistema será manejado por una persona de la biblioteca que recibe la petición, consulta al sistema, recoge el libro de la estantería y lo entrega. Esta persona también recibe la devolución y la registra en el sistema. Basta con suponer una biblioteca de tres títulos de libros con dos ejemplares de cada uno.
+
+El diseño debe contar con el diagrama de clases y los diagramas de secuencia de préstamo y devolución. Es necesario explicar el papel de cada clase y los comportamientos de cada método. Además, la práctica debe ser analizada respecto a sus semejanzas y diferencias con el resto de ejercicios realizados; el porqué de las decisiones tomadas y dónde han aplicado el Principio de Ocultación de Información.
+
+2) La práctica debe ser diseñada con el enfoque de objetos y no con el enfoque de funciones que transforman datos.
+
+3) La práctica es individual. La fecha máxima de entrega es el próximo martes 9 de diciembre a las 15:00 horas.
+
+Deseo que les sea útil.
+
+Nelson

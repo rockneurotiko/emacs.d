@@ -1,0 +1,303 @@
+:- module(_,_,[]).
+
+% bits
+
+bind(0).
+bind(1).
+
+% byte
+
+binary_byte([bind(B7), bind(B6), bind(B5), bind(B4), bind(B3), bind(B2), bind(B1), bind(B0)]) :-
+	bind(B7),
+	bind(B6),
+	bind(B5),
+	bind(B4),
+	bind(B3),
+	bind(B2),
+	bind(B1),
+	bind(B0).
+
+% Define an hex digit (nibble) type.
+
+hexd(0).
+hexd(1).
+hexd(2).
+hexd(3).
+hexd(4).
+hexd(5).
+hexd(6).
+hexd(7).
+hexd(8).
+hexd(9).
+hexd(a).
+hexd(b).
+hexd(c).
+hexd(d).
+hexd(e).
+hexd(f).
+
+hex_byte([hexd(H1), hexd(H0)]) :-
+	hexd(H1),
+	hexd(H0).
+
+byte(BB) :-
+	binary_byte(BB).
+byte(HB) :-
+	hex_byte(HB).
+
+
+byte_to_nibble([B1,B2,B3,B4|Bs], [B1,B2,B3,B4],Bs).
+
+% PRACTICA
+
+byte_list([]).
+byte_list([L|Ls]) :-
+	byte(L),
+	byte_list(Ls).
+
+bin_byte_list([]).
+bin_byte_list([L|Ls]) :-
+	binary_byte(L),
+	bin_byte_list(Ls).
+
+hex_byte_list([]).
+hex_byte_list([L|Ls]) :-
+	hex_byte(L),
+	hex_byte_list(Ls).
+
+
+hex_to_bin(hexd(0),[bind(0),bind(0),bind(0),bind(0)]).
+hex_to_bin(hexd(1),[bind(0),bind(0),bind(0),bind(1)]).
+hex_to_bin(hexd(2),[bind(0),bind(0),bind(1),bind(0)]).
+hex_to_bin(hexd(3),[bind(0),bind(0),bind(1),bind(1)]).
+hex_to_bin(hexd(4),[bind(0),bind(1),bind(0),bind(0)]).
+hex_to_bin(hexd(5),[bind(0),bind(1),bind(0),bind(1)]).
+hex_to_bin(hexd(6),[bind(0),bind(1),bind(1),bind(0)]).
+hex_to_bin(hexd(7),[bind(0),bind(1),bind(1),bind(1)]).
+hex_to_bin(hexd(8),[bind(1),bind(0),bind(0),bind(0)]).
+hex_to_bin(hexd(9),[bind(1),bind(0),bind(0),bind(1)]).
+hex_to_bin(hexd(a),[bind(1),bind(0),bind(1),bind(0)]).
+hex_to_bin(hexd(b),[bind(1),bind(0),bind(1),bind(1)]).
+hex_to_bin(hexd(c),[bind(1),bind(1),bind(0),bind(0)]).
+hex_to_bin(hexd(d),[bind(1),bind(1),bind(0),bind(1)]).
+hex_to_bin(hexd(e),[bind(1),bind(1),bind(1),bind(0)]).
+hex_to_bin(hexd(f),[bind(1),bind(1),bind(1),bind(1)]).
+
+
+byte_conversion([PrimH,SegH],Byte) :-
+	hex_byte([PrimH,SegH]),
+	hex_to_bin(PrimH,Nibble1),
+	hex_to_bin(SegH,Nibble2),
+	byte_to_nibble(Byte,Nibble1,Nibble2).
+
+
+byte_list_conversion([],[]).
+byte_list_conversion([H|Hs],[B|Bs]) :-
+	byte_conversion(H,B),
+	byte_list_conversion(Hs,Bs).
+
+
+get_nth_bit_from_byte(Acc,[A,B],Z) :-
+	hex_byte([A,B]),
+	hex_to_bin(A,Ya),
+	hex_to_bin(B,Yb),
+	byte_to_nibble(Y,Ya,Yb),
+	get_nth_bit_from_byte_(Acc,Y,Z).
+	
+get_nth_bit_from_byte(Acc,X,Z) :-
+	binary_byte(X),
+	get_nth_bit_from_byte_(Acc,X,Z).
+
+get_nth_bit_from_byte_(0,[X|_],X).
+get_nth_bit_from_byte_(s(Acc),[_|Xs],Z) :-
+	get_nth_bit_from_byte_(Acc,Xs,Z).
+
+
+%% TEST
+% byte_list_clsh([[hexd(5), hexd(a)], [hexd(2), hexd(3)], [hexd(5), hexd(5)], [hexd(3), hexd(7)]], L).
+% >> [[hexd(b), hexd(4)], [hexd(4), hexd(6)], [hexd(a), hexd(a)], [hexd(6), hexd(e)]]
+
+byte_list_clsh([],[]).
+byte_list_clsh(L, SL) :-
+        hex_byte_list(L),
+        byte_list_clsh_hex(L,SL),
+        hex_byte_list(SL).
+byte_list_clsh(L, SL) :-
+        bin_byte_list(L),
+        byte_list_clsh_bin(L,SL),
+        bin_byte_list(SL).
+
+
+byte_list_clsh_hex(L,SL) :-
+        hex_byte_list(L),
+        byte_list_conversion(L,Lb),
+        byte_list_clsh_bin(Lb,SLb),
+        byte_list_conversion(SL,SLb),
+        hex_byte_list(SL).
+
+byte_list_clsh_bin(L,SL) :-
+        bin_byte_list(L),
+        left(L,SL),
+        bin_byte_list(SL).
+
+
+% Rotacion de bits
+left([[X|Xs]|Zs],Y) :-
+	r_left(Xs,Zs,X,Y).
+
+r_left(Zs,[],X,[Y|[]]) :-
+	myappend(Zs,[X],Y).
+r_left(Xs,[[Z|Zs]|Ms],X,[Y|Ys]) :-
+	myappend(Xs,[Z],Y),
+	r_left(Zs,Ms,X,Ys).
+
+myappend([],L,L) :-
+	list(L).
+myappend([X|Xs],Ys,[X|Zs]) :-
+	myappend(Xs,Ys,Zs).
+
+
+my_reverse([],[]).
+my_reverse([X|Xs],Ys) :-
+      my_reverse(Xs,Zs),
+      myappend(Zs,[X],Ys).
+
+%% TEST
+% byte_list_crsh([[hexd(b), hexd(4)], [hexd(4), hexd(6)], [hexd(a), hexd(a)], [hexd(6), hexd(e)]], L).
+
+byte_list_crsh([],[]).
+byte_list_crsh(A,B) :-
+	bin_byte_list(A),
+	left(B,A).
+% Si es hexadecimal
+byte_list_crsh(A,B) :-
+	hex_byte_list(A),
+	byte_list_conversion(A,C),
+	byte_list_crsh(C,Bb),
+	byte_list_conversion(B,Bb).
+
+% A nivel de bit
+bit_xor(bind(0),bind(0), bind(0)).
+bit_xor(bind(0),bind(1), bind(1)).
+bit_xor(bind(1),bind(1), bind(0)).
+bit_xor(bind(1),bind(0), bind(1)).
+
+
+%% TEST
+% byte_xor([hexd(5),hexd(a)],[hexd(2),hexd(3)], B3).
+
+
+% Se separa en bits y se envia a "xorear" todo
+byte_xor([],[],[]).
+byte_xor([B1a,B1b],[B2a,B2b],[XOR1,XOR2]) :-
+	hex_byte([B1a,B1b]),
+	hex_byte([B2a,B2b]),
+	hex_to_bin(B1a,B1ab),
+	hex_to_bin(B1b,B1bb),
+	hex_to_bin(B2a,B2ab),
+	hex_to_bin(B2b,B2bb),
+	all_xor(B1ab,B2ab,Bab),
+	all_xor(B1bb,B2bb,Bbb),
+	hex_to_bin(XOR1,Bab),
+	hex_to_bin(XOR2,Bbb).
+byte_xor(Byte1,Byte2,ByteXor) :-
+	all_xor(Byte1,Byte2,ByteXor).
+
+
+% Se "xorea" todo recursivamente
+all_xor([],[],[]).
+all_xor([X|Xs],[Y|Ys],[Z|Zs]) :-
+	bit_xor(X,Y,Z),
+	all_xor(Xs,Ys,Zs).
+
+% and a nivel de bit
+bit_and(bind(1),bind(1),bind(1)).
+bit_and(bind(0),bind(0),bind(0)).
+bit_and(bind(1),bind(0),bind(0)).
+bit_and(bind(0),bind(1),bind(0)).
+
+% Se "andea" todo recursivamente
+all_and([],[],[]).
+all_and([X|Xs],[Y|Ys],[Z|Zs]) :-
+	bit_and(X,Y,Z),
+	all_and(Xs,Ys,Zs).
+
+take(_,[],0).
+take([X|Xs],[X|Ys],s(Acc)) :-
+	take(Xs,Ys,Acc).
+
+take_right(X,Y,Acc) :-
+	my_reverse(X,Xr),
+	take(Xr,Xrc,Acc),
+	my_reverse(Xrc,Y).
+
+take_n_right(X,Y,0) :-
+	my_reverse(X,Xr),
+	take(Xr,[Y],s(0)).
+take_n_right(X,Y,s(Acc)) :-
+	my_reverse(X,[_|Xr]),
+	my_reverse(Xr,Y2),
+	take_n_right(Y2,Y,Acc).
+
+hex_to_s(hexd(0),0).
+hex_to_s(hexd(1),s(0)).
+hex_to_s(hexd(2),s(s(0))).
+hex_to_s(hexd(3),s(s(s(0)))).
+hex_to_s(hexd(4),s(s(s(s(0))))).
+hex_to_s(hexd(5),s(s(s(s(s(0)))))).
+hex_to_s(hexd(6),s(s(s(s(s(s(0))))))).
+hex_to_s(hexd(7),s(s(s(s(s(s(s(0)))))))).
+
+xorshift_encrypt(A,B,C) :-
+	hex_byte_list(A),
+	hex_byte_list(B),
+	byte_list_conversion(A,Ab),
+	byte_list_conversion(B,Bb),
+	xorshift_encrypt(Ab,Bb,Cb),
+	byte_list_conversion(C,Cb).
+xorshift_encrypt(A,B,C) :-
+	bin_byte_list(A),
+	bin_byte_list(B),
+	cipher_steps(A,B,Cb,s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(0))))))))))))))))),
+	take_n_right(Cb,C,0).
+
+cipher_steps(_,_,[],0).
+cipher_steps([Byte1,Byte2],Key,[BytesXorRotate|Ciph],s(Acc)) :-
+	hex_to_bin(hexd(7),Seven),
+	take_right(Byte2,Last4,s(s(s(s(0))))),
+	all_and(Last4,Seven,KandBit),
+	hex_to_bin(KandHex,KandBit),
+	hex_to_s(KandHex,KandSucc),
+	take_n_right(Key,KByteSel,KandSucc),
+	byte_xor(Byte1,KByteSel,ByteXor),
+	byte_list_crsh([ByteXor,Byte2],BytesXorRotate),
+	cipher_steps(BytesXorRotate,Key,Ciph,Acc).
+
+% TEST:
+% xorshift_decrypt([[hexd(8), hexd(b)], [hexd(5), hexd(2)]], [[hexd(0), hexd(1)], [hexd(2), hexd(3)], [hexd(4), hexd(5)], [hexd(6), hexd(7)], [hexd(8), hexd(9)], [hexd(a), hexd(b)], [hexd(c), hexd(d)], [hexd(e), hexd(f)]], DEC).
+
+%%xorshift_decrypt([],[],_). %% Si se vuelve al metodo anterior
+xorshift_decrypt(A,B,C) :-
+	hex_byte_list(A),
+	hex_byte_list(B),
+	byte_list_conversion(A,Ab),
+	byte_list_conversion(B,Bb),
+	xorshift_decrypt(Ab,Bb,Cb),
+	byte_list_conversion(C,Cb).
+xorshift_decrypt(A,B,C) :-
+	bin_byte_list(A),
+	bin_byte_list(B),
+	decrypt_steps(A,B,Cb,s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(s(0))))))))))))))))),
+	take_n_right(Cb,C,0).
+
+decrypt_steps(_,_,[],0).
+decrypt_steps([Byte1,Byte2],Key,[[BytesXor,ByteRot2]|Ciph],s(Acc)) :-
+	hex_to_bin(hexd(7),Seven),
+	byte_list_clsh([Byte1,Byte2],[ByteRot1,ByteRot2]),
+	take_right(ByteRot2,Last4,s(s(s(s(0))))),
+	all_and(Last4,Seven,KandBit),
+	hex_to_bin(KandHex,KandBit),
+	hex_to_s(KandHex,KandSucc),
+	take_n_right(Key,KByteSel,KandSucc),
+	byte_xor(ByteRot1,KByteSel,BytesXor),
+	decrypt_steps([BytesXor,ByteRot2],Key,Ciph,Acc).

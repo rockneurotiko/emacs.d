@@ -1,0 +1,5 @@
+#!/bin/bash
+
+pyflakes "$1"
+pep8 --ignore=501 --repeat "$1"
+true

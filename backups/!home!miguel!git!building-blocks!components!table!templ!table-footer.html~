@@ -1,0 +1,39 @@
+<div class="tableFooter"
+    ng-class="{
+        'off': !TC.itemsSelected(),
+        'on': TC.itemsSelected()
+    }">
+    <div class="tableFooterElement">{{ (data | filter:{"$selected": true}).length }} selected</div>
+    <div class="tableFooterElement right" ng-if="!TC.itemsSelected()">
+        <img src="images/movistar/arrow_left_black.png" ng-click="(TC.params.page()>1) ? TC.params.page(TC.params.page()-1) : null">
+        <p>{{params.page()}} of {{params.npages}}</p>
+        <img src="images/movistar/arrow_right_black.png" ng-click="(TC.params.page()<TC.params.total()/TC.params.count()) ? TC.params.page(TC.params.page()+1) : null">
+    </div>
+
+    <div class="tableFooterBtn" ng-if="TC.itemsSelected()">
+        <ul>
+            <li class="foot-list" ng-repeat="option in TC.options"
+                ng-click="TC.clear(option); option.shown = !option.shown" ng-class="{'clicked': option.shown}">
+                <div>{{option.name}}</div>
+                <ul ng-if="option.shown">
+                    <li ng-repeat="value in option.value" ng-click="TC.dynamic_click(value)"><div class="tableFooter-subitem">{{value.name}}</div></li>
+                </ul>
+            </li>
+
+            <!-- // With Buttons
+            // <li ng-repeat="option in options"
+            //     ng-click="clear(option); (option.type === 'button') ? dynamic_click(option) : option.shown = !option.shown" ng-class="{
+            //         'clicked': option.shown,
+            //         'foot-list': !(option.type === 'button')
+            //     }">
+            //     <div ng-if="!(option.type === 'button')">{{option.name}}</div>
+            //     <button class="movistar button small {{option.my_class}}" ng-if="(option.type === 'button')" type='submit' enabled="">{{option.name}}</button>
+            //     <ul ng-if="option.shown">
+            //         <li ng-repeat="value in option.value" ng-click="dynamic_click(value)">{{value.name}}</li>
+            //     </ul>
+            // </li>
+            -->
+        </ul>
+    </div>
+
+</div>

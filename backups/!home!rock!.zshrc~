@@ -1,0 +1,129 @@
+# Path to your oh-my-zsh configuration.
+ZSH=$HOME/.oh-my-zsh
+
+# Set name of the theme to load.
+# Look in ~/.oh-my-zsh/themes/
+# Optionally, if you set this to "random", it'll load a random theme each
+# time that oh-my-zsh is loaded.
+ZSH_THEME="af-magic"
+
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# Set to this to use case-sensitive completion
+# CASE_SENSITIVE="true"
+
+# Comment this out to disable bi-weekly auto-update checks
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment to change how many often would you like to wait before auto-updates occur? (in days)
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment following line if you want to disable colors in ls
+# DISABLE_LS_COLORS="true"
+
+# Uncomment following line if you want to disable autosetting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment following line if you want red dots to be displayed while waiting for completion
+# COMPLETION_WAITING_DOTS="true"
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+plugins=(git virtualenv archlinux cabal common-aliases lol pep8 pip zsh-syntax-highlighting)
+
+source $ZSH/oh-my-zsh.sh
+
+# Customize to your needs...
+
+export LESSOPEN="| /usr/bin/source-highlight-esc.sh %s"
+export LESS='-R '
+
+alias y="yaourt"
+alias py="python"
+alias py2="python2"
+
+alias lh="ls -lh"
+
+alias o="xdg-open"
+#alias mypy="/home/rock/Git/mypy/scripts/mypy"
+
+alias rclua="vim ~/.config/awesome/rc.lua"
+
+#alias clc="clear"
+alias make="make CC=clang"
+#alias mpd="mpd ~/.mpd/config"
+#alias poweroff="shutdown -h now"
+alias getip="links -dump http://ipecho.net/plain"
+
+#alias grep='grep --color=auto'
+
+alias cp='cp -gR'
+alias mv='mv -g'
+
+alias mwin='sudo mount /dev/sda4 /mnt/wind'
+alias umwin='sudo umount /mnt/wind'
+alias gotowin='cd /mnt/wind'
+alias gotowinhome='cd /mnt/wind/Users/rock'
+
+#alias telegram='firefox-nightly http://localhost:8000/app/index.html'
+#alias telegram-start='/home/rock/startTelegram.sh'
+
+alias pdb='python2 -m pyringe'
+
+alias pililastop='python ~/Git/pili.la/pililad.py stop'
+alias pililastart='python ~/Git/pili.la/pililad.py start'
+
+alias notebook='ipython3 notebook'
+alias ijulia='ipython notebook --profile julia'
+
+alias ys='yakuake_session'
+alias save_yak='yakuake_session mydump /home/rock/.yakuake_sessions/profiles/qtile.json'
+alias load_yak='yakuake_session load /home/rock/.yakuake_sessions/profiles/qtile.json'
+
+#alias LT='lighttable'
+
+export PATH=$PATH:/usr/local/bsvc/bin/:/gome/rock/Git/autoprefixer/bin/
+
+export PATH=$PATH:/usr/local/bsvc/bin
+
+export PATH=$PATH:/home/rock/.cabal/bin
+
+export CLASSPATH=.:/home/rock/javaLib/cclib-0.4.6.jar:/home/rock/javaLib/jcsp-core.jar:/home/rock/javaLib/net-datastructures-5-0.jar
+export EDITOR="vim"
+export GOPATH=~/go
+
+
+TIMEFMT='%J   %U  user %S system %P cpu %*E total'$'\navg shared (code):         %X KB'$'\navg unshared (data/stack): %D KB'$'\ntotal (sum):               %K KB'$'\nmax memory:                %M MB'$'\npage faults from disk:     %F'$'\nother page faults:         %R'
+
+cdp () {
+      cd "$(python -c "import os.path as _, ${1}; \
+          print(_.dirname(_.realpath(${1}.__file__[:-1])))"
+        )"
+    }
+
+man() {
+    env LESS_TERMCAP_mb=$'\E[01;31m' \
+    LESS_TERMCAP_md=$'\E[01;38;5;74m' \
+    LESS_TERMCAP_me=$'\E[0m' \
+    LESS_TERMCAP_se=$'\E[0m' \
+    LESS_TERMCAP_so=$'\E[38;5;246m' \
+    LESS_TERMCAP_ue=$'\E[0m' \
+    LESS_TERMCAP_us=$'\E[04;38;5;146m' \
+    man "$@"
+}
+
+PATH="/home/rock/perl5/bin${PATH+:}${PATH}"; export PATH;
+PERL5LIB="/home/rock/perl5/lib/perl5${PERL5LIB+:}${PERL5LIB}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/rock/perl5${PERL_LOCAL_LIB_ROOT+:}${PERL_LOCAL_LIB_ROOT}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/rock/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/rock/perl5"; export PERL_MM_OPT;
+
+export YAOURT_COLORS="nb=1:pkg=1:ver=1;32:lver=1;45:installed=1;42:grp=1;34:od=1;41;5:votes=1;44:dsc=0:other=1;35"
+
+# OPAM configuration
+. /home/rock/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh

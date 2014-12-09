@@ -1,0 +1,39 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ (#("/home/miguel/git/building-blocks/components/dropdown/" 44 53 (face flx-highlight-face)) . #("js/" 0 2 (face flx-highlight-face)))
+)
+
+;; ----- ido-work-directory-list -----
+(
+ #("/home/miguel/git/building-blocks/components/dropdown/js/" 44 53 (face flx-highlight-face) 53 55 (face flx-highlight-face))
+ "/home/miguel/git/building-blocks/components/login/js/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ #("controller-example.js" 0 2 (face flx-highlight-face))
+ "LoginController.js"
+ "validations.js"
+ "app.js"
+ "InputController.js"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ (#("/home/miguel/git/building-blocks/components/dropdown/js/" 44 53 (face flx-highlight-face) 53 55 (face flx-highlight-face)) (21596 39101 647452 82000) "app.js" "../" "./" "controller-example.js" "dropdown.js")
+
+ (#("/home/miguel/git/building-blocks/components/dropdown/" 44 53 (face flx-highlight-face)) (21624 13020 503285 286000) "js/" "o2.html" "css/" "vivo.html" "../" "movistar.html" "./" "telefonica.html")
+
+ (#("/home/miguel/git/building-blocks/components/checkbox/" 44 53 (face flx-highlight-face)) (21596 39101 623452 82000) "o2.html" "css/" "vivo.html" "../" "movistar.html" "./" "telefonica.html" "img/")
+
+ ("/home/miguel/git/building-blocks/components/" (21624 13020 499285 286000) "login/" "buttons/" "inputs_special/" "dropdown/" "../" "radio_buttons/" "./" "table/" "checkbox/" "searchbox_square/" "inputs_standard/" "searchbox_rounded/")
+
+ ("/home/miguel/git/building-blocks/components/login/" (21624 13020 503285 286000) "js/" "o2.html" "css/" "vivo.html" "../" "movistar.html" "./" "telefonica.html" "img/")
+
+ ("/home/miguel/git/building-blocks/components/login/js/" (21633 30954 184140 821000) "app.js" "LoginController.js" "../" "InputController.js" "./" "validations.js")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

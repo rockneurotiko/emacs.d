@@ -1,0 +1,351 @@
+from libqtile.config import Key, Screen, Group, Drag, Click, Match, Rule
+from libqtile.command import lazy
+from libqtile import layout, bar, widget, hook
+from libqtile.dgroups import simple_key_binder
+import subprocess
+import re
+# import os
+import shlex
+
+mod = "mod4"
+alt = "mod1"
+ctrl = "control"
+shift = "shift"
+tab = "Tab"
+
+term = "gnome-terminal"
+
+home = "/home/rock/"
+
+keys = [
+    Key([mod, shift], "c", lazy.window.kill()),  # Kill awesome
+    Key([mod], tab, lazy.layout.down()),
+    Key([mod, shift], tab, lazy.layout.up()),
+    # # Change app
+    # # Move windows up or down in current stack
+    # Key(
+    #     [mod, "control"], "k",
+    #     lazy.layout.shuffle_down()
+    # ),
+    # Key(
+    #     [mod, "control"], "j",
+    #     lazy.layout.shuffle_up()
+    # ),
+
+    # Switch window focus to other pane(s) of stack
+    Key(
+        [mod], "space",
+        lazy.layout.next()
+    ),
+
+    # Swap panes of split stack
+    Key(
+        [mod, "shift"], "space",
+        lazy.layout.rotate()
+    ),
+
+    Key([mod], "Return", lazy.spawn(term)),
+
+    Key([mod], "l", lazy.nextlayout()),
+    Key([mod], "s", lazy.prevlayout()),
+
+    Key([mod, "control"], "r", lazy.restart()),
+    Key([mod, "control"], "q", lazy.shutdown()),
+    Key([mod], "r", lazy.spawncmd()),
+
+    # Key([mod], "m", lazy.layout.maximize()),
+
+    # My controls :-)
+    # Sound
+    Key([ctrl], "u", lazy.spawn("amixer set Master playback unmute")),
+    Key([ctrl], "m", lazy.spawn("amixer set Master playback mute")),
+    Key([alt, ctrl], "m", lazy.spawn('amixer set Master playback 100%')),
+    Key([ctrl], "Up", lazy.spawn("amixer set Master playback 1%+")),
+    Key([ctrl], "Down", lazy.spawn("amixer set Master playback 1%-")),
+
+    # Apps
+    Key([mod], "t", lazy.spawn("Telegram")),
+    Key([mod], "c", lazy.spawn("spacefm")),
+    Key([mod], "k", lazy.spawn("keepass")),
+    Key([mod], "b", lazy.spawn("/home/rock/bin/mylock")),  # my lock, pause dunst notify
+
+    # Language
+    Key([mod], "d", lazy.spawn("setxkbmap dvorak")),
+    Key([mod], "e", lazy.spawn("setxkbmap es")),
+
+    Key([mod], "Left", lazy.screen.prevgroup(skip_managed=True)),
+    Key([mod], "Right", lazy.screen.nextgroup(skip_managed=True)),
+    Key([mod], "Up", lazy.spawn("xbacklight -inc 10")),
+    Key([mod], "Down", lazy.spawn("xbacklight -dec 10")),
+
+    Key([alt], "p", lazy.spawn('gnome-screenshot')),
+
+]
+
+# GROUPS
+
+# groups = [Group(i) for i in "12345678"]
+
+# for i, grp in enumerate(groups):
+#     keys.extend([
+#         Key([mod], str(i+1), lazy.group[grp.name].toscreen()),
+#         Key([mod, shift], str(i+1), lazy.window.togroup(grp.name)),
+#         Key([alt, shift], str(i+1), lazy.group.swap_groups(grp.name)),
+#         ])
+
+
+g_chrome = Group('www', init=True, exclusive=False,
+                 persist=True, position=1,
+                 matches=[Match(wm_class=['Google-chrome-stable'])])
+g_emacs = Group('emacs', init=False, exclusive=False, position=2,
+                persist=False, matches=[Match(wm_class=['Emacs'])])
+g_telg = Group('telg', init=False, exclusive=False, position=3,
+               persist=False, matches=[Match(wm_class=['Telegram'])])
+g_vlc = Group('vlc', init=False, exclusive=False, position=4,
+              persist=False, matches=[Match(wm_class=['Vlc'])])
+g_term = Group('term', init=False, exclusive=False, position=5,
+               persist=False,
+               matches=[Match(wm_class=['Gnome-terminal'])])
+
+groups = [g_chrome, g_emacs, g_telg, g_vlc, g_term]
+
+groups += [Group('other')]
+
+other_apps = ['CopyAgent', 'Nautilus']
+groups += [Group('garb', init=False, exclusive=False,
+                 persist=False, matches=[Match(wm_class=other_apps)])]
+
+# dgroup rules that not belongs to any group
+dgroups_app_rules = [
+    # Everything i want to be float, but don't want to change group
+    Rule(Match(title=['nested', 'gscreenshot'],
+               wm_class=['Guake.py', 'Exe', 'Onboard', 'Florence',
+                         'Plugin-container', 'Terminal', 'Gpaint',
+                         'Kolourpaint', 'Wrapper', 'Gcr-prompter',
+                         'Ghost', 'feh', 'Gnuplot', 'Pinta',
+                         re.compile('Gnome-keyring-prompt.*?')],
+               ),
+         float=True, intrusive=True),
+    # floating windows
+    Rule(Match(wm_class=['Synfigstudio', 'Wine', 'Xephyr', 'postal2-bin'],
+               # title=[re.compile('[a-zA-Z]*? Steam'),
+               # re.compile('Steam - [a-zA-Z]*?')]
+               ),
+         float=True),
+    ]
+
+dgroups_key_binder = simple_key_binder(mod)
+
+
+# Layout Theme
+layout_theme = {
+    "border_width": 2,
+    "margin": 3,
+    "border_focus": "#005F0C",
+    "border_normal": "#555555"
+    }
+
+layouts = [
+    layout.Max(**layout_theme),
+    layout.RatioTile(**layout_theme),
+    layout.MonadTall(**layout_theme),
+    layout.Stack(num_stacks=2, **layout_theme),
+    layout.Tile(**layout_theme),
+    layout.Zoomy(),
+    layout.TreeTab(),
+    # layout.MonadWide(**layout_theme),
+    # layout.Floating(),
+]
+
+floating_layout = layout.Floating(**layout_theme)
+
+widget_defaults = dict(
+    font='ProFont',
+    fontshadow='000000',
+    margin_y=1,
+    margin_x=1,
+    padding=4,
+    margin=0,
+    fontsize=12,
+)
+
+theme_vol = "/usr/share/icons/oxygen/16x16/status"
+
+screens = [
+    Screen(
+        top=bar.Bar(
+            [
+                widget.GroupBox(padding=1, borderwith=1,),
+                widget.Sep(padding=0, height_percent=100),
+                widget.CurrentLayout(padding=1, foreground="a0a0a0"),
+                widget.Sep(padding=1, height_percent=100),
+                widget.Prompt(padding=0),
+                widget.TaskList(borderwith=0, padding=1,
+                                max_title_width=100,
+                                highlight_method="block"),
+                widget.Sep(padding=0, height_percent=100),
+
+                widget.Notify(),
+                widget.Systray(icon_size=14),
+                widget.Sep(padding=2, height_percent=100),
+                widget.TextBox(text=" [U:", padding=0),
+                widget.Pacman(padding=0),
+                widget.TextBox(text="]", padding=0),
+                widget.TextBox(text=" [C:", padding=0),
+                widget.Cpu(padding=0),
+                widget.TextBox(text="]", padding=0),
+                widget.TextBox(text=" [M:", padding=0),
+                widget.Mem(padding=0),
+                widget.TextBox(text="]", padding=0),
+                widget.TextBox(text=" [V:", padding=0),
+                widget.Volume(padding=0, cardid=1,
+                              ),  # foreground="70ff70", ),
+                widget.TextBox(text="]", padding=0),
+                # widget.Spacer(width=2),
+                widget.TextBox(text=" [Br:", padding=0),
+                widget.Backlight(
+                    padding=0,
+                    backlight_name="intel_backlight",
+                    update_interval=1,
+                ),
+                widget.TextBox(text="]", padding=0),
+                # widget.Sep(padding=0, height_percent=100),
+                widget.DF(
+                    partition='/',
+                    visible_on_warn=True,
+                    format="CARE! {uf}{m}",
+                    update_interval=3600,
+                ),
+                widget.TextBox(text=" [Net:", padding=0),
+                widget.Net(padding=0, interface="wlp4s0", update_interval=2),
+                widget.TextBox(text="]", padding=0),
+                # widget.Sep(padding=0, height_percent=100),
+                widget.TextBox(text=" [Ba:", padding=0),
+                widget.Battery(
+                    battery_name="BAT1",
+                    update_delay=6,
+                    padding=0,
+                    foreground="7070ff",
+                    charge_char='\xe2\x86\x91',
+                    discharge_char='\xe2\x86\x93',
+                ),
+                widget.TextBox(text="]", padding=0),
+                widget.TextBox(text=" [", padding=0),
+                # widget.Sep(padding=0, height_percent=100),
+                widget.Clock(fmt='%d/%m/%Y', padding=0,
+                             ),  # foreground="a0a0a0",),
+                widget.TextBox(text="]", padding=0),
+                # widget.Sep(padding=0, height_percent=100),
+                widget.TextBox(text="[", padding=0),
+                widget.Clock(fmt="%H:%M", padding=0,
+                             ),  # foreground="a0a0a0",),
+                widget.TextBox(text="]", padding=0),
+            ],
+            18,
+            background=['000000', '000000'],
+            opacity=0.2,
+        ),
+    ),
+    Screen(),
+    Screen(),
+]
+
+
+# Drag floating layouts.
+mouse = [
+    Drag([mod], "Button1", lazy.window.set_position_floating(),
+         start=lazy.window.get_position()),
+    Drag([mod], "Button3", lazy.window.set_size_floating(),
+         start=lazy.window.get_size()),
+    Click([mod], "Button2", lazy.window.bring_to_front())
+]
+
+
+def runone(cmdline):
+    cmd = shlex.split(cmdline)
+    try:
+        subprocess.check_call(['pgrep', cmd[0]])
+    except:
+        run(cmdline)
+
+
+def run(cmdline):
+    subprocess.Popen(shlex.split(cmdline))
+
+
+@hook.subscribe.client_new
+def Yak(window):
+    try:
+        if window.window.get_wm_class()[1] == "Yakuake":
+            lazy.to_screen(0)
+            window.floating = True
+    except:
+        pass
+
+
+# @hook.subscribe.client_new
+# def grouper(window):
+#     try:
+#         # print('NEW WINDOW! Class: ' + str(window.window.get_wm_class()))
+#         if(window.window.get_wm_class()[1] == 'Telegram'):
+#             window.togroup('3')
+#         elif(window.window.get_wm_class()[1] == 'Emacs'):
+#             window.togroup('2')
+#         elif(window.window.get_wm_class()[1] == 'Google-Chrome'):
+#             window.togroup('1')
+#         # elif(window.window.get_wm_class()[1] == 'Thunderbird'):
+#         #    window.togroup('mail')
+#         # elif(window.window.get_wm_class()[1] == 'Vlc'):
+#         #    window.togroup('vlc')
+#         # elif(window.window.get_wm_class()[1] == 'xfreerdp'):
+#         #    window.togroup('rdp')
+#     except:
+#         pass  # TODO: handle errors. LibreOffice makes qtile crash here
+
+
+@hook.subscribe.startup
+def startup():
+    """
+    Run after qtile is started
+    """
+    image_name = "1237146_10201891467548968_404711370_m.jpg"
+    image_path = "{}{}{}".format(home, 'Images/Celia/walls/', image_name)
+
+    runone('Telegram')
+    runone('nm-applet')
+    runone('setxkbmap dvorak')
+    runone('xscreensaver -no-splash')
+    runone('yakuake')
+    runone('unclutter -idle 10')
+    runone('feh --bg-fill %s' % image_path)
+    runone('/home/rock/Git/gnome-wallpaper-changer/pywallchanger.py start')
+    runone('CopyAgent')
+    runone('dropboxd')
+
+
+# @hook.subscribe.startup
+# def dbus_register():
+#     x = os.environ['DESKTOP_AUTOSTART_ID']
+#     subprocess.Popen(['dbus-send',
+#                       '--session',
+#                       '--print-reply=string',
+#                       '--dest=org.gnome.SessionManager',
+#                       '/org/gnome/SessionManager',
+#                       'org.gnome.SessionManager.RegisterClient',
+#                       'string:qtile',
+#                       'string:' + x])
+
+
+# dgroups_key_binder = None
+dgroups_app_rules = []
+# main = None
+follow_mouse_focus = True
+bring_front_click = False
+cursor_warp = False
+# floating_layout = layout.Floating()
+auto_fullscreen = True
+wmname = "qtile"
+
+
+def main(qtile):
+    qtile.cmd_warning()

@@ -1,0 +1,82 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/rock/Git/rockneurotiko.github.io/Universidad/AplicacionesNumericas/PageRank/" . "Dia2/")
+ ("/home/rock/Git/rockneurotiko.github.io/Universidad/AplicacionesNumericas/" . "PageRank/")
+ ("/home/rock/Git/rockneurotiko.github.io/Universidad/" . "AplicacionesNumericas/")
+ ("/home/" . "rock/")
+ ("/" . "home/")
+ ("/home/rock/Dropbox/Universidad/" . "Prolog/")
+ ("/home/rock/Git/" . "rockneurotiko.github.io/")
+ ("/home/rock/Universidad/Terceraño/" . "6-Sexto/")
+ ("/home/rock/Universidad/" . "Terceraño/")
+ ("/home/rock/Dropbox/" . "Prolog/")
+ ("/home/rock/" . ".emacs.d/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/rock/.emacs.d/"
+ "/home/rock/Git/rockneurotiko.github.io/Universidad/AplicacionesNumericas/PageRank/Dia2/"
+ "/home/rock/Dropbox/Prolog/"
+ "/home/rock/"
+ "/home/rock/Dropbox/Universidad/Prolog/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "init.el"
+ "potencia.jl"
+ "xorshift.pl"
+ "test.pl"
+ "clase20nov.pl"
+ "practica2.pl"
+ ".emacs"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/rock/TODO/" (21634 603 745651 86000) "todoUniversidad.org" "../" "./")
+
+ ("/home/rock/.emacs.d/" (21633 24044 154465 110000) ".emacs.desktop" "../" "auto-save-list/" "init.el" "plugins/" "tutorial/" "recentf" "./" "ido.last" "backups/" "ac-comphist.dat" "init.el~" "elpa/" "places")
+
+ ("/home/rock/" (21633 23954 170529 447000) ".gnome/" "log.txt" "wifi_honey_1.0.tar.bz2" "Python/" "Audiobooks/" "tutorial.cljs" ".avidemux/" "test.c" "Telegram" ".python-eggs/" ".idlerc/" ".subversion/" "Copy/" ".taskrc" ".projects/" ".exercism.go" ".s.vim" ".guake_startup" "test.db" ".cshrc.bak~0~" ".xmonad/" ".gnupg/" ".m2/" "Documentos/" "Universidad/" "davidhasselhof.jpg" "Biblioteca de calibre/" ".TelegramDesktop/" ".gstreamer-0.10/" "diff.py" "tg_curses.py" ".rnd" "iPod/" "t.txt" "vigenere.py~" "sketchbook/" ".wingide4/" "AA__ClientesTwitter.txt" "Black Sails 1x01 Episodio 1 [HDTv][Ac3][Cas] [By JB].avi" "key.py" ".gimp-2.8/" "mitmset.sh" "Updater" ".opam/" "AA__ComandosUtiles.txt" ".lesshst" ".emacs.d/" ".pyew" "daemon.py" ".gem/" ".ipython/" ".processing/" ".termtter/" "renamePacman.py" ".mitmproxy/" "Mercurial/" "hs.sh" "cast.py" ".config/" ".copy/" ".ViberPC/" ".dbus/" "connections.xml" "AA__PythonDocumentos.txt" ".yagomix/" "test.hs" "test3.py" ".filezilla/" ".elementary/" "ducky/" ".pulse-cookie" "completer.hist" ".cshrc" ".appdata/" "Git/" "Plantillas/" ".xmobarrc0" ".steampath" "pt/" ".spyder2-py3/" ".npmrc" "tdata/" ".pywallchanger/" ".dia/" "wallpaper.sh" "perl5/" ".eclipse/" ".ocamlinit" "tmp/" ".offlineimaprc" ".weechat/" ".converseen.conf" "asm68k.vim" ".themes/" ".Xauthority" ".nvimrc" "carenas.js" "test.itf" "test.scala" "rock.asc" "vigenere.py" ".activator/" "Dropbox/" "autores.txt" ".ssh/" ".groovesquid/" "facturagrafica.pdf" ".log/" ".stunnixws/" "AA__ComandosYaourt.txt" "mutt_coyote" "my_lt.keymap" ".fehbg" "tarifas.txt" ".netbeans-derby/" "Desktop/" ".vimperatorrc" ".zcompdump-localhost-5.0.5" "keyNoOut.py" ".distlib/" ".pyload/" ".msmtprc" "test.po" ".klei/" ".icons/" ".thinkingrock/" "webdis.log" ".dogecoin/" ".java/" "test.jl" ".things/" ".zsh-update" "Apress - Beginning Scala.pdf" ".image.so" ".pylint.d/" ".ghc/" "Marvels.Agents.of.S.H.I.E.L.D.S01E05.720p.HDTV.X264-DIMENSION.mkv" "workspace/" "pps/" ".netbeans/" ".viminfz.tmp" "archivos_renombrar.txt" "test.todo" ".steampid" "respuestasNewYork.txt" "diagrama1.jpeg" ".rainbow_oauth" ".dropbox/" "xor.py" ".kde4/" ".macromedia/" "GlassFish_Server/" ".android/" ".e/" "test.py" ".python_history" ".steam/" ".zsh_history" ".mutt/" "actual.sublime-workspace" ".xsession-errors" ".zcompdump-neurotiko-5.0.2" "slybypass.js" "Coursera/" "go-help/" "Julia.ipynb" "pacmanReinstall.sh" "Escritorio/" "youtube.py" "service.bd" ".ZAP/" ".offlineimap/" "Big Rigs Over the Road Racing/" ".gitconfig" ".pyloadcli" "qwerInDvor.py" ".mail/" ".gconf/" ".links/" ".jdownloader/" ".zcompdump" "Videos/" "Poeta Magica/" "test.pl" "target/" "testFetch.c" "WepCrack/" ".calc_history" "javaLib/" ".Skype/" "profile-5556.json" ".el4r/" "Público/" ".ncmpcpp/" "dotfilesJoeDiCastro/" "install-packages.sh" "puertoa" "pyfiles.txt" ".gtkpod/" "Scripts/" ".codeintel/" "SDC19607.JPG" ".gns3/" ".screenlayout/" ".mpd/" ".zcompdump-neurotiko-5.0.7" ".noip/" ".cpan/" "Descargas/" ".mozilla/" ".centerim/" "Imágenes/" ".warsow-1.5/" ".pylint-gui-history" ".pulse/" "Musica/" ".esd_auth" ".IdeaIC12/" ".bash_logout" "Mail/" "Codigos_Google_Doble_Auth.txt" "create.py" "Diagrama1.dia" ".thumbnails/" ".pocket/" ".muttrc.backup" ".msf4/" "actual.sublime-project" "432.gif" ".dropbox-dist/" "sly.js" ".gsharkdown/" ".ivy2/" "test.pl~" "dump.rdb" ".putty/" ".blockify_list" ".cxx-obfus-projects/" ".AndroidStudioPreview/" ".vim/" "PlayOnLinux's virtual drives/" "underscore.js" "testdaemon.py" "hdmi.rules" ".nvimlog" "Midd/" "BonitaBPMCommunity/" ".wine/" ".gnome2/" ".mpdconf" ".xscreensaver" "Libros/" ".cabal/" ".color/" ".groovy/" "qwerInDvor.pyc" "mineBitch.sh" ".nviminfo" ".atom/" ".umit/" ".elinks/" "aoeaoeaoe.txt" "Podcasts/" ".racket/" "yaourt/" "puertob" ".ptpython_history" ".irssi/" ".bashrc.bak~1~" ".xsession" ".dmrc" ".e-crashdump.txt" ".gtk-recordmydesktop" ".oh-my-zsh/" ".sbt/" "collectionCache.bnk" ".pki/" ".matplotlib/" ".npm/" "aoeui.sh" ".ICEauthority" "sublime.json" ".mono/" ".bzr.log" ".xsel.log" ".mysql_history" ".list.tasks" ".twilc" "Haskell/" ".bundler/" ".conky/" ".local/" ".gksu.lock" ".bash_profile" "Marvels.Agents.of.S.H.I.E.L.D.S01E07.HDTV.x264-LOL.mp4" "wifi_honey/" ".qwit2/" ".purple/" ".vimperator/" ".vimrc" "testFetch" "startTelegram.sh" ".cddb/" "carenas2.js" ".xinitrc" "Marvel/" ".ocp/" ".sqlite_history" ".netrc" ".turses/" "__pycache__/" ".ddd/" ".retroshare/" ".node-gyp/" ".pilila.data" ".viminfo" "vigenere2.py" ".zshrc.default" ".armagetronad/" ".bash_history" "icecast/" ".pulse-cookie-bak" ".mailpile/" "pelis/" ".wicd/" ".bosonx/" ".thunderbird/" ".gnome2_private/" ".bazaar/" ".packettracer" ".bashrc" "Marvels.Agents.of.S.H.I.E.L.D.S01E04.720p.HDTV.X264-DIMENSION.mkv" ".Quivi/" ".julia_history" ".cache/" "crypt.txt" "SSOO/" "node_modules/" "rainbow.db" ".appletviewer" ".TrueCrypt/" "PyPi/" ".taskopenrc" ".scala_history" "SUBS.txt" ".zcompdump-neurotiko-5.0.5" "Android/" "t2.txt" "logoTwitter.jpg" "a.out" ".zshrc" ".neverball/" "AA__AInstalar.txt" ".wireshark/" ".recently-used" "gd.settings" "t.sh" ".task/" "jd-gui.cfg" "cronLogger.sh" ".telegram/" "wall.png" "frasebonita.txt" ".lein/" "sync.log" "Certificados/" ".bluej/" "joker-clap.gif" ".julia_history2" ".adobe/" ".muttrc" "criba.py" ".ts3client/" ".PlayOnLinux/" "SDC19608.JPG" ".archey3.cfg" ".btsync/" ".psql_history" ".coffee_history" ".gtk-bookmarks" ".kivy/" ".conkyrc" "CEHv7/" "go/" ".pip/" ".ipynb_checkpoints/" ".bashrc.bak~0~" ".PyCharm30/" ".mplayer/" "mnt/" ".wing101-4/" "gd.history" "GNUstep/" ".julia/" ".viminfo.tmp" ".rediscli_history" "EJERCICIOOOOO3" ".audacity-data/" "../" "./")
+
+ ("/home/rock/.emacs.d/./" (21633 22581 152272 83000) "../" "auto-save-list/" "init.el" "plugins/" "tutorial/" "recentf" "./" "ido.last" "backups/" "init.el~" "elpa/" "places")
+
+ ("/home/rock/Git/rockneurotiko.github.io/Universidad/AplicacionesNumericas/PageRank/Dia2/" (21632 55719 128015 787000) "potencia.jl" "../" "names.dat" "mytest.dat" "sparse_potencia.jl" "data.dat" "./" "Practica PageRank_2.pdf")
+
+ ("/home/rock/Git/rockneurotiko.github.io/Universidad/AplicacionesNumericas/PageRank/" (21630 12777 514786 180000) "potencia.jl" "../" "sparse_potencia.jl" "./" "Haskell/" "Dia1/" "Dia2/" ".ipynb_checkpoints/")
+
+ ("/home/rock/Git/rockneurotiko.github.io/Universidad/AplicacionesNumericas/" (21612 32350 570798 655000) "../" "aplNum.py" "aplNum4.py" "./" "aplNum3.ipynb" "AplNum4.ipynb" "AplNum2.py" "PageRank/" "aplNum1.ipynb" "aplNum3.py" ".ipynb_checkpoints/")
+
+ ("/home/rock/Git/rockneurotiko.github.io/Universidad/" (21603 50098 530202 813000) "../" "./" "AplicacionesNumericas/" "ACM/")
+
+ ("/home/rock/Git/rockneurotiko.github.io/" (21618 56307 406938 434000) "Universidad/" "../" "test.json" "Presentaciones/" "RandomThings/" ".git/" "./" "index.html" "parse_html.py" "index.md" "TelefonicaID/" "ApssFire/" "linksPython.html" "a.mp3" "test/")
+
+ ("/home/rock/Git/" (21632 8883 485664 94000) "TypeCheck.jl/" "descargar-revistas/" "rockneurotiko.github.io/" "Universidad/" "madness-things/" "../" "SOS/" "Euler/" "webogram/" "e-s-68k/" "webdis/" "RespuestaAula.txt.raw" "20up/" "edx-downloader/" "Pagerank.jl/" "./" "Retos/" "CosasUniversidad/" "yagomix/" "ViolentPython/" "pili.la/" "mypy/" "gnome-wallpaper-changer/" "notas" "click/" "peticionAulas.txt.raw" "Web/" "mypy-rock/" "LightTable/" "light-mypy/" "npyscreen/" "python-prompt-toolkit/")
+
+ ("/home/rock/Dropbox/Prolog/" (21632 24075 120699 967000) "practica2.pl~" "xorshift.pl" "../" "practica2.itf" "practica2.pl" "memoria.txt" ".dropbox" "./" "practica2.po" "practica2_borr.pl" ".#xorshift.pl")
+
+ ("/home/rock/Dropbox/" (21632 24041 310553 105000) "DSC04942.jpg" ".dropbox.cache/" "RyanairBoardingPass.pdf" "Getting Started.pdf" "Universidad/" "4.apk" "DSC04937.jpg" "images.jpg" "../" "Attachments/" "T5 - Bloques funcionales secuenciales.pdf" "IMG_20120528_205854.jpg" "Prolog/" "DSC06470.jpg" "Middleware/" "UE7_A3_ENUN.java" "LabDecorosoCrespo__2.rar" "flunym0us.tar.gz" "rockneurotiko.droppages.com/" "a1008_1_APUNTES~DE~LENGUA~Y~LITERATURA~PARA~SELECTIVIDAD.pdf" "Rock.pdf" "T4 - Implementacion estructurada de sistemas secuenciales sincronos.pdf" "T3 - Sistemas secuenciales sincronos.pdf" "DSC06470-3.jpg" "Mine/" "IMG_20120412_110852.jpg" "yo_bataka.jpeg" "LabDecorosoCrespo.rar" "Public/" "Libros Seguridad/" "PPS/" "Caballeros que dicen PII/" ".dropbox" "ThinkingInPython.pdf" "Wix&Lux/" "Songs/" "ProyectoPrepa/" "Ejercicio 1.pdf" "DSC05632.jpg" "./" "universidad (1)/" "Ejercicio_T3_Moodle_11_12.pdf" "MachineofDeath_FINAL.pdf" "2009 - 2010.cfg collection.rar" "Pass/" "PDL/" "Sublime/" "Proyecto ensamblador/" "reconstructor-2.6_all.deb" "Rol en la FI/" "FTP&TORRENT/" "PyE II/" "Libros/" "minientrega.sh" "Prueba compartir/" "Downloads.lnk" "gente toxica (bernardo stamateas).pdf" "gif time!/" "Proyecto middleware/" "#UE7_A3_ENUN.java#" "ProyectoArqRock/" "DSC06470-2.jpg" "Photos/" "Documento nuevo.pdf" "Code.Complete.Second.Edition.eBook.pdf" "9-5-14/" "5iler/" "Backtrack/" "Los juegos del hambre/" "Luis Garcia de Bobadilla.pdf" "Configurar_LDAP_(www.DragonJAR.org).PDF")
+
+ ("/home/rock/Dropbox/Universidad/Prolog/" (21594 17227 940340 63000) "../" "./" "clase16octubre.pl" "clase23octubre.pl")
+
+ ("/home/rock/Dropbox/Universidad/" (21594 17172 542741 380000) "../" "Prolog/" "PPS/" "Programacion/" "./" "Proyecto ensamblador/" "ProyectoArqRock/" "Calculus/" "programacionconcesionario_.zip")
+
+ ("/home/rock/Git/CosasUniversidad/" (21359 56291 632998 910000) "Python/" "../" "README.md" "PAELLAS2014.txt" ".git/" "./" "C/" "Cursos/" "Java/")
+
+ ("/home/rock/Universidad/Terceraño/6-Sexto/" (21424 14129 424902 853000) "../" "SOS/" "CompPers/" "./" "SistDistr/")
+
+ ("/home/rock/Universidad/Terceraño/5-Quinto/" (21413 25432 952598 930000) "middleware/" "../" "Seguridad/" "IA/" "./")
+
+ ("/home/rock/Universidad/Terceraño/" (21264 47059 133218 13000) "5-Quinto/" "../" "./" "6-Sexto/")
+
+ ("/home/rock/Universidad/" (21362 15968 744469 533000) "Others/" "../" "AntiCopia/" "Primer año/" "TRYIT/" "Segundo año/" "./" "myCert.p12" "901_horarios_4S_gradoII_12-13_febrero.txt" "Terceraño/" "Online/")
+
+ ("/home/" (21367 37984 689343 912000) "../" "./" "grub.cfg" "rock/")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

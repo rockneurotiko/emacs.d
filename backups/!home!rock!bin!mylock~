@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+notify-send "DUNST_COMMAND_PAUSE"
+xscreensaver-lock -lock
