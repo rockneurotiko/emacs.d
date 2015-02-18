@@ -1,7 +1,0 @@
-; @begin(63300294)@ - Do not edit these lines - added automatically!
-(if (file-exists-p "/home/rock/Descargas/temp/CiaoDE-1.14.2-13646/emacs-mode/ciao-mode-init.el")
-(load-file "/home/rock/Descargas/temp/CiaoDE-1.14.2-13646/emacs-mode/ciao-mode-init.el")
-)
-; @end(63300294)@ - End of automatically added lines.
-
-(load-theme tango-dark)

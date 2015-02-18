@@ -1,0 +1,162 @@
+;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Wed Feb 18 08:50:54 2015
+;; Desktop file format version 206
+;; Emacs version 24.4.1
+
+;; Global section:
+(setq desktop-saved-frameset [frameset 1 (21732 17502 554351 25000) (desktop . "206") "rock@neurotiko" nil nil ((((font-backend xft x) (font . "-unknown-Droid Sans Mono-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1") (font-parameter . "Droid Sans Mono 10") (border-width . 0) (internal-border-width . 0) (right-divider-width . 0) (bottom-divider-width . 0) (vertical-scroll-bars) (foreground-color . "#DEDEDE") (background-color . "#161A1F") (mouse-color . "black") (border-color . "black") (screen-gamma) (line-spacing) (left-fringe . 8) (right-fringe . 8) (scroll-bar-foreground) (scroll-bar-background . "grey75") (menu-bar-lines . 0) (tool-bar-lines . 0) (title) (wait-for-wm . t) (fullscreen) (tool-bar-position . top) (icon-type . t) (auto-raise) (auto-lower) (cursor-type . box) (scroll-bar-width . 0) (alpha) (display-type . color) (background-mode . dark) (cursor-color . "#EEDC82") (visibility) (frameset--id . "CE02-9760-5302-1BE7") (frameset--mini t) (modeline . t) (minibuffer . t) (unsplittable) (icon-name) (display . ":0") (explicit-name) (height . 23) (width . 192) (left . 0) (top . 0)) ((min-height . 4) (min-width . 10) (min-height-ignore . 2) (min-width-ignore . 4) (min-height-safe . 1) (min-width-safe . 2) (min-pixel-height . 60) (min-pixel-width . 80) (min-pixel-height-ignore . 30) (min-pixel-width-ignore . 32) (min-pixel-height-safe . 15) (min-pixel-width-safe . 16)) leaf (pixel-width . 1552) (pixel-height . 330) (total-width . 194) (total-height . 22) (normal-height . 1.0) (normal-width . 1.0) (buffer "*scratch*" (selected) (hscroll . 0) (fringes 8 8 nil) (margins nil) (scroll-bars 0 0 nil nil) (vscroll . 0) (dedicated) (point . 1) (start . 1))) (((font-backend xft x) (font . "-unknown-Droid Sans Mono-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1") (font-parameter . "Droid Sans Mono 10") (border-width . 0) (internal-border-width . 0) (right-divider-width . 0) (bottom-divider-width . 0) (vertical-scroll-bars) (foreground-color . "#DEDEDE") (background-color . "#161A1F") (mouse-color . "black") (border-color . "black") (screen-gamma) (line-spacing) (left-fringe . 8) (right-fringe . 8) (scroll-bar-foreground) (scroll-bar-background . "grey75") (menu-bar-lines . 0) (tool-bar-lines . 0) (title) (wait-for-wm . t) (fullscreen . maximized) (tool-bar-position . top) (icon-type . t) (auto-raise) (auto-lower) (cursor-type . box) (scroll-bar-width . 0) (alpha) (horizontal-scroll-bars . t) (display-type . color) (background-mode . dark) (cursor-color . "#EEDC82") (sticky) (environment) (frameset--id . "6020-FC78-EB8C-2965") (frameset--mini t . t) (modeline . t) (minibuffer . t) (unsplittable) (icon-name) (display . ":0") (explicit-name) (maximized) (visibility . t) (height . 47) (width . 168) (left . 0) (top . 28)) ((min-height . 4) (min-width . 10) (min-height-ignore . 2) (min-width-ignore . 4) (min-height-safe . 1) (min-width-safe . 2) (min-pixel-height . 60) (min-pixel-width . 80) (min-pixel-height-ignore . 30) (min-pixel-width-ignore . 32) (min-pixel-height-safe . 15) (min-pixel-width-safe . 16)) leaf (pixel-width . 1366) (pixel-height . 703) (total-width . 170) (total-height . 47) (normal-height . 1.0) (normal-width . 1.0) (buffer "init.el" (selected . t) (hscroll . 0) (fringes 8 8 nil) (margins 9) (scroll-bars 0 0 nil nil) (vscroll . 0) (dedicated) (point . 3956) (start . 3372))))])
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name nil)
+(setq tags-table-list nil)
+(setq search-ring '("url" "redo"))
+(setq regexp-search-ring '("tfi" "incomingCallR" "accept" "remoteCamera" "handl" "activate" "connect" "handler" "click" "GO" "load-path" "auto-com" "flym" "express" "path" "auto-indent"))
+(setq register-alist (list (list 313465889 "Unprintable entity" (let ((mk (make-marker))) (add-hook 'desktop-delay-hook `(lambda nil (set-marker ,mk ,nil (get-buffer ," *temp*")))) mk))))
+(setq file-name-history '("~/BTSync/Libros/convert-epub.py" "~/renamePacman.py" "~/archivos_renombrar.txt" "~/Git/kurento-example-services/kurento-one2one-call/server.js" "~/Git/kurento-one2one-widget/src/js/core.js" "~/Git/kurento-crowddetector-widget/src/index.html" "~/Git/kurento-crowddetector-widget/.jshintrc-jasmine" "~/Git/kurento-crowddetector-widget/package.json" "~/Git/kurento-crowddetector-widget/bower.json" "~/Git/kurento-crowddetector-widget/src/js/CrowdDetector.js" "~/.emacs.d/init.el" "~/Git/kurento-crowddetector-widget/src/test/js/crowddetectorSpec.js" "~/Git/Retos/nodelearning/funcjavascript/basic_reduce.js" "~/Git/Retos/nodelearning/funcjavascript/partial_no_bind.js" "~/Git/kurento-example-services/kurento-chroma/static/js/console.js" "~/Git/kurento-example-services/kurento-chroma/static/js/index.js" "~/Git/kurento-crowddetector-widget/src/test/helpers/MashupPlatformHelper.js" "~/Git/kurento-crowddetector-widget/src/test/vendor/mockMashupPlatform.js" "~/Git/kurento-crowddetector-widget/src/test/helpers/mockServer.js" "~/Git/kurento-crowddetector-widget/.grunt/grunt-contrib-jasmine/src/js/CrowdDetector.js" "~/Git/kurento-one2one-widget/bower.json" "~/Git/kurento-one2one-widget/package.json" "~/Git/kurento-crowddetector-widget/Gruntfile.js" "~/Git/kurento-crowddetector-widget/src/test/js/one2oneSpec.js" "~/Git/kurento-crowddetector-widget/src/js/main.js" "~/Universidad/Cuarto/Robotica/PyRobot/pyrobot/plugins/brains/WallWalk.py" "~/Universidad/Cuarto/Robotica/PyRobot/pyrobot/plugins/brains/Avoid.py" "~/Git/kurento-crowddetector-widget/src/doc/index.md" "~/Git/kurento-crowddetector-widget/src/doc/changelog.md" "~/Git/kurento-crowddetector-widget/src/config.xml"))
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 206
+  "/home/rock/.emacs.d/init.el"
+  "init.el"
+  'emacs-lisp-mode
+  '(flx-ido-mode helm-mode undo-tree-mode auto-indent-mode autopair-mode linum-mode auto-complete-mode indent-guide-mode)
+  3956
+  '(3997 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . prefer-utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/rock/Git/kurento-crowddetector-widget/src/js/CrowdDetector.js"
+  "CrowdDetector.js"
+  'js2-mode
+  '(flx-ido-mode helm-mode undo-tree-mode auto-indent-mode autopair-mode linum-mode auto-complete-mode indent-guide-mode)
+  26093
+  '(1 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/rock/Git/kurento-crowddetector-widget/doc.org"
+  "doc.org"
+  'org-mode
+  '(flx-ido-mode helm-mode undo-tree-mode autopair-mode linum-mode indent-guide-mode org-indent-mode)
+  187
+  '(nil nil)
+  nil
+  nil
+  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines . t)))
+
+(desktop-create-buffer 206
+  "/home/rock/Git/kurento-crowddetector-widget/src/test/js/crowddetectorSpec.js"
+  "crowddetectorSpec.js"
+  'js2-mode
+  '(flx-ido-mode helm-mode undo-tree-mode auto-indent-mode autopair-mode linum-mode auto-complete-mode indent-guide-mode)
+  2338
+  '(96 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (overwrite-mode)))
+
+(desktop-create-buffer 206
+  "/home/rock/Git/kurento-crowddetector-widget/src/index.html"
+  "index.html"
+  'web-mode
+  '(flx-ido-mode helm-mode undo-tree-mode auto-indent-mode autopair-mode linum-mode auto-complete-mode indent-guide-mode)
+  1239
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/home/rock/Git/kurento-crowddetector-widget/Gruntfile.js"
+  "Gruntfile.js"
+  'js2-mode
+  '(flx-ido-mode helm-mode undo-tree-mode auto-indent-mode autopair-mode linum-mode auto-complete-mode indent-guide-mode)
+  4517
+  '(2300 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/rock/Git/kurento-crowddetector-widget/src/doc/changelog.md"
+  "changelog.md"
+  'markdown-mode
+  '(flx-ido-mode helm-mode undo-tree-mode autopair-mode linum-mode indent-guide-mode)
+  287
+  '(297 nil)
+  nil
+  nil
+  '((tab-width . 4) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/home/rock/Git/Retos/nodelearning/funcjavascript/hello.js"
+  "hello.js"
+  'js2-mode
+  '(flx-ido-mode helm-mode undo-tree-mode auto-indent-mode autopair-mode linum-mode auto-complete-mode indent-guide-mode)
+  67
+  '(67 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
+(desktop-create-buffer 206
+  "/home/rock/Git/kurento-example-services/kurento-chroma/static/js/index.js"
+  "index.js"
+  'js2-mode
+  '(flx-ido-mode helm-mode undo-tree-mode auto-indent-mode autopair-mode linum-mode auto-complete-mode indent-guide-mode)
+  2128
+  '(1 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/home/rock/Git/kurento-crowddetector-widget/src/test/vendor/mockMashupPlatform.js"
+  "mockMashupPlatform.js"
+  'js2-mode
+  '(flx-ido-mode helm-mode undo-tree-mode auto-indent-mode autopair-mode linum-mode auto-complete-mode indent-guide-mode)
+  1562
+  '(3609 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/home/rock/Git/kurento-crowddetector-widget/src/js/main.js"
+  "main.js"
+  'js2-mode
+  '(flx-ido-mode helm-mode undo-tree-mode auto-indent-mode autopair-mode linum-mode auto-complete-mode indent-guide-mode)
+  100
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/home/rock/Cursos/ocaml/Ejercicios/1-Intro/ps3.ml"
+  "ps3.ml"
+  'tuareg-mode
+  '(flx-ido-mode helm-mode undo-tree-mode auto-indent-mode autopair-mode linum-mode auto-complete-mode indent-guide-mode merlin-mode)
+  5933
+  '(5933 nil)
+  nil
+  nil
+  '((indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/home/rock/.emacs.d/elpa/org-20150202/org-loaddefs.el"
+  "org-loaddefs.el"
+  'emacs-lisp-mode
+  '(flx-ido-mode helm-mode undo-tree-mode auto-indent-mode autopair-mode linum-mode auto-complete-mode indent-guide-mode)
+  86726
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . utf-8-unix)))
+
