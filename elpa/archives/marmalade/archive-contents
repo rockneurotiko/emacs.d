@@ -1,4 +1,22 @@
 (1
+ (yesql-ghosts .
+	       [(0 1 0)
+		((s
+		  (1 9 0))
+		 (dash
+		  (2 10 0))
+		 (cider
+		  (0 8 0)))
+		"Display ghostly yesql defqueries inline" single])
+ (melpa-repository .
+		   [(0 0 5)
+		    nil "add the melpa elpa repository to emacs" single])
+ (xbm-life .
+	   [(0 1)
+	    nil "A XBM version of Conway's Game of Life" single])
+ (winner-mode-enable .
+		     [(0 0 5)
+		      nil "Enables winner mode if its available" tar])
  (zone-matrix .
 	      [(0 0 1)
 	       nil "Matrix themed Zone mode" tar])
@@ -1130,7 +1148,7 @@
 		  (0 0 5)))
 		"robots based on rcirc irc" single])
  (rcirc-notify .
-	       [(0 9)
+	       [(1 0 0)
 		nil "libnotify popups" single])
  (rcirc-color .
 	      [(0 2)
@@ -1487,7 +1505,7 @@
 	     (1 0)))
 	   "Simple package system for Emacs" single])
  (pabbrev .
-	  [(4 1)
+	  [(4 2)
 	   nil "Predictive abbreviation expansion" single])
  (p4 .
      [(11 0)
@@ -2451,7 +2469,7 @@
 		 [(1 0)
 		  nil "highlight the word the point is on" single])
  (ical-pull .
-	    [(0 0 2)
+	    [(0 0 3)
 	     ((shadchen
 	       (1 2))
 	      (dash
@@ -2459,7 +2477,9 @@
 	      (s
 	       (1 9 0))
 	      (noflet
-	 (0 0 14)))
+	 (0 0 14))
+	      (web
+	       (0 5 1)))
 	     "pull ical feeds into org-agenda" single])
  (ibuffer-vc .
 	     [(0 7)

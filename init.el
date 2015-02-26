@@ -27,8 +27,7 @@
  '(elfeed-feeds
    (quote
     ("http://prog21.dadgum.com/atom.xml" "http://syntaxexclamation.wordpress.com/feed/" "http://blog.emillon.org/rss.xml" "http://why-lambda.blogspot.com/feeds/posts/default" "http://sigfpe.blogspot.com/feeds/posts/default" "http://psnively.github.com/atom.xml" "http://edwinb.wordpress.com/feed/" "http://existentialtype.wordpress.com/feed/" "http://brianmckenna.org/blog/feed" "http://queuea9.wordpress.com/feed/" "http://zenzike.com/rss.xml" "http://lambda.jstolarek.com/feed/" "http://monoidal.blogspot.com/feeds/posts/default" "http://spire-lang.org/atom.xml" "http://typesandkinds.wordpress.com/feed/" "http://homotopytypetheory.org/feed/" "http://arcanesentiment.blogspot.com/feeds/posts/default" "http://paolocapriotti.com/atom.xml" "http://semantic-domain.blogspot.com/feeds/posts/default" "http://comonad.com/reader/feed/" "http://jozefg.bitbucket.org/rss.xml" "http://math.andrej.com/feed/" "http://www.lpw25.net/rss.xml" "http://ocaml.janestreet.com/?q=rss.xml" "http://jeremykun.wordpress.com/feed/" "http://twanvl.nl/feed" "http://bartoszmilewski.wordpress.com/feed/" "http://kwangyulseo.com/feed/" "http://www.haskellforall.com/feeds/posts/default" "http://conal.net/blog/feed/" "https://golem.ph.utexas.edu/category/atom10.xml" "http://requestforlogic.blogspot.com/feeds/posts/default" "http://chromaticleaves.com/rss.xml" "http://feeds.feedburner.com/ezyang" "http://raichoo.github.io/feed.rss" "http://bentnib.org/posts.rss.xml" "http://www.simonjf.com/wordpress/?feed=rss2" "http://gallium.inria.fr/~scherer/gagallium/index.rss" "http://anil.recoil.org/feeds/atom.xml" "http://blog.higher-order.com/atom.xml" "http://bitemyapp.com/rss.xml" "http://mazzo.li/rss.xml" "http://infinitecardinals.wordpress.com/feed/" "http://www.stephanboyer.com/feeds/posts/default")))
- '(ido-everywhere t)
- '(python-indent-offset 4 t))
+ '(ido-everywhere t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -38,10 +37,10 @@
 
 ;; MY PATH
 (add-to-list 'load-path "~/.emacs.d/plugins")
-
+(add-to-list 'load-path "~/.emacs.d/settings")
 ;; IRC
 (eval-after-load "erc"
-  '(progn
+    '(progn
      (setq erc-nick "rockneurotiko")
      (setq erc-user-full-name "Rock Neurotiko")
      (setq erc-autojoin-channels-alist
@@ -312,66 +311,79 @@
 (load "~/.emacs.d/plugins/ESS/lisp/ess-site.el")
 (setq inferior-julia-program-name "julia")
 
+;; SCALA
+(require 'scala-settings)
+
 
 ;; Python
+(require 'python-settings)
 
-;; Setup for Flymake code checking.
-(require 'flymake)
-;;(require 'auto-complete)
-;;(require 'yasnippet)
-(require 'python-mode)
-(load-library "flymake-cursor")
-;;(elpy-enable)
+;; ;; Setup for Flymake code checking.
+;; (require 'flymake)
+;; ;;(require 'auto-complete)
+;; ;;(require 'yasnippet)
+;; (require 'python-mode)
+;; (load-library "flymake-cursor")
+;; ;;(elpy-enable)
 
-(setq-default python-indent-offset 4)
-(setq-default indent-tabs-mode nil)
+;; (setq-default python-indent-offset 4)
+;; (setq-default indent-tabs-mode nil)
 
-(autoload 'python-mode "python-mode" "Python Mode." t)
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-(add-to-list 'interpreter-mode-alist '("python" . python-mode))
-(setq interpreter-mode-alist
-      (cons '("python" . python-mode)
-            interpreter-mode-alist)
-      python-mode-hook
-      '(lambda () (progn
-                    (setq python-indent-offset 4)
-                    (set-variable 'py-smart-indentation nil)
-                    ;;(set-variable 'indent-tabs-mode nil)
-                    (setq tab-width 4)
-                    ;; (setq python-indent 4)
-                    ;;(highlight-beyond-fill-column)
-                                        ;(pabbrev-mode)
-                                        ;(abbrev-mode)
-                    )
-         )
-      )
-
-
-;; Script that flymake uses to check code. This script must be
-;; present in the system path.
-(setq pycodechecker "pychecker")
-
-(when (load "flymake" t)
-  (defun flymake-pycodecheck-init ()
-    (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-inplace))
-           (local-file (file-relative-name
-                        temp-file
-                        (file-name-directory buffer-file-name))))
-      (list pycodechecker (list local-file))))
-  (add-to-list 'flymake-allowed-file-name-masks
-               '("\\.py\\'" flymake-pycodecheck-init)))
-
-(add-hook 'python-mode-hook 'flymake-mode)
-
-;; (add-hook 'python-mode-hook
-;;           (lambda ()
-;;             (setq indent-tabs-mode t)
-;;             (setq tab-width 4)
-;;             (setq python-indent 4)))
+;; (autoload 'python-mode "python-mode" "Python Mode." t)
+;; (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+;; (add-to-list 'interpreter-mode-alist '("python" . python-mode))
+;; (setq interpreter-mode-alist
+;;       (cons '("python" . python-mode)
+;;             interpreter-mode-alist)
+;;       python-mode-hook
+;;       '(lambda () (progn
+;;                     (setq python-indent-offset 4)
+;;                     (set-variable 'py-smart-indentation nil)
+;;                     ;;(set-variable 'indent-tabs-mode nil)
+;;                     (setq tab-width 4)
+;;                     ;; (setq python-indent 4)
+;;                     ;;(highlight-beyond-fill-column)
+;;                                         ;(pabbrev-mode)
+;;                                         ;(abbrev-mode)
+;;                     )
+;;          )
+;;       )
 
 
-(add-hook 'after-init-hook (lambda () (setq python-indent-offset 4)))
+;; ;; Script that flymake uses to check code. This script must be
+;; ;; present in the system path.
+;; (setq pycodechecker "pychecker")
+
+;; (when (load "flymake" t)
+;;   (defun flymake-pycodecheck-init ()
+;;     (let* ((temp-file (flymake-init-create-temp-buffer-copy
+;;                        'flymake-create-temp-inplace))
+;;            (local-file (file-relative-name
+;;                         temp-file
+;;                         (file-name-directory buffer-file-name))))
+;;       (list pycodechecker (list local-file))))
+;;   (add-to-list 'flymake-allowed-file-name-masks
+;;                '("\\.py\\'" flymake-pycodecheck-init)))
+
+;; (add-hook 'python-mode-hook 'flymake-mode)
+
+;; ;; (add-hook 'python-mode-hook
+;; ;;           (lambda ()
+;; ;;             (setq indent-tabs-mode t)
+;; ;;             (setq tab-width 4)
+;; ;;             (setq python-indent 4)))
+;; (add-hook 'after-init-hook (lambda () (setq python-indent-offset 4)))
+
+;; (setenv "ESHELL" (expand-file-name "~/bin/eshell"))
+
+;; VirtualEnv
+(require 'virtualenvwrapper)
+(venv-initialize-interactive-shells) ;; if you want interactive shell support
+(venv-initialize-eshell) ;; if you want eshell support
+(setq venv-location "~/Envs")
+
+
+
 
 ;; My funcs
 
@@ -441,9 +453,9 @@ region\) apply comment-or-uncomment to the current line"
 
 
 ;; OCAML
-(require 'merlin)
 (add-to-list 'load-path "/home/rock/.opam/4.01.0/share/emacs/site-lisp")
 (add-to-list 'load-path "/home/rock/.opam/4.01.0/bin/")
+(require 'merlin)
 (require 'ocp-indent)
 
 ;; (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
