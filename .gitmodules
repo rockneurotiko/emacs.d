@@ -1,3 +1,6 @@
 [submodule "plugins/ESS"]
 	path = plugins/ESS
 	url = git://github.com/emacs-ess/ESS.git
+[submodule "plugins/emacs-realtime-markdown-viewer"]
+	path = plugins/emacs-realtime-markdown-viewer
+	url = git@github.com:syohex/emacs-realtime-markdown-viewer.git
