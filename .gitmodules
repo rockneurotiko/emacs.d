@@ -1,0 +1,3 @@
+[submodule "plugins/ESS"]
+	path = plugins/ESS
+	url = git://github.com/emacs-ess/ESS.git
