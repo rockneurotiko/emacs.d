@@ -4,3 +4,6 @@
 [submodule "plugins/emacs-realtime-markdown-viewer"]
 	path = plugins/emacs-realtime-markdown-viewer
 	url = git@github.com:syohex/emacs-realtime-markdown-viewer.git
+[submodule "plugins/web-mode"]
+	path = plugins/web-mode
+	url = git@github.com:fxbois/web-mode.git
