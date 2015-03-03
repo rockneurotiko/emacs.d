@@ -1,4 +1,3 @@
-
 (defun set-undo ()
     ;; Undo properties
     (require 'undo-tree)
@@ -51,6 +50,11 @@
     (require 'realtime-markdown-viewer)
     )
 
+(defun set-scroll ()
+    (require 'smooth-scroll)
+    (require 'smooth-scrolling)
+    )
+
 (defun set-auto-complete ()
     ;; Autocompletado
     (require 'auto-complete)
@@ -81,6 +85,22 @@
 (defun set-zone ()
     (require 'zone)
     (zone-when-idle 120)
+    )
+
+(defun set-auto-update ()
+    ;; Auto package update
+    (require 'auto-package-update)
+    (auto-package-update-maybe)
+    )
+
+(defun set-uniquify ()
+    (require 'uniquify)
+    (setq uniquify-buffer-name-style 'forward)
+    )
+
+(defun set-mochi ()
+    (require 'mochi-mode)
+    (setq-default indent-tabs-mode nil)
     )
 
 (provide 'random-requires)

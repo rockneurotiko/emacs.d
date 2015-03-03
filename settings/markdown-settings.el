@@ -2,15 +2,11 @@
 ;;; Markdown mode ;;;
 ;-------------------;
 
-(include-plugin "markdown-mode")
-(autoload 'markdown-mode "markdown-mode.el"
-  "Major mode for editing Markdown files" t)
-(setq auto-mode-alist
-      (append 
-       (list '("\\.text" . markdown-mode) 
-	     '("\\.md" . markdown-mode) 
-	     '("\\.markdown" . markdown-mode) 
-	     )
-       auto-mode-alist))
+(package-require 'markdown-mode)
+
+(setq-default markdown-command "pandoc -S -s --self-contained -f markdown -t html5 ")
+
+(add-to-list 'auto-mode-alist '("\\.markdown$" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 
 (provide 'markdown-settings)

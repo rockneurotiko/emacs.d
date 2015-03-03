@@ -11,8 +11,9 @@
 
 ;; web dev
 (add-to-list 'auto-mode-alist '("\\.php[345]?\\'\\|\\.inc\\'" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.js[x]?\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.json\\'\\|\\.jshintrc\\'" . json-mode))
+;;(add-to-list 'auto-mode-alist '("\\.json\\'\\|\\.jshintrc\\'" . json-mode))
 (add-to-list 'auto-mode-alist
              '("\\.p?html\\(\\.[a-z]\\{2\\}\\)?\\'" . html-mode))
 
@@ -29,6 +30,7 @@
       (interactive)
       (delete-process "Tern"))
     )
+
 (defun load-angular ()
     (require 'angular-snippets)
     (eval-after-load "sgml-mode"
