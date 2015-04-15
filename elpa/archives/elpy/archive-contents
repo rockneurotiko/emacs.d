@@ -20,4 +20,5 @@
  (idomenu . [(0 1) nil "imenu tag selection with ido" single])
  (iedit . [(0 97) nil "Edit multiple regions in the same way simultaneously." tar])
  (nose . [(0 1 1) nil "Easy Python test running in Emacs" single])
+ (buttercup . [(1 0) nil "Behavior-Driven Emacs Lisp Testing" tar])
 )

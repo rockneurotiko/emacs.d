@@ -1,7 +1,6 @@
 ;;--PROLOG
-(require 'prolog-settings
+(require 'prolog-settings)
 
-         )
 ;;--JAVASCRIPT && WEB
 (require 'js-settings)
 (load-web-mode)

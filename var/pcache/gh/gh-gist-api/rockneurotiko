@@ -1,0 +1,377 @@
+;; Object gh/gh-gist-api/rockneurotiko
+;; EIEIO PERSISTENT OBJECT
+(gh-cache "gh/gh-gist-api/rockneurotiko"
+  :file "rockneurotiko"
+  :version "0.3/gh-3"
+  :entries #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8 data (("/users/rockneurotiko/gists" "GET" "518961b9e53cab492b8a913ae8ba7382d4306545") [object gh-cache-entry "gh-cache-entry" 1428439892.354033 nil ([object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "resultados.md" 4992 "https://gist.githubusercontent.com/rockneurotiko/13c3d7140a906747c9ad/raw/d48db02c1fcd0552f69c8b1d3048f772b0d50ce2/resultados.md" nil]) :json-false "" "2015-04-07T20:32:45Z" "2015-04-07T20:50:28Z" "https://gist.github.com/13c3d7140a906747c9ad.git" "https://gist.github.com/13c3d7140a906747c9ad.git" "https://gist.github.com/13c3d7140a906747c9ad" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "13c3d7140a906747c9ad" "https://api.github.com/gists/13c3d7140a906747c9ad" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "sha1.py" 6212 "https://gist.githubusercontent.com/rockneurotiko/7ce3aa35ca474281428f/raw/55697f7d4f669a63aa3d08ddec0a99f9b30f2b91/sha1.py" "#!/usr/bin/env python
+from sys import version_info
+from hashlib import sha1
+from optparse import OptionParser
+from random import randint
+try:
+    from cProfile import runctx
+except ImportError:
+    from cprofile import runctx
+
+
+def sord(l):
+    if version_info.major == 3:
+        return l
+    else:
+        return ord(l)
+
+
+########################################################################
+
+
+def bit_diff(x, y, bits):
+    return len([1 for i in range(bits) if x[i] != y[i]])
+
+
+def to_bin(x):
+    return bin(bytes2int(x))[2:]
+
+
+def rotl(word, offset):
+    return ((word << offset) | (word >> (32 - offset))) & 0xffffffff
+
+
+def int2bytes(data, length=1):
+    return bytes(bytearray(reversed([(data >> i * 8) % 256 for i in range(length)])))
+
+
+def bytes2int(data):
+    return sum([sord(bi) << ((len(data) - 1 - i) * 8) for i, bi in enumerate(data)])
+
+
+def SHA1(message):
+    IV = [0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0]
+    K = [0x5A827999, 0x6ED9EBA1, 0x8F1BBCDC, 0xCA62C1D6]
+
+    # message padding
+    # append 0x8000...00 and the msg bitlen (as 8 big-endian bytes) to fill
+    # up to a multiple of 512 bits
+    message += b\"\\x80\" + b\"\\x00\" * \\
+               ((56 - len(message) - 1) % 64) + \\
+               int2bytes(len(message) * 8, length=8)
+
+    # initialize chaining value
+    h0, h1, h2, h3, h4 = IV
+
+    # process message in blocks of 64 bytes (or 16 words a 32 bits)
+    for i in range(0, len(message), 64):
+        # extend 16 message words to 80 words, one for each round
+        w = [None] * 80
+        for j in range(16):
+            w[j] = bytes2int(message[i + 4 * j:i + 4 * (j + 1)])
+        for j in range(16, 80):
+            w[j] = rotl(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1)
+
+        # initialize state to chaining value
+        a, b, c, d, e = h0, h1, h2, h3, h4
+
+        # update state in 80 rounds
+        for j in range(80):
+            if 0 <= j < 20:
+                f = d ^ (b & (c ^ d))
+                k = K[0]
+            elif 20 <= j < 40:
+                f = b ^ c ^ d
+                k = K[1]
+            elif 40 <= j < 60:
+                f = (b & c) | (b & d) | (c & d)
+                k = K[2]
+            elif 60 <= j < 80:
+                f = b ^ c ^ d
+                k = K[3]
+
+            a, b, c, d, e = (rotl(a, 5) + f + e + k + w[j]) & 0xffffffff, a, rotl(b, 30), c, d
+
+        # update chaining value with state
+        h0 = (h0 + a) & 0xffffffff
+        h1 = (h1 + b) & 0xffffffff
+        h2 = (h2 + c) & 0xffffffff
+        h3 = (h3 + d) & 0xffffffff
+        h4 = (h4 + e) & 0xffffffff
+
+    # return last chaining value as hash
+    return \"{h0:08X} {h1:08X} {h2:08X} {h3:08X} {h4:08X}\".format(**locals())
+
+
+def process_SHA1(message=b'', custom=True, profile=False):
+    if profile:
+        print(\"Custom implementation: \")
+        runctx('SHA1(message)', {'SHA1': SHA1, 'message': message}, {})
+        print(\"Hashlib implementation: \")
+        runctx('sha1(message).hexdigest()', {'sha1': sha1, 'message': message}, {})
+        return ''
+    elif custom:
+        return SHA1(message)
+    else:
+        res = sha1(message).hexdigest()
+        return ' '.join([res[start:start + 8].upper() for start in range(0, len(res), 8)])
+
+
+def samples(custom=True, profile=False):
+    samples = [('One', b'abc', 'A9993E36 4706816A BA3E2571 7850C26C 9CD0D89D'),
+               ('Two', b'abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq', '84983E44 1C3BD26E BAAE4AA1 F95129E5 E54670F1')]
+    results = []
+    print('-' * 80)
+    for (v, ms, res) in samples:
+        print(\"Calculating {} block sample...\".format(v))
+        results.append(process_SHA1(ms, custom, profile))
+        print('-' * 80)
+    if not profile:
+        for i, n in enumerate(results):
+            equal = n == samples[i][2]
+            print(\"{} block hash calculated is: {}\\nOne block hash expected is:   {}\\nAre the same: {}\".format(samples[i][0], n, samples[i][2], equal))
+
+
+def random(n=1, profile=False):
+    total_bits = n * 512
+    print(\"Let's hash {} bits ({} blocks | {} B | {} KB | {} MB)\".format(total_bits, n, total_bits / 8, total_bits / 8 / 1024, total_bits / 8 / 1024 / 1024))
+
+    v = (''.join((chr(randint(97, 122)) for _ in range(n) for _ in range(64)))).encode()
+
+    print(\"-\" * 80)
+    mysol = process_SHA1(v, True, profile)
+    if not profile:
+        oficial = process_SHA1(v, False, profile)
+        print(\"Custom implementation:  {}\\nHashlib implementation: {}\\n\".format(mysol, oficial))
+        print(\"Equal: {}\".format(mysol == oficial))
+
+
+def test_avalancha(bits=8, custom=True):
+    ntimes = (2 ** bits)
+    res = []
+    if (bits / 8.0).is_integer():
+        nbytes = bits // 8
+    else:
+        nbytes = 1 if bits < 8 else bits // 8 + 1
+    prev = None
+    for i in range(ntimes):
+        sh = process_SHA1(int2bytes(i, nbytes), custom, False)
+        repl = sh.replace(' ', '').lower().encode()
+        proc = to_bin(repl)
+        if prev is not None:
+            res.append(bit_diff(proc, prev, 160))
+        prev = proc
+
+    res = list(map(lambda x: x / float(160), res))
+    media = sum(res) / len(res)
+    print(\"Media de cambio para %d muestras de cambios tanto de claves como de datos: %2.3f%%\" % (len(res), media * 100))
+
+
+########################################################################
+
+# Command to create a file of 'n' bytes:
+# dd if=/dev/zero of=output.dat  bs=1M  count=n
+
+
+def main():
+    parser = OptionParser()
+
+    parser.add_option('-f', '--file', dest='filename')
+    parser.add_option('-t', '--text', dest='text')
+    parser.add_option('-l', '--library', action='store_false', default=True, dest='custom')
+    parser.add_option('-s', '--sample', action='store_true', default=False, dest='sample')
+    parser.add_option('-p', '--profile', action='store_true', default=False, dest='profile')
+    parser.add_option('-r', '--random', type=int, dest='random')
+    parser.add_option('-a', '--avalanche', type=int, dest='avalanche')
+
+    (option, args) = parser.parse_args()
+    custom = option.custom
+    profile = option.profile
+
+    if option.sample:
+        samples(custom, profile)
+    elif option.random is not None:
+        random(option.random, option.profile)
+    elif option.avalanche is not None:
+"]) :json-false "" "2015-04-07T20:31:37Z" "2015-04-07T20:46:27Z" "https://gist.github.com/7ce3aa35ca474281428f.git" "https://gist.github.com/7ce3aa35ca474281428f.git" "https://gist.github.com/7ce3aa35ca474281428f" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "7ce3aa35ca474281428f" "https://api.github.com/gists/7ce3aa35ca474281428f" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "renamepacman.py" 1203 "https://gist.githubusercontent.com/rockneurotiko/b9ea13bf95e3256c1571/raw/32891c8659d15931aaca8a04f0dfaf2e6bb17f16/renamepacman.py" nil]) :json-false "Remove files when pacman suck" "2015-02-25T15:23:09Z" "2015-02-25T15:23:10Z" "https://gist.github.com/b9ea13bf95e3256c1571.git" "https://gist.github.com/b9ea13bf95e3256c1571.git" "https://gist.github.com/b9ea13bf95e3256c1571" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "b9ea13bf95e3256c1571" "https://api.github.com/gists/b9ea13bf95e3256c1571" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "homofonico.py" 1003 "https://gist.githubusercontent.com/rockneurotiko/9c00ae81efb4a3bbdc18/raw/3e6c6100fab6f57599ae558acbb1a93d818b9d2f/homofonico.py" nil]) :json-false "Descifrado Homofonico." "2015-02-17T19:31:36Z" "2015-02-17T19:31:37Z" "https://gist.github.com/9c00ae81efb4a3bbdc18.git" "https://gist.github.com/9c00ae81efb4a3bbdc18.git" "https://gist.github.com/9c00ae81efb4a3bbdc18" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "9c00ae81efb4a3bbdc18" "https://api.github.com/gists/9c00ae81efb4a3bbdc18" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "keybase.md" 3487 "https://gist.githubusercontent.com/rockneurotiko/e275ca79bfba612dda29/raw/658cf8da4202101db8f217458235bae6d50f03b3/keybase.md" nil]) t "keybase.md" "2015-01-20T14:41:06Z" "2015-01-20T14:41:07Z" "https://gist.github.com/e275ca79bfba612dda29.git" "https://gist.github.com/e275ca79bfba612dda29.git" "https://gist.github.com/e275ca79bfba612dda29" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "e275ca79bfba612dda29" "https://api.github.com/gists/e275ca79bfba612dda29" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "potencia.jl" 3180 "https://gist.githubusercontent.com/rockneurotiko/35b1061a1fd182e162cc/raw/54b1350aaf473f59de4cd580f5c8547a1479f917/potencia.jl" nil]) :json-false "Metodo de la potencia + pagerank para Aplicaciones Numericas." "2014-11-30T20:21:15Z" "2014-11-30T20:21:16Z" "https://gist.github.com/35b1061a1fd182e162cc.git" "https://gist.github.com/35b1061a1fd182e162cc.git" "https://gist.github.com/35b1061a1fd182e162cc" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "35b1061a1fd182e162cc" "https://api.github.com/gists/35b1061a1fd182e162cc" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "slyPremium.user.js" 443 "https://gist.githubusercontent.com/rockneurotiko/3e886b1d177c8cf70ccb/raw/a5479281291891893aab99a97e161fb70f419217/slyPremium.user.js" nil]) :json-false "series.ly.premium" "2014-10-26T17:17:41Z" "2014-10-26T19:08:37Z" "https://gist.github.com/3e886b1d177c8cf70ccb.git" "https://gist.github.com/3e886b1d177c8cf70ccb.git" "https://gist.github.com/3e886b1d177c8cf70ccb" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "3e886b1d177c8cf70ccb" "https://api.github.com/gists/3e886b1d177c8cf70ccb" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "grinbuzz.user.js" 1814 "https://gist.githubusercontent.com/rockneurotiko/5953fc3e93286e9ede1e/raw/cdf99f3b9411e9088f19968a5021a11c9989db63/grinbuzz.user.js" nil]) :json-false "Grinbuzz" "2014-10-20T13:23:46Z" "2014-10-27T15:01:02Z" "https://gist.github.com/5953fc3e93286e9ede1e.git" "https://gist.github.com/5953fc3e93286e9ede1e.git" "https://gist.github.com/5953fc3e93286e9ede1e" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "5953fc3e93286e9ede1e" "https://api.github.com/gists/5953fc3e93286e9ede1e" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "pyGeo.py" 3343 "https://gist.githubusercontent.com/rockneurotiko/a60db4c0a35fb570c9b1/raw/41ae423f53dca5a26c54e087f0ce7d2f30a94273/pyGeo.py" nil]) :json-false "pyGeo" "2014-10-16T09:17:59Z" "2014-10-16T09:18:00Z" "https://gist.github.com/a60db4c0a35fb570c9b1.git" "https://gist.github.com/a60db4c0a35fb570c9b1.git" "https://gist.github.com/a60db4c0a35fb570c9b1" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "a60db4c0a35fb570c9b1" "https://api.github.com/gists/a60db4c0a35fb570c9b1" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "combs.py" 448 "https://gist.githubusercontent.com/rockneurotiko/33496d9a27c2aa0adfa2/raw/055077233931cf9052861f8d06e4aa9a5f108241/combs.py" nil]) :json-false "Combinations" "2014-09-22T20:44:44Z" "2014-09-22T20:44:45Z" "https://gist.github.com/33496d9a27c2aa0adfa2.git" "https://gist.github.com/33496d9a27c2aa0adfa2.git" "https://gist.github.com/33496d9a27c2aa0adfa2" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "33496d9a27c2aa0adfa2" "https://api.github.com/gists/33496d9a27c2aa0adfa2" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "trans.pl" 419 "https://gist.githubusercontent.com/rockneurotiko/4764b6488e61b59790f0/raw/089a884b9265bda5ad5f6d5e441af1a283a99eb7/trans.pl" nil]) :json-false ":S" "2014-09-18T07:32:23Z" "2014-09-18T08:07:26Z" "https://gist.github.com/4764b6488e61b59790f0.git" "https://gist.github.com/4764b6488e61b59790f0.git" "https://gist.github.com/4764b6488e61b59790f0" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "4764b6488e61b59790f0" "https://api.github.com/gists/4764b6488e61b59790f0" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "tail_rec_print.py" 646 "https://gist.githubusercontent.com/rockneurotiko/34f9197cca00c218d701/raw/59b83154870622fbb15032ca1e0f3938164517d6/tail_rec_print.py" nil]) t "tail_rec_print" "2014-09-17T06:18:41Z" "2014-09-17T06:18:42Z" "https://gist.github.com/34f9197cca00c218d701.git" "https://gist.github.com/34f9197cca00c218d701.git" "https://gist.github.com/34f9197cca00c218d701" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "34f9197cca00c218d701" "https://api.github.com/gists/34f9197cca00c218d701" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "post.py" 1161 "https://gist.githubusercontent.com/rockneurotiko/3fc4d05cc87d979efce5/raw/7cbcc9ae4c4c727df6f2723bfa2714679fb3fd9b/post.py" nil]) :json-false "NP" "2014-09-03T17:40:56Z" "2014-09-03T17:40:57Z" "https://gist.github.com/3fc4d05cc87d979efce5.git" "https://gist.github.com/3fc4d05cc87d979efce5.git" "https://gist.github.com/3fc4d05cc87d979efce5" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "3fc4d05cc87d979efce5" "https://api.github.com/gists/3fc4d05cc87d979efce5" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "in_to_post.py" 1181 "https://gist.githubusercontent.com/rockneurotiko/6bbfa5ceb32df57cc43f/raw/9dbd66b33bf1b88283b9ebb7902c97fa02636c6c/in_to_post.py" nil]) :json-false "Infija a Postfija" "2014-09-03T17:30:17Z" "2014-09-03T17:30:18Z" "https://gist.github.com/6bbfa5ceb32df57cc43f.git" "https://gist.github.com/6bbfa5ceb32df57cc43f.git" "https://gist.github.com/6bbfa5ceb32df57cc43f" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "6bbfa5ceb32df57cc43f" "https://api.github.com/gists/6bbfa5ceb32df57cc43f" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "vigenere.py" 3221 "https://gist.githubusercontent.com/rockneurotiko/6067add5443231bcceec/raw/c44ec39b1177a01ab421bc003a158a2af2a23c0c/vigenere.py" nil]) :json-false "Vigenere" "2014-09-03T17:21:50Z" "2014-09-03T17:21:51Z" "https://gist.github.com/6067add5443231bcceec.git" "https://gist.github.com/6067add5443231bcceec.git" "https://gist.github.com/6067add5443231bcceec" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "6067add5443231bcceec" "https://api.github.com/gists/6067add5443231bcceec" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "collapse.py" 2880 "https://gist.githubusercontent.com/rockneurotiko/017044d907242c2e0482/raw/69bc9141c99b5124539c6c987ac4351dae25f5f6/collapse.py" nil]) t "Collapse" "2014-08-19T17:22:30Z" "2014-08-19T17:22:31Z" "https://gist.github.com/017044d907242c2e0482.git" "https://gist.github.com/017044d907242c2e0482.git" "https://gist.github.com/017044d907242c2e0482" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "017044d907242c2e0482" "https://api.github.com/gists/017044d907242c2e0482" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "client.py" 5620 "https://gist.githubusercontent.com/rockneurotiko/2984e6b4037e58f59342/raw/f1dbe5b0272d99d1ed4da083a3dc4c447c935474/client.py" nil]) :json-false "Cliente" "2014-07-14T14:07:15Z" "2014-07-14T14:07:16Z" "https://gist.github.com/2984e6b4037e58f59342.git" "https://gist.github.com/2984e6b4037e58f59342.git" "https://gist.github.com/2984e6b4037e58f59342" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "2984e6b4037e58f59342" "https://api.github.com/gists/2984e6b4037e58f59342" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "cast128.py" 41959 "https://gist.githubusercontent.com/rockneurotiko/88f7b35b9cdda6afce38/raw/91f3906e6fb96c8a41fa910d537b81e2714bb324/cast128.py" nil]) :json-false "RFC2144 implementation" "2014-07-06T18:49:56Z" "2014-07-06T21:30:40Z" "https://gist.github.com/88f7b35b9cdda6afce38.git" "https://gist.github.com/88f7b35b9cdda6afce38.git" "https://gist.github.com/88f7b35b9cdda6afce38" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "88f7b35b9cdda6afce38" "https://api.github.com/gists/88f7b35b9cdda6afce38" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "Skeleton.java" 37689 "https://gist.githubusercontent.com/rockneurotiko/ebc4bf6899e20d41ccee/raw/36290b0d6bd12c3ae07ee58c48a244e3224afa8b/Skeleton.java" nil] [object gh-gist-gist-file "gh-gist-gist-file" "Cliente.java" 18288 "https://gist.githubusercontent.com/rockneurotiko/ebc4bf6899e20d41ccee/raw/39de81be4243601cb9dc0c70e4707add6ec33f92/Cliente.java" nil]) :json-false "SOS :)" "2014-07-05T17:15:39Z" "2014-07-05T17:15:40Z" "https://gist.github.com/ebc4bf6899e20d41ccee.git" "https://gist.github.com/ebc4bf6899e20d41ccee.git" "https://gist.github.com/ebc4bf6899e20d41ccee" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "ebc4bf6899e20d41ccee" "https://api.github.com/gists/ebc4bf6899e20d41ccee" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "seriesly.user.js" 7801 "https://gist.githubusercontent.com/rockneurotiko/b863c2755d24cb0c4dec/raw/8ff6200467ae42ed1df842a3bacbeceafcb1c2da/seriesly.user.js" nil]) :json-false ";) Don't share much, and enjoy :)" "2014-06-25T17:07:32Z" "2014-11-03T14:54:45Z" "https://gist.github.com/b863c2755d24cb0c4dec.git" "https://gist.github.com/b863c2755d24cb0c4dec.git" "https://gist.github.com/b863c2755d24cb0c4dec" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "b863c2755d24cb0c4dec" "https://api.github.com/gists/b863c2755d24cb0c4dec" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "letterCountMine.sc" 1432 "https://gist.githubusercontent.com/rockneurotiko/ce3c3436de300ddb5e04/raw/371c521ef812269f08720e2848e07515bbe822e2/letterCountMine.sc" nil]) :json-false "Letter count (by stdin or file) " "2014-06-25T14:24:33Z" "2014-06-25T14:29:40Z" "https://gist.github.com/ce3c3436de300ddb5e04.git" "https://gist.github.com/ce3c3436de300ddb5e04.git" "https://gist.github.com/ce3c3436de300ddb5e04" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "ce3c3436de300ddb5e04" "https://api.github.com/gists/ce3c3436de300ddb5e04" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "letterCount.sc" 1149 "https://gist.githubusercontent.com/rockneurotiko/d81f0128d432d2fa8f4e/raw/f404ae4bbc0d1eb908f58ba236e3b2d1fcb5a87a/letterCount.sc" nil]) :json-false "Letter count (by stdin or file) " "2014-06-25T14:14:09Z" "2014-06-25T14:24:01Z" "https://gist.github.com/d81f0128d432d2fa8f4e.git" "https://gist.github.com/d81f0128d432d2fa8f4e.git" "https://gist.github.com/d81f0128d432d2fa8f4e" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "d81f0128d432d2fa8f4e" "https://api.github.com/gists/d81f0128d432d2fa8f4e" nil] [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "TailRecPythonCribe.py" 2076 "https://gist.githubusercontent.com/rockneurotiko/e2490fd71be1de37015e/raw/bedc5b605d4c65dfc84d4ef090042fe78b7ab7bc/TailRecPythonCribe.py" nil] [object gh-gist-gist-file "gh-gist-gist-file" "TailRecPrime.scala" 1071 "https://gist.githubusercontent.com/rockneurotiko/e2490fd71be1de37015e/raw/d53f2153cb9f78e39e8d4fa84b4a90dc62d63970/TailRecPrime.scala" nil]) t "Eratosthenes cribe in Scala and Python using tailrec" "2014-06-19T14:23:40Z" "2014-06-19T16:57:53Z" "https://gist.github.com/e2490fd71be1de37015e.git" "https://gist.github.com/e2490fd71be1de37015e.git" "https://gist.github.com/e2490fd71be1de37015e" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "e2490fd71be1de37015e" "https://api.github.com/gists/e2490fd71be1de37015e" nil]) "W/\"7b16fe6aa697800b59271eb2899a04d7\"" nil] ("/gists/7ce3aa35ca474281428f" "GET" "f4d1f4c2954f506a7ba7d4f833c419d6ea827936") [object gh-cache-entry "gh-cache-entry" 1428439914.333092 nil [object gh-gist-gist "gh-gist-gist" ([object gh-gist-gist-file "gh-gist-gist-file" "sha1.py" 6212 "https://gist.githubusercontent.com/rockneurotiko/7ce3aa35ca474281428f/raw/55697f7d4f669a63aa3d08ddec0a99f9b30f2b91/sha1.py" "#!/usr/bin/env python
+from sys import version_info
+from hashlib import sha1
+from optparse import OptionParser
+from random import randint
+try:
+    from cProfile import runctx
+except ImportError:
+    from cprofile import runctx
+
+
+def sord(l):
+    if version_info.major == 3:
+        return l
+    else:
+        return ord(l)
+
+
+########################################################################
+
+
+def bit_diff(x, y, bits):
+    return len([1 for i in range(bits) if x[i] != y[i]])
+
+
+def to_bin(x):
+    return bin(bytes2int(x))[2:]
+
+
+def rotl(word, offset):
+    return ((word << offset) | (word >> (32 - offset))) & 0xffffffff
+
+
+def int2bytes(data, length=1):
+    return bytes(bytearray(reversed([(data >> i * 8) % 256 for i in range(length)])))
+
+
+def bytes2int(data):
+    return sum([sord(bi) << ((len(data) - 1 - i) * 8) for i, bi in enumerate(data)])
+
+
+def SHA1(message):
+    IV = [0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0]
+    K = [0x5A827999, 0x6ED9EBA1, 0x8F1BBCDC, 0xCA62C1D6]
+
+    # message padding
+    # append 0x8000...00 and the msg bitlen (as 8 big-endian bytes) to fill
+    # up to a multiple of 512 bits
+    message += b\"\\x80\" + b\"\\x00\" * \\
+               ((56 - len(message) - 1) % 64) + \\
+               int2bytes(len(message) * 8, length=8)
+
+    # initialize chaining value
+    h0, h1, h2, h3, h4 = IV
+
+    # process message in blocks of 64 bytes (or 16 words a 32 bits)
+    for i in range(0, len(message), 64):
+        # extend 16 message words to 80 words, one for each round
+        w = [None] * 80
+        for j in range(16):
+            w[j] = bytes2int(message[i + 4 * j:i + 4 * (j + 1)])
+        for j in range(16, 80):
+            w[j] = rotl(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1)
+
+        # initialize state to chaining value
+        a, b, c, d, e = h0, h1, h2, h3, h4
+
+        # update state in 80 rounds
+        for j in range(80):
+            if 0 <= j < 20:
+                f = d ^ (b & (c ^ d))
+                k = K[0]
+            elif 20 <= j < 40:
+                f = b ^ c ^ d
+                k = K[1]
+            elif 40 <= j < 60:
+                f = (b & c) | (b & d) | (c & d)
+                k = K[2]
+            elif 60 <= j < 80:
+                f = b ^ c ^ d
+                k = K[3]
+
+            a, b, c, d, e = (rotl(a, 5) + f + e + k + w[j]) & 0xffffffff, a, rotl(b, 30), c, d
+
+        # update chaining value with state
+        h0 = (h0 + a) & 0xffffffff
+        h1 = (h1 + b) & 0xffffffff
+        h2 = (h2 + c) & 0xffffffff
+        h3 = (h3 + d) & 0xffffffff
+        h4 = (h4 + e) & 0xffffffff
+
+    # return last chaining value as hash
+    return \"{h0:08X} {h1:08X} {h2:08X} {h3:08X} {h4:08X}\".format(**locals())
+
+
+def process_SHA1(message=b'', custom=True, profile=False):
+    if profile:
+        print(\"Custom implementation: \")
+        runctx('SHA1(message)', {'SHA1': SHA1, 'message': message}, {})
+        print(\"Hashlib implementation: \")
+        runctx('sha1(message).hexdigest()', {'sha1': sha1, 'message': message}, {})
+        return ''
+    elif custom:
+        return SHA1(message)
+    else:
+        res = sha1(message).hexdigest()
+        return ' '.join([res[start:start + 8].upper() for start in range(0, len(res), 8)])
+
+
+def samples(custom=True, profile=False):
+    samples = [('One', b'abc', 'A9993E36 4706816A BA3E2571 7850C26C 9CD0D89D'),
+               ('Two', b'abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq', '84983E44 1C3BD26E BAAE4AA1 F95129E5 E54670F1')]
+    results = []
+    print('-' * 80)
+    for (v, ms, res) in samples:
+        print(\"Calculating {} block sample...\".format(v))
+        results.append(process_SHA1(ms, custom, profile))
+        print('-' * 80)
+    if not profile:
+        for i, n in enumerate(results):
+            equal = n == samples[i][2]
+            print(\"{} block hash calculated is: {}\\nOne block hash expected is:   {}\\nAre the same: {}\".format(samples[i][0], n, samples[i][2], equal))
+
+
+def random(n=1, profile=False):
+    total_bits = n * 512
+    print(\"Let's hash {} bits ({} blocks | {} B | {} KB | {} MB)\".format(total_bits, n, total_bits / 8, total_bits / 8 / 1024, total_bits / 8 / 1024 / 1024))
+
+    v = (''.join((chr(randint(97, 122)) for _ in range(n) for _ in range(64)))).encode()
+
+    print(\"-\" * 80)
+    mysol = process_SHA1(v, True, profile)
+    if not profile:
+        oficial = process_SHA1(v, False, profile)
+        print(\"Custom implementation:  {}\\nHashlib implementation: {}\\n\".format(mysol, oficial))
+        print(\"Equal: {}\".format(mysol == oficial))
+
+
+def test_avalancha(bits=8, custom=True):
+    ntimes = (2 ** bits)
+    res = []
+    if (bits / 8.0).is_integer():
+        nbytes = bits // 8
+    else:
+        nbytes = 1 if bits < 8 else bits // 8 + 1
+    prev = None
+    for i in range(ntimes):
+        sh = process_SHA1(int2bytes(i, nbytes), custom, False)
+        repl = sh.replace(' ', '').lower().encode()
+        proc = to_bin(repl)
+        if prev is not None:
+            res.append(bit_diff(proc, prev, 160))
+        prev = proc
+
+    res = list(map(lambda x: x / float(160), res))
+    media = sum(res) / len(res)
+    print(\"Media de cambio para %d muestras de cambios tanto de claves como de datos: %2.3f%%\" % (len(res), media * 100))
+
+
+########################################################################
+
+# Command to create a file of 'n' bytes:
+# dd if=/dev/zero of=output.dat  bs=1M  count=n
+
+
+def main():
+    parser = OptionParser()
+
+    parser.add_option('-f', '--file', dest='filename')
+    parser.add_option('-t', '--text', dest='text')
+    parser.add_option('-l', '--library', action='store_false', default=True, dest='custom')
+    parser.add_option('-s', '--sample', action='store_true', default=False, dest='sample')
+    parser.add_option('-p', '--profile', action='store_true', default=False, dest='profile')
+    parser.add_option('-r', '--random', type=int, dest='random')
+    parser.add_option('-a', '--avalanche', type=int, dest='avalanche')
+
+    (option, args) = parser.parse_args()
+    custom = option.custom
+    profile = option.profile
+
+    if option.sample:
+        samples(custom, profile)
+    elif option.random is not None:
+        random(option.random, option.profile)
+    elif option.avalanche is not None:
+"]) :json-false "" "2015-04-07T20:31:37Z" "2015-04-07T20:46:27Z" "https://gist.github.com/7ce3aa35ca474281428f.git" "https://gist.github.com/7ce3aa35ca474281428f.git" "https://gist.github.com/7ce3aa35ca474281428f" 0 [object gh-user "gh-user" unbound unbound unbound unbound] "7ce3aa35ca474281428f" "https://api.github.com/gists/7ce3aa35ca474281428f" nil] "W/\"0e76f3513a409109155c0995698e50a8\"" nil]))
+  :timestamp 1428517205.3266242)

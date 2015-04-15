@@ -12,4 +12,5 @@
 (setq mc/cmds-to-run-once
       '(
         keyboard-escape-quit
+        sp-remove-active-pair-overlay
         ))

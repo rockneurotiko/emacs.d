@@ -31,6 +31,7 @@
 ;; Some modes ;
 ;;------------;
 (require 'org-settings)
+(set-org-reveal)
 (require 'random-requires) ;; Functions for some modes and other things
 (set-undo) ;; Ctrl-z powered
 (set-outline) ;; outline mode

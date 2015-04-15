@@ -2,9 +2,13 @@
 ;; Automatically generated file!!! DO NOT EDIT!!!
 
 (setq url-cookie-storage
- '((".chromaticleaves.com"
-  [url-cookie "__cfduid" "df095c113f2adac1c783af48824fa57451418722376" "16 Dec 15 09:32:56 [GMT]" "/" ".chromaticleaves.com" nil]
-  [url-cookie "HttpOnly" nil "16 Dec 15 09:32:56 [GMT]" "/" ".chromaticleaves.com" nil]))
+ '((".google.com"
+  [url-cookie "PREF" "ID=4a1218d57989848c:FF=0:TM=1425509218:LM=1425509218:S=ej0Cs4iqp5FPgJHK" "03-Mar-2017 22:46:58.00 GMT" "/" ".google.com" nil]
+  [url-cookie "NID" "67=sMMQCrje-ux2gQEHCBf3IX1yOPYQog8e02lcvUD7GHMm1HvvRGz4zu2pJXeu1eBrhIeAImrXKyocxxoFCAMTPoyaUBrBaoJtegdOyvKguDeOawqv4OJqWvbl34rYLExs" "03-Sep-2015 22:46:58.00 GMT" "/" ".google.com" nil]
+  [url-cookie "HttpOnly" nil "03-Sep-2015 22:46:58.00 GMT" "/" ".google.com" nil])
+ (".chromaticleaves.com"
+  [url-cookie "HttpOnly" nil "16 Dec 15 09:32:56 [GMT]" "/" ".chromaticleaves.com" nil]
+  [url-cookie "__cfduid" "df095c113f2adac1c783af48824fa57451418722376" "16 Dec 15 09:32:56 [GMT]" "/" ".chromaticleaves.com" nil]))
 )
 (setq url-cookie-secure-storage
  'nil)
