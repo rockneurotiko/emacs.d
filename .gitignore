@@ -1,3 +1,10 @@
 backups/
 auto-save-list/
 .emacs.desktop.lock
+.emacs.desktop
+ac-comphist.dat
+eshell/history
+eshell/lastdir
+*.last
+places
+recentf
