@@ -36,7 +36,12 @@
     (define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
     (define-key haskell-mode-map (kbd "C-c C-s") (lambda () (interactive) (haskell-process-do-type t)))
     (define-key haskell-mode-map (kbd "C-c M-.") nil)
-    (define-key haskell-mode-map (kbd "C-c C-d") nil)))
+    (define-key haskell-mode-map (kbd "C-c TAB") 'ghc-show-info-popup)
+    (define-key haskell-mode-map (kbd "C-c C-i") 'ghc-show-info-popup)
+    (define-key haskell-mode-map (kbd "C-c C-S-i") 'ghc-show-info)
+    (define-key haskell-mode-map (kbd "C-c C-d") nil)
+    (define-key haskell-mode-map (kbd "C-c C-,") 'haskell-mode-run-test-suite)))
+
 
 ;; Put ghc-show-info in a popup
 (package-require 'popup)
@@ -44,10 +49,6 @@
   (interactive)
   (popup-tip (ghc-get-info (ghc-things-at-point))
              :around t :scroll-bar t))
-(define-key haskell-mode-map (kbd "C-c TAB") 'ghc-show-info-popup)
-(define-key haskell-mode-map (kbd "C-c C-i") 'ghc-show-info-popup)
-(define-key haskell-mode-map (kbd "C-c C-S-i") 'ghc-show-info)
-
 ;; Use standard keybinding for inferior-haskell-find-definition
 ;; (define-key haskell-mode-map (kbd "M-.")
 ;;   (lambda () (interactive)
@@ -58,8 +59,6 @@
   (interactive)
   (require 'compile)
   (compile (concat "cd " (projectile-project-root) "; cabal test")))
-(define-key haskell-mode-map (kbd "C-c C-,") 'haskell-mode-run-test-suite)
-
 ;; Flycheck addons
 (package-require 'flycheck-haskell)
 (eval-after-load 'flycheck

@@ -1,4 +1,4 @@
-;; -*- emacs-lisp -*- <14/12/07 13:43:07 /home/rock/.emacs.d/tramp>
+;; -*- emacs-lisp -*- <15/04/15 11:36:40 /home/miguel/.emacs.d/tramp>
 ;; Tramp connection history.  Don't change this file.
 ;; You can delete it, forcing Tramp to reapply the checks.
 
@@ -20,4 +20,54 @@
   ("perl" "\\perl")
   ("readlink" "\\readlink")
   ("uid-integer" 0)
-  ("ls" "/bin/ls --color=never")))
+  ("ls" "/bin/ls --color=never"))
+ (["sudo" "root" "miguel-All-Series" nil nil]
+  ("uname" "Linux 3.16.0-34-generic")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("locale" "LC_ALL=en_US.utf8")
+  ("~root" "/root")
+  ("file-exists" "test -e")
+  ("stat" "\\stat")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 0)
+  ("gid-string" "root")
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl"))
+ (["ssh" nil "miguel-All-Series" nil nil]
+  nil)
+ (["scp" nil "conwet" nil nil]
+  ("uname" "Linux 3.13.0-40-generic")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("locale" "LC_ALL=en_US.utf8")
+  ("~" "/home/conwet")
+  ("file-exists" "test -e")
+  ("stat" "\\stat")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 1002)
+  ("gid-string" "conwet")
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl"))
+ (["scp" "t110261" "triqui.fi.upm.es" nil nil]
+  ("uname" "Linux 2.6.32-504.8.1.el6.x86_64")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin"))
+  ("remote-shell" "/bin/sh")
+  ("locale" "LC_ALL=en_US.utf8")
+  ("~" "/homefi/alumnos/t/t110261")
+  ("file-exists" "test -e")
+  ("stat" "\\stat")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 10001)
+  ("gid-string" "matriculas")
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")))

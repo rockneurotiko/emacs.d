@@ -2,37 +2,26 @@
 
 ;; ----- ido-last-directory-list -----
 (
- (#("/home/miguel/git/building-blocks/components/dropdown/" 44 53 (face flx-highlight-face)) . #("js/" 0 2 (face flx-highlight-face)))
+ ("/home/miguel/.emacs.d/" . "settings/")
 )
 
 ;; ----- ido-work-directory-list -----
 (
- #("/home/miguel/git/building-blocks/components/dropdown/js/" 44 53 (face flx-highlight-face) 53 55 (face flx-highlight-face))
- "/home/miguel/git/building-blocks/components/login/js/"
+ "/home/miguel/.emacs.d/settings/"
 )
 
 ;; ----- ido-work-file-list -----
 (
- #("controller-example.js" 0 2 (face flx-highlight-face))
- "LoginController.js"
- "validations.js"
- "app.js"
- "InputController.js"
+ "theme-settings.el"
 )
 
 ;; ----- ido-dir-file-cache -----
 (
- (#("/home/miguel/git/building-blocks/components/dropdown/js/" 44 53 (face flx-highlight-face) 53 55 (face flx-highlight-face)) (21596 39101 647452 82000) "app.js" "../" "./" "controller-example.js" "dropdown.js")
+ ("/home/miguel/.emacs.d/settings/" (21744 23686 329688 46000) "el-get-settings.el" "scss-settings.el" "markdown-settings.el" "js-settings.el" "theme-settings.el" "rock-defuns.el" "ido-settings.el" "latex-settings.el" "julia-settings.el" "custom.el" "random-requires.el" "mumamo-settings.el" "package-settings.el" "auto-complete-settings.el" "go-settings.el" "general-settings.el" "custom-functions.el" "irc-settings.el" "custom-variables.el" "./" "yasnippet-settings.el" "bodil-powerline.el" "python-settings.el" "camelcase-settings.el" "scala-settings.el" "../" "matlab-settings.el" "helm-settings.el")
 
- (#("/home/miguel/git/building-blocks/components/dropdown/" 44 53 (face flx-highlight-face)) (21624 13020 503285 286000) "js/" "o2.html" "css/" "vivo.html" "../" "movistar.html" "./" "telefonica.html")
+ ("/home/miguel/.emacs.d/" (21744 24140 658263 197000) "ac-comphist.dat" "eshell/" "elpa/" "recentf" "tramp" ".gitmodules" "ido.last" ".git/" ".python-environments/" ".last-package-update-day" "ensime/" ".emacs.desktop" "menu_log.notes" "auto-save-list/" "url/" ".gitignore" "init.el" "settings/" "places" "./" "backups/" ".mc-lists.el" "tutorial/" "plugins/" "../")
 
- (#("/home/miguel/git/building-blocks/components/checkbox/" 44 53 (face flx-highlight-face)) (21596 39101 623452 82000) "o2.html" "css/" "vivo.html" "../" "movistar.html" "./" "telefonica.html" "img/")
-
- ("/home/miguel/git/building-blocks/components/" (21624 13020 499285 286000) "login/" "buttons/" "inputs_special/" "dropdown/" "../" "radio_buttons/" "./" "table/" "checkbox/" "searchbox_square/" "inputs_standard/" "searchbox_rounded/")
-
- ("/home/miguel/git/building-blocks/components/login/" (21624 13020 503285 286000) "js/" "o2.html" "css/" "vivo.html" "../" "movistar.html" "./" "telefonica.html" "img/")
-
- ("/home/miguel/git/building-blocks/components/login/js/" (21633 30954 184140 821000) "app.js" "LoginController.js" "../" "InputController.js" "./" "validations.js")
+ ("/home/miguel/" (21744 24195 441846 773000) ".ssh/" ".ecryptfs/" ".bash_history" "Música/" "git/" ".gitconfig" "Plantillas/" ".zsh_history" "Vídeos/" ".gnome/" "Descargas/" ".profile" ".bash_logout" ".kde/" ".zshrc" "Documentos/" ".oh-my-zsh/" ".zcompdump-miguel-All-Series-5.0.5" ".zshrc~" "THEME/" "examples.desktop" ".zshrc.pre-oh-my-zsh" ".vim/" ".Xauthority" ".cache/" ".pki/" ".recentf" ".xsession-errors.old" ".local/" ".config/" ".compiz/" ".zsh-update" ".emacs.d/" ".gconf/" ".gnupg/" ".viminfo" ".ICEauthority" ".zcompdump" "Escritorio/" ".mozilla/" ".Private/" ".xsession-errors" "Público/" ".bashrc" "Imágenes/" "../" "./")
 )
 
 ;; ----- ido-unc-hosts-cache -----
