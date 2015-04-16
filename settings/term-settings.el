@@ -1,4 +1,3 @@
-
 (require 'multi-term)
 
 (global-set-key (kbd "<f5>") 'multi-term)

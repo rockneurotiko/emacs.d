@@ -23,10 +23,12 @@
 ;;--PYTHON
 (require 'python-settings)
 (set-ipython)
-(set-pycomplete)
+;;(set-pycomplete)
 (set-flymake)
 (set-virtualenv)
 
+;;--TypeScript
+(require 'tss-settings)
 
 ;;--OCAML
 (require 'ocaml-settings)

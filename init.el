@@ -30,6 +30,7 @@
 ;;------------;
 ;; Some modes ;
 ;;------------;
+(require 'term-settings)
 (require 'org-settings)
 (set-org-reveal)
 (require 'random-requires) ;; Functions for some modes and other things
