@@ -85,6 +85,8 @@
 (global-set-key (kbd "M-s-<down>") 'shrink-window)
 (global-set-key (kbd "M-s-<up>") 'enlarge-window)
 
+(global-set-key (kbd "C-c g") 'magit-status)
+
 (global-set-key [C-return] 'sublime-new-line)
 ;; (global-set-key (kbd "C-/") 'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "C-x w") 'elfeed)

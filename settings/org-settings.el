@@ -65,5 +65,10 @@
              my/org-babel-evaluated-languages))
     )
 
+(defun set-org-reveal ()
+    (require 'ox-reveal)
+    (setq org-reveal-root "file:///home/rock/Descargas/revealjs/reveal.js")
+    )
+
 
 (provide 'org-settings)

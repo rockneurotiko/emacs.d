@@ -1,1 +1,16 @@
 ls
+ls
+..
+ls
+..
+ls
+exit
+gst
+ls
+sudo python renamePacman.py 
+sudo python bak renamePacman.py 
+sudo python renamePacman.py bak archivos_renombrar.txt 
+sudo python renamePacman.py bak archivos_renombrar.txt 
+sudo python renamePacman.py bak archivos_renombrar.txt 
+sudo python renamePacman.py bak archivos_renombrar.txt 
+sudo python renamePacman.py bak archivos_renombrar.txt 
