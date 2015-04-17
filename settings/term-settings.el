@@ -74,7 +74,7 @@
 
     (define-key term-mode-map (kbd "C-S-l") 'emux-term-clear-screen)
 
-    (modify-frame-parameters (make-frame) (list (cons 'name "emux")))
+    ;; (modify-frame-parameters (make-frame) (list (cons 'name "emux")))
 
     '(emux-completing-read-command (quote ido-completing-read))
     '(multi-term-program "/usr/bin/zsh")
