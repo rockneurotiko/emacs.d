@@ -5,3 +5,5 @@ auto-save-list/
 ac-comphist.dat
 ido.last
 places
+recentf
+*.log
