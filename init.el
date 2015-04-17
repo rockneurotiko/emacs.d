@@ -27,9 +27,13 @@
 (require 'helm-settings)
 (set-helm-swoop)  ;;M-i and search all buffers!
 
+
 ;;------------;
 ;; Some modes ;
 ;;------------;
+(require 'term-settings)
+(set-multi-term)
+(set-emux)
 (require 'org-settings)
 (set-org-reveal)
 (require 'random-requires) ;; Functions for some modes and other things

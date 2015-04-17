@@ -10,3 +10,6 @@
 [submodule "plugins/web-mode"]
 	path = plugins/web-mode
 	url = git@github.com:fxbois/web-mode.git
+[submodule "plugins/emux"]
+	path = plugins/emux
+	url = https://github.com/re5et/emux.git
