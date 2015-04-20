@@ -33,7 +33,8 @@
 ;;------------;
 (require 'term-settings)
 (set-multi-term)
-(set-emux)
+;; (set-emux)
+;; (emux-default-sessions)
 
 (require 'org-settings)
 (set-org-reveal)

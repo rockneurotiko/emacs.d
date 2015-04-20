@@ -38,20 +38,37 @@
 
 )
 
+(defun emux-default-sessions ()
+    (emux-session-define-template
+     system
+     (emux-session-set-default-directory "~/")
+     (emux-screen-create '(:name "system"))
+     ;; (emux-term "bmon")
+     ;; (emux-term "free space" "watch df -h")
+     (other-window 1)
+     (proced)
+     (other-window 1)
+     (delete-window))
+
+    )
+;; (emux-default-sessions)
+
 (defun set-emux ()
     (add-to-list 'load-path "~/.emacs.d/plugins/emux")
     (require 'emux-session)
     (global-set-key (kbd "C-x c") 'emux-term-create)
     (global-set-key (kbd "C-x P") 'emux-session-load-template)
+    (global-set-key (kbd "M-s s") 'emux-screen-switch)
+    (global-set-key (kbd "M-s S") 'emux-session-switch)
     (setq term-bind-key-alist
           '(("C-x c" . emux-term-create)
             ("C-x r" . emux-term-rename)
             ("C-x K" . emux-term-destroy)
             ("C-x C" . emux-screen-create)
             ("C-x R" . emux-screen-rename)
-            ("C-x s" . emux-screen-switch)
+            ("M-s s" . emux-screen-switch)
             ("C-x M-s" . emux-jump-to-screen)
-            ("C-x S" . emux-session-switch)
+            ("M-s S" . emux-session-switch)
             ("C-x P" . emux-session-load-template)
             ("C-x C-S-k" . emux-session-destroy)
             ("C-x B" . emux-jump-to-buffer)
@@ -76,14 +93,13 @@
 
     ;; (modify-frame-parameters (make-frame) (list (cons 'name "emux")))
 
-    '(emux-completing-read-command (quote ido-completing-read))
-    '(multi-term-program "/usr/bin/zsh")
-    '(term-unbind-key-list (quote ("C-z" "C-x" "C-c" "C-h" "C-l" "<ESC>")))
-    '(ansi-term-color-vector [unspecified "white" "red" "green" "yellow" "royal blue" "magenta" "cyan" "white"] t)
-    '(multi-term-scroll-show-maximum-output t)
-    '(term-buffer-maximum-size 16384)
-
-
+    (custom-set-variables
+     '(emux-completing-read-command (quote ido-completing-read))
+     '(emux-term-program "/usr/bin/zsh")
+     '(term-unbind-key-list (quote ("C-z" "C-x" "C-c" "C-h" "C-l" "<ESC>")))
+     ;; '(ansi-term-color-vector [unspecified "white" "red" "green" "yellow" "royal blue" "magenta" "cyan" "white"] t)
+     '(multi-term-scroll-show-maximum-output t)
+     '(term-buffer-maximum-size 16384)
+     )
     )
-
 (provide 'term-settings)
