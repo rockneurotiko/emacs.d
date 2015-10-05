@@ -45,9 +45,16 @@
     )
 
 (defun set-realtime-markdown ()
+    (load "~/.emacs.d/plugins/websocket.el")
     (require 'websocket)
     (load "~/.emacs.d/plugins/emacs-realtime-markdown-viewer/realtime-markdown-viewer.el")
     (require 'realtime-markdown-viewer)
+    )
+
+(defun set-livedown ()
+    (add-to-list 'load-path (expand-file-name "~/.emacs.d/plugins/emacs-livedown"))
+    (require 'livedown)
+
     )
 
 (defun set-scroll ()

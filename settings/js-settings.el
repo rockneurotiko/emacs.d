@@ -38,7 +38,8 @@
     )
 
 (defun load-web-mode ()
-    (load "~/.emacs.d/plugins/web-mode/web-mode.el")
+    (require 'web-mode)
+    ;; (load "~/.emacs.d/plugins/web-mode/web-mode.el")
     (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))

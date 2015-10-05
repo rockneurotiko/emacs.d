@@ -5,6 +5,9 @@
       '(
         autopair-insert-opening
         indent-for-tab-command
+        isearch-forward-regexp
+        isearch-printing-char
+        kill-region
         markdown-exdent-or-delete
         py-indent-line
         ))
@@ -12,5 +15,6 @@
 (setq mc/cmds-to-run-once
       '(
         keyboard-escape-quit
+        markdown-cycle
         sp-remove-active-pair-overlay
         ))

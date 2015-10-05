@@ -1,4 +1,4 @@
-;; -*- emacs-lisp -*- <15/04/15 11:36:40 /home/miguel/.emacs.d/tramp>
+;; -*- emacs-lisp -*- <15/10/01 11:41:14 /home/mgarcia/.emacs.d/tramp>
 ;; Tramp connection history.  Don't change this file.
 ;; You can delete it, forcing Tramp to reapply the checks.
 
@@ -37,8 +37,6 @@
   ("perl-file-spec" t)
   ("perl-cwd-realpath" t)
   ("perl" "\\perl"))
- (["ssh" nil "miguel-All-Series" nil nil]
-  nil)
  (["scp" nil "conwet" nil nil]
   ("uname" "Linux 3.13.0-40-generic")
   ("test" "test")
@@ -70,4 +68,63 @@
   ("gid-string" "matriculas")
   ("perl-file-spec" t)
   ("perl-cwd-realpath" t)
-  ("perl" "\\perl")))
+  ("perl" "\\perl"))
+ (["ssh" nil "conwet" nil nil]
+  ("uname" "Linux 3.13.0-40-generic")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("locale" "LC_ALL=en_US.utf8")
+  ("~" "/home/conwet")
+  ("file-exists" "test -e")
+  ("stat" "\\stat")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 1002)
+  ("gid-string" "conwet")
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("readlink" "\\readlink")
+  ("ls" "/bin/ls --color=never")
+  ("uid-integer" 1002))
+ (["ssh" nil "gitlab" nil nil]
+  ("uname" "Linux 2.6.32-042stab108.8")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("locale" "LC_ALL=en_US.utf8")
+  ("~" "/root")
+  ("file-exists" "test -e")
+  ("stat" "\\stat")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 0)
+  ("gid-string" "root")
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("readlink" "\\readlink")
+  ("uid-integer" 0)
+  ("ls" "/bin/ls --color=never"))
+ (["ssh" nil "bots" nil nil]
+  ("uname" "Linux 2.6.32-042stab108.8")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("locale" "LC_ALL=C")
+  ("~" "/root")
+  ("file-exists" "test -e")
+  ("stat" "\\stat")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 0)
+  ("gid-string" "root")
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("readlink" "\\readlink")
+  ("ls" "/bin/ls --color=never")
+  ("uid-integer" 0))
+ (["su" "root" "mgarcia-All-Series" nil nil]
+  nil))

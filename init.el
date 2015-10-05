@@ -48,13 +48,12 @@
 (set-indent-guide)  ;; The indent vertical lines.. cute!
 (set-pair)  ;; How to pair? autopair or smartparens?
 (set-multiple-cursors)  ;; The more, the better
-(set-uniquify)  ;; Buffer names uniques!
-;; (set-auto-package)  ;; Auto update all packages
-;; (set-zone)  ;; Zone the code
-;; (set-uml-plantuml)  ;; UML from text biatch!
-;; (set-libreoffice) ;; You don't need libreoffice biatch
-;; (set-realtime-markdown)  ;; Can't make it work
-;; (set-mochi)  ;; I tried to do it.. not good XD
+(set-uniquify)  ;; Buffer names uniques! (set-auto-package) ;; Auto update all
+;; packages (set-zone) ;; Zone the code (set-uml-plantuml) ;; UML from text
+;; biatch! (set-libreoffice) ;; You don't need libreoffice biatch
+;; (set-realtime-markdown) ;; Can't make it work (set-mochi) ;; I tried to do
+(set-livedown)
+;; it.. not good XD
 
 ;;----------------;
 ;;    LANGUAGES   ;

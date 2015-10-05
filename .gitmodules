@@ -13,3 +13,6 @@
 [submodule "plugins/emux"]
 	path = plugins/emux
 	url = https://github.com/re5et/emux.git
+[submodule "plugins/emacs-tss"]
+	path = plugins/emacs-tss
+	url = https://github.com/aki2o/emacs-tss.git

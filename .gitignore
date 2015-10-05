@@ -11,3 +11,5 @@ eshell/history
 eshell/lastdir
 *.last
 places
+elpa
+abbrev_defs
