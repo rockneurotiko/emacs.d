@@ -4,7 +4,6 @@
 
 (setenv "GOPATH" "/home/mgarcia/go")
 
-
 (add-to-list 'load-path "~/go/src/github.com/dougm/goflymake")
 (require 'go-flymake)
 

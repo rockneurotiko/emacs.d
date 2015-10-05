@@ -1,5 +1,5 @@
 (defun set-multi-term ()
-    (require 'multi-term)
+    (package-require 'multi-term)
 
     (global-set-key (kbd "<f5>") 'multi-term)
     (global-set-key (kbd "<C-next>") 'multi-term-next)
@@ -55,7 +55,7 @@
 
 (defun set-emux ()
     (add-to-list 'load-path "~/.emacs.d/plugins/emux")
-    (require 'emux-session)
+    (package-require 'emux-session)
     (global-set-key (kbd "C-x c") 'emux-term-create)
     (global-set-key (kbd "C-x P") 'emux-session-load-template)
     (global-set-key (kbd "M-s s") 'emux-screen-switch)
