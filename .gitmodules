@@ -25,3 +25,6 @@
 [submodule "plugins/evil-ranger"]
 	path = plugins/evil-ranger
 	url = https://github.com/ralesi/ranger.git
+[submodule "plugins/emacs-livedown"]
+	path = plugins/emacs-livedown
+	url = https://github.com/shime/emacs-livedown.git
