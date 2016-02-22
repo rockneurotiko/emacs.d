@@ -1,7 +1,0 @@
-;; Object gh/gh-gist-api/rockneurotiko
-;; EIEIO PERSISTENT OBJECT
-(gh-cache "gh/gh-gist-api/rockneurotiko"
-  :file "rockneurotiko"
-  :version "0.3/gh-3"
-  :entries #s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8 data ())
-  :timestamp 1432590896.239215)
