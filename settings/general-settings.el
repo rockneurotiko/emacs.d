@@ -113,4 +113,5 @@
 ;; (global-aggressive-indent-mode 1)
 ;; (nyan-mode 1)
 
+(setq magit-last-seen-setup-instructions "1.4.0")
 (provide 'general-settings)

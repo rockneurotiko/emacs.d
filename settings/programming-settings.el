@@ -45,10 +45,13 @@
 (require 'scala-settings)
 
 
+;;--PONY
+(require 'pony-settings)
+
 ;;--PYTHON
 (require 'python-settings)
 (set-ipython)
-;;(set-pycomplete)
+(set-pycomplete)
 (set-flymake)
 (set-virtualenv)
 
@@ -66,3 +69,6 @@
 ;;--MARKDOWN
 (require 'markdown-settings)
 (provide 'programming-settings)
+
+;;--RUST
+(require 'rust-settings)

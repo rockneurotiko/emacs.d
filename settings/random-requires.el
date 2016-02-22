@@ -17,6 +17,7 @@
 
 (defun set-autoindent ()
     (package-require 'auto-indent-mode)
+    (add-to-list 'auto-indent-disabled-modes-list 'ponylang-mode)
     (auto-indent-global-mode)
     (setq tab-width 4)
     )
@@ -113,5 +114,14 @@
 ;;     (package-require 'dirtree)
 ;;     (autoload 'dirtree "dirtree" "Add directory to tree view" t)
 ;;     (global-set-key "\C-o" 'dirtree-show))
+
+(defun set-evil-ranger ()
+    (load "~/.emacs.d/plugins/evil-ranger/evil-ranger.el")
+    (require 'evil-ranger)
+    (setq evil-ranger-enable-on-directories t)
+    (setq evil-ranger-parent-depth 2)
+    (setq evil-ranger-ignored-extensions '("mkv" "iso" "mp4" "mp3"))
+    (setq evil-ranger-max-preview-size 10)
+    )
 
 (provide 'random-requires)

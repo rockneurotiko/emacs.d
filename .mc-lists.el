@@ -4,17 +4,28 @@
 (setq mc/cmds-to-run-for-all
       '(
         autopair-insert-opening
+        beginning-of-visual-line
+        go-mode-insert-and-indent
+        helm-M-x
+        helm-show-kill-ring
         indent-for-tab-command
         isearch-forward-regexp
         isearch-printing-char
         kill-region
+        lua-electric-match
+        markdown-cycle
         markdown-exdent-or-delete
+        move-text-up
+        org-beginning-of-line
+        org-self-insert-command
         py-indent-line
         ))
 
 (setq mc/cmds-to-run-once
       '(
+        ignore
         keyboard-escape-quit
-        markdown-cycle
+        racer-complete-or-indent
+        sh-execute-region
         sp-remove-active-pair-overlay
         ))

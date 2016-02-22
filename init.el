@@ -11,6 +11,14 @@
 ;; Package
 (require 'package-settings)
 
+
+;; ido and flx
+(require 'ido-settings)
+;; HELM <3
+(require 'helm-settings)
+(set-helm-swoop)  ;;M-i and search all buffers!
+
+
 ;;---------;
 ;;  THEME  ;
 ;;---------;
@@ -20,13 +28,6 @@
 (set-powerline)
 (set-moe)
 ;; (set-random-theme)
-
-;; ido and flx
-(require 'ido-settings)
-;; HELM <3
-(require 'helm-settings)
-(set-helm-swoop)  ;;M-i and search all buffers!
-
 
 ;;------------;
 ;; Some modes ;
@@ -50,12 +51,22 @@
 (set-multiple-cursors)  ;; The more, the better
 (set-uniquify)  ;; Buffer names uniques! (set-auto-package) ;; Auto update all
 ;; packages (set-zone) ;; Zone the code (set-uml-plantuml) ;; UML from text
+;; (set-uml-plantuml)  ;; UML from text biatch!
 ;; biatch! (set-libreoffice) ;; You don't need libreoffice biatch
-;; (set-realtime-markdown) ;; Can't make it work (set-mochi) ;; I tried to do
 (set-livedown)
 ;; it.. not good XD
+;; (set-evil-ranger) ;; Range mode
+;; (set-auto-package)  ;; Auto update all packages
+;; (set-libreoffice) ;; You don't need libreoffice biatch
+;; (set-mochi)  ;; I tried to do it.. not good XD
 
 ;;----------------;
 ;;    LANGUAGES   ;
 ;;----------------;
 (require 'programming-settings)
+
+;;-------------------;
+;;    WEBSEMANTICA   ;
+;;-------------------;
+(require 'websemantica-settings)
+(set-turtle)

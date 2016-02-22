@@ -3,7 +3,7 @@
          (setq erc-nick "rockneurotiko")
          (setq erc-user-full-name "Rock Neurotiko")
          (setq erc-autojoin-channels-alist
-               '(("freenode.net" "#python" "#haskell" "##typetheory" "#scala" "#julia" )))))
+               '(("freenode.net" "##plig" ))))) ;; "#python" "#haskell" "##typetheory" "#scala" "#julia" )))))
 
 (defun my-erc ()
     "Connect IRC with SSL"

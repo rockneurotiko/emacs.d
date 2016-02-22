@@ -37,7 +37,7 @@
       (indent-rigidly region-start region-finish numcols))))
 
 (defun eval-and-replace ()
-  "Replace the preceding sexp with its value."
+    "Replace the preceding sexp with its value."
   (interactive)
   (backward-kill-sexp)
   (condition-case nil
@@ -137,6 +137,7 @@
     (interactive)
     (end-of-line)
     (newline-and-indent))
+;; (global-set-key [C-return] 'sublime-new-line)
 
 ;; Comment/uncomment region
 (defun comment-or-uncomment-region-or-line ()

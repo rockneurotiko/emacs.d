@@ -1,6 +1,8 @@
 ;; If use bundled typescript.el,
-(load "~/.emacs.d/plugins/emacs-tss/typescript.el")
-(load "~/.emacs.d/plugins/emacs-tss/tss.el")
+;; (load "~/.emacs.d/plugins/emacs-tss/typescript.el")
+;; (load "~/.emacs.d/plugins/emacs-tss/tss.el")
+
+;; (add-to-list 'load-path "~/.emacs.d/plugins/emacs-tss")
 (require 'typescript)
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
 
@@ -18,7 +20,7 @@
 ;; Do setting recommemded configuration
 (tss-config-default)
 
-(setq tss-module "commonjs")
 
+;; (setq tss-module "commonjs")
 
 (provide 'tss-settings)
