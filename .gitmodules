@@ -16,18 +16,12 @@
 [submodule "plugins/emacs-tss"]
 	path = plugins/emacs-tss
 	url = https://github.com/aki2o/emacs-tss.git
-[submodule "plugins/emacs-livedown"]
-	path = plugins/emacs-livedown
-	url = https://github.com/shime/emacs-livedown.git
 [submodule "plugins/tern"]
 	path = plugins/tern
 	url = git@github.com:ternjs/tern.git
 [submodule "es6-snippets"]
 	path = es6-snippets
 	url = git@github.com:codyreichert/es6-snippets
-[submodule "plugins/emacs-livedown2"]
-	path = plugins/emacs-livedown2
-	url = https://github.com/shime/emacs-livedown.git
 [submodule "plugins/evil-ranger"]
 	path = plugins/evil-ranger
 	url = https://github.com/ralesi/ranger.git
