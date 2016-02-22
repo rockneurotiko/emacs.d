@@ -29,3 +29,8 @@ tags
 tramp
 url/cookies
 savehist
+/.last-package-update-day
+/.mc-lists.el
+/menu_log.notes
+/tutorial/
+/var/
