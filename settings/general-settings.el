@@ -1,4 +1,4 @@
-                                        ;--------------------------------;
+;--------------------------------;
 ;;; General or Global Settings ;;;
 ;--------------------------------;
 
@@ -100,6 +100,26 @@
 ;;-------------;
 ;;Other things!;
 ;;-------------;
+
+;; Backup
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(setq delete-old-versions -1)
+(setq version-control t)
+(setq vc-make-backup-files t)
+(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+
+;; Save historial
+(setq savehist-file "~/.emacs.d/savehist")
+(savehist-mode 1)
+(setq history-length t)
+(setq history-delete-duplicates t)
+(setq savehist-save-minibuffer-history 1)
+(setq savehist-additional-variables
+      '(kill-ring
+        search-ring
+        regexp-search-ring))
+
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 ;; ; turn on mouse wheel support for scrolling
 (require 'mwheel)
@@ -112,6 +132,25 @@
 (setq gc-cons-threshold 20000000)
 ;; (global-aggressive-indent-mode 1)
 ;; (nyan-mode 1)
+
+(setq browse-url-browser-function 'browse-url-firefox
+      browse-url-new-window-flag  t
+      browse-url-firefox-new-window-is-tab t)
+
+;; (setq browse-url-browser-function 'browse-url-generic)
+;; (setq browse-url-generic-program "firefox")
+
+(setq sentence-end-double-space nil)
+
+;; winner-mode https://www.emacswiki.org/emacs/WinnerMode
+(use-package winner
+    :ensure t
+    :defer t)
+
+;; ++Old way++
+;; (when (fboundp 'winner-mode)
+;;     (winner-mode 1))
+;; --Old way--
 
 (setq magit-last-seen-setup-instructions "1.4.0")
 (provide 'general-settings)

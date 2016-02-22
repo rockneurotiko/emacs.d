@@ -1,8 +1,16 @@
 ;;; bodil-powerline-el -- Modeline fashion
 
-(package-require 'powerline)
-(require 'bodil-flycheck)
-(require 'flycheck)
+(use-package powerline
+    :ensure t)
+;; (use-package bodil-flycheck
+;;     :ensure t)
+(use-package flycheck
+    :ensure t)
+
+
+;; (package-require 'powerline)
+;; (require 'bodil-flycheck)
+;; (require 'flycheck)
 
 (defun powerline-nyan-theme ()
   (interactive)
@@ -84,6 +92,6 @@
      (powerline-render lhs)
      (powerline-fill face2 (powerline-width rhs))
      (powerline-render rhs)))))))
-;;(powerline-nyan-theme)
+;; (powerline-nyan-theme)
 
 (provide 'bodil-powerline)

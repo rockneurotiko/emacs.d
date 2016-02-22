@@ -17,8 +17,12 @@
         markdown-exdent-or-delete
         move-text-up
         org-beginning-of-line
+        org-cycle
         org-self-insert-command
+        org-yank
         py-indent-line
+        sublime-new-line
+        tern-ac-dot-complete
         ))
 
 (setq mc/cmds-to-run-once

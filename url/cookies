@@ -9,10 +9,7 @@
   [url-cookie "HttpOnly" nil "19 May 16 23:34:19 [GMT]" "/" ".is.gd" nil]
   [url-cookie "__cfduid" "d828ef9bfd39b7f311c516e4be0c901041432164859" "19 May 16 23:34:19 [GMT]" "/" ".is.gd" nil])
  (".google.es"
-  [url-cookie "PREF" "ID=1111111111111111:FF=0:TM=1430922838:LM=1430922844:S=LLij7ImxNK9o8YCX" "31-Dec-2015 16:06:14.00 GMT" "/" ".google.es" nil]
-  [url-cookie "NID" "67=JFQrfjq3haeSATA4_SC_js__IV6RLRXDMbLdmyNFuZIJbUQ_i_qCKheXWVCoU5D2NMuve15NehBESW4ONDrQOGEhGU8T9VSGhS5ViiqjKbe3LYXtAOhZ8yREGAFPLi0A" "05-Nov-2015 14:33:58.00 GMT" "/" ".google.es" nil]
-  [url-cookie "HttpOnly" nil "05-Nov-2015 14:33:58.00 GMT" "/" ".google.es" nil]
-  [url-cookie "CONSENT" "CG.24a974" "08-Oct-2015 06:00:34.00 GMT" "/" ".google.es" nil])
+  [url-cookie "PREF" "ID=1111111111111111:FF=0:TM=1430922838:LM=1430922844:S=LLij7ImxNK9o8YCX" "31-Dec-2015 16:06:14.00 GMT" "/" ".google.es" nil])
  (".stackoverflow.com"
   [url-cookie "__cfduid" "d4911f66087085e6c4d7e6e55d86a99bd1441605634" "06 Sep 16 06:00:34 [GMT]" "/" ".stackoverflow.com" nil]
   [url-cookie "HttpOnly" nil "01-Jan-2055 00:00:00.00 GMT" "/" ".stackoverflow.com" nil]

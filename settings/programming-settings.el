@@ -1,15 +1,18 @@
 ;;--PROLOG
-(require 'prolog-settings)
+;; (require 'prolog-settings)
 
 ;;--JAVASCRIPT && WEB
 (require 'js-settings)
+(use-js2)
+(load-tern)
+(js-flycheck)
 (load-web-mode)
-;; (load-tern)
+(set-emmet)
 ;; (load-angular)
 
 
 ;;--JULIA
-(require 'julia-settings)
+;; (require 'julia-settings)
 
 
 
@@ -28,14 +31,6 @@
 ;; (add-hook 'ponylang-mode-hook 'set-newline-and-indent)
 
 ;;--PONY
-(require 'ponylang-mode)
-(add-hook 'ponylang-mode-hook
-          (lambda ()
-              (setq auto-indent-newline-function 'newline-and-indent)
-              (setq tab-width 2)
-              (auto-indent-mode -1)
-              (electric-indent-local-mode -1)
-              ))
 
 ;;--GO
 (require 'go-settings)
@@ -44,9 +39,15 @@
 ;;--SCALA
 (require 'scala-settings)
 
+;;--JAVA
+(require 'java-settings)
+
+
+;;-- ELISP
+(require 'elisp-settings)
 
 ;;--PONY
-(require 'pony-settings)
+;; (require 'pony-settings)
 
 ;;--PYTHON
 (require 'python-settings)
@@ -56,10 +57,10 @@
 (set-virtualenv)
 
 ;;--TypeScript
-(require 'tss-settings)
+;; (require 'tss-settings)
 
 ;;--OCAML
-(require 'ocaml-settings)
+;; (require 'ocaml-settings)
 
 
 ;;--HASKELL
@@ -68,7 +69,12 @@
 
 ;;--MARKDOWN
 (require 'markdown-settings)
-(provide 'programming-settings)
+
 
 ;;--RUST
-(require 'rust-settings)
+;; (require 'rust-settings)
+
+;;--ELM
+(require 'elm-settings)
+
+(provide 'programming-settings)

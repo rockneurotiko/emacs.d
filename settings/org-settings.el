@@ -1,3 +1,4 @@
+(require 'flyspell)
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
@@ -22,7 +23,34 @@
                            (org-agenda-files :level . 1)))
 (setq-default org-src-fontify-natively t)
 
+;; http://www.farseer.cn/tweak/2014/11/10/org-your-notes/
+(setq org-directory "~/docs/org")
+(unless (file-exists-p org-directory)
+    (make-directory org-directory t))
+(setq org-log-done nil)
+(setq org-file-apps '((auto-mode . emacs24)
+                      ("\\.mp4\\'" . "xdg-open %s")
+                      ("\\.pdf\\'" . "xdg-open %s")))
+(setq org-startup-with-latex-preview)
+(setq org-startup-with-inline-images)
 
+(add-hook 'org-mode-hook 'flyspell-mode)
+(add-hook 'org-mode-hook 'visual-line-mode)
+(add-hook 'org-mode-hook
+          (lambda ()
+              ;; Register " as verbatim
+              ;; http://permalink.gmane.org/gmane.emacs.orgmode/82669
+              (setcar (nthcdr 2 org-emphasis-regexp-components) " \t\n,'")
+              (custom-set-variables `(org-emphasis-alist ', org-emphasis-alist))))
+
+
+(defun helm-org()
+    (use-package helm-flyspell
+        :ensure t
+        :config (define-key flyspell-mode-map (kbd "C-;") 'helm-flyspell-correct))
+    ;; (require 'helm-flyspell)
+    ;; (define-key flyspell-mode-map (kbd "C-;") 'helm-flyspell-correct)
+    )
 
 (defun set-org-babel ()
 
@@ -56,19 +84,104 @@
     (defvar my/org-babel-evaluated-languages
         '(emacs-lisp)
         '(python)
-        '(julia))
+        '(julia)
+        '(haskell))
 
     (org-babel-do-load-languages
      'org-babel-load-languages
      (mapcar (lambda (lang)
                  (cons lang t))
-             my/org-babel-evaluated-languages))
-    )
+             my/org-babel-evaluated-languages)))
 
 (defun set-org-reveal ()
-    (require 'ox-reveal)
-    (setq org-reveal-root "file:///home/rock/Descargas/revealjs/reveal.js")
+    (use-package ox-reveal
+        :ensure t
+        :init (setq org-reveal-root "file:///home/rock/Descargas/revealjs/reveal.js-3.0.0"))
+    ;; (require 'ox-reveal)
+    ;; (setq org-reveal-root "file:///home/rock/Descargas/revealjs/reveal.js-3.0.0")
     )
+
+(defun set-ditaa ()
+    (setq org-ditaa-jar-path "/usr/share/java/ditaa/ditaa-0_9.jar")
+    ;; this line activates ditaa
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((ditaa . t))))
+
+(defun enable-beamer ()
+    ;; allow for export=>beamer by placing
+
+    ;; #+LaTeX_CLASS: beamer in org files
+
+    (require 'ox-latex)
+    (add-to-list 'org-latex-classes
+                 '("beamer"
+                   "\\documentclass\[presentation\]\{beamer\}"
+                   ("\\section\{%s\}" . "\\section*\{%s\}")
+                   ("\\subsection\{%s\}" . "\\subsection*\{%s\}")
+                   ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
+
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((latex . t))))
+
+
+;; (setq org-modules '(org-bbdb
+;;                     org-gnus
+;;                     org-drill
+;;                     org-info
+;;                     org-jsinfo
+;;                     org-habit
+;;                     org-irc
+;;                     org-mouse
+;;                     org-protocol
+;;                     org-annotate-file
+;;                     org-eval
+;;                     org-expiry
+;;                     org-interactive-query
+;;                     org-man
+;;                     org-collector
+;;                     org-panel
+;;                     org-screen
+;;                     org-toc))
+;; (eval-after-load 'org
+;;     '(org-load-modules-maybe t))
+;; (setq org-expiry-inactive-timestamps t)
+
+;; (bind-key "C-c r" 'org-capture)
+;; (bind-key "C-c a" 'org-agenda)
+;; (bind-key "C-c l" 'org-store-link)
+;; (bind-key "C-c L" 'org-insert-link-global)
+;; (bind-key "C-c O" 'org-open-at-point-global)
+;; (bind-key "<f9> <f9>" 'org-agenda-list)
+;; (bind-key "<f9> <f8>" (lambda () (interactive) (org-capture nil "r")))
+;; (bind-key "C-TAB" 'org-cycle org-mode-map)
+;; (bind-key "C-c v" 'org-show-todo-tree org-mode-map)
+;; (bind-key "C-c C-r" 'org-refile org-mode-map)
+;; (bind-key "C-c R" 'org-reveal org-mode-map)
+
+;; (eval-after-load 'org
+;;     '(bind-key "C-M-w" 'append-next-kill org-mode-map))
+
+;; (eval-after-load 'org-agenda
+;;     '(bind-key "i" 'org-agenda-clock-in org-agenda-mode-map))
+
+;; (setq org-goto-interface 'outline
+;;       org-goto-max-level 10)
+;; (require 'imenu)
+;; (setq org-startup-folded nil)
+;; (bind-key "C-c j" 'org-clock-goto) ;; jump to current task from anywhere
+;; (bind-key "C-c C-w" 'org-refile)
+;; (setq org-cycle-include-plain-lists 'integrate)
+
+(setq org-default-notes-file "~/docs/org/organizer.org")
+
+;; (defun my/yank-more ()
+;;     (interactive)
+;;     (insert "[[")
+;;     (yank)
+;;     (insert "][more]]"))
+;; (global-set-key (kbd "<f6>") 'my/yank-more)
 
 
 (provide 'org-settings)

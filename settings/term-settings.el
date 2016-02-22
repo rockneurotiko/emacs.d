@@ -34,9 +34,7 @@
                   (autopair-mode -1)))
     (add-hook 'term-mode-hook
               (lambda ()
-                  (define-key term-raw-map (kbd "C-y") 'term-paste)))
-
-)
+                  (define-key term-raw-map (kbd "C-y") 'term-paste))))
 
 (defun emux-default-sessions ()
     (emux-session-define-template
@@ -48,9 +46,7 @@
      (other-window 1)
      (proced)
      (other-window 1)
-     (delete-window))
-
-    )
+     (delete-window)))
 ;; (emux-default-sessions)
 
 (defun set-emux ()
@@ -99,7 +95,6 @@
      '(term-unbind-key-list (quote ("C-z" "C-x" "C-c" "C-h" "C-l" "<ESC>")))
      ;; '(ansi-term-color-vector [unspecified "white" "red" "green" "yellow" "royal blue" "magenta" "cyan" "white"] t)
      '(multi-term-scroll-show-maximum-output t)
-     '(term-buffer-maximum-size 16384)
-     )
-    )
+     '(term-buffer-maximum-size 16384)))
+
 (provide 'term-settings)

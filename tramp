@@ -1,4 +1,4 @@
-;; -*- emacs-lisp -*- <15/10/06 08:59:33 /home/rock/.emacs.d/tramp>
+;; -*- emacs-lisp -*- <16/02/02 20:07:24 /home/rock/.emacs.d/tramp>
 ;; Tramp connection history.  Don't change this file.
 ;; You can delete it, forcing Tramp to reapply the checks.
 
@@ -136,17 +136,40 @@
   ("remote-path"
    ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
   ("remote-shell" "/bin/sh")
-  ("id" "/usr/bin/id")
-  ("gid-string" "root")
-  ("stat" "\\stat")
-  ("file-exists" "test -e")
-  ("gid-integer" 0)
-  ("ls" "/bin/ls --color=never")
   ("~" "/root")
+  ("file-exists" "test -e")
+  ("stat" "\\stat")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 0)
+  ("gid-string" "root")
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl"))
+ (["ssh" "t110261" "triqui3.fi.upm.es" nil nil]
+  ("locale" "LC_ALL=en_US.utf8")
+  ("uname" "Linux 2.6.32-573.3.1.el6.x86_64")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("~" "/homefi/alumnos/t/t110261")
+  ("file-exists" "test -e")
+  ("stat" "\\stat")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 10001)
+  ("gid-string" "matriculas")
   ("perl-file-spec" t)
   ("perl-cwd-realpath" t)
   ("perl" "\\perl")
-  ("ls-dired" t)
   ("readlink" "\\readlink")
   ("git" "\\git")
-  ("uid-integer" 0)))
+  ("uid-integer" 15128)
+  ("ls" "/bin/ls --color=never"))
+ (["rockneurotiko" "cdSLWowrea2HDbtJ05kw" "master2.gamesp.eu" nil nil]
+  nil)
+ (["scp" nil "rockneurotiko" nil nil]
+  nil)
+ (["rockneurotiko" "cdSLWowrea2HDbtJ05kw" "master2.gamesp.eu#21" nil nil]
+  nil)
+ (["ftp" "rockneurotiko" "master2.gamesp.eu#21" nil nil]
+  ("started" t)))

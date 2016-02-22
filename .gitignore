@@ -26,3 +26,5 @@ games/
 session.*
 tags
 /var/pcache/cache
+tramp
+url/cookies

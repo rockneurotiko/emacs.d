@@ -8,6 +8,12 @@
  '(ansi-color-names-vector
    (vector "#eaeaea" "#d54e53" "#b9ca4a" "#e7c547" "#7aa6da" "#c397d8" "#70c0b1" "#000000"))
  '(auto-indent-assign-indent-level 4)
+ '(auto-indent-disabled-indent-functions (quote (indent-relative indent-relative-maybe)))
+ '(auto-indent-disabled-modes-list
+   (quote
+    (compilation-mode conf-windows-mode diff-mode inferior-ess-mode dired-mode eshell-mode markdown-mode fundamental-mode log-edit-mode makefile-gmake-mode org-mode snippet-mode texinfo-mode text-mode wl-summary-mode elm-mode)))
+ '(auto-indent-on-visit-file t)
+ '(company-ghc-show-info t)
  '(custom-enabled-themes (quote (sanityinc-tomorrow-eighties)))
  '(custom-safe-themes
    (quote
@@ -16,7 +22,40 @@
    (quote
     ("http://prog21.dadgum.com/atom.xml" "http://syntaxexclamation.wordpress.com/feed/" "http://blog.emillon.org/rss.xml" "http://why-lambda.blogspot.com/feeds/posts/default" "http://sigfpe.blogspot.com/feeds/posts/default" "http://psnively.github.com/atom.xml" "http://edwinb.wordpress.com/feed/" "http://existentialtype.wordpress.com/feed/" "http://brianmckenna.org/blog/feed" "http://queuea9.wordpress.com/feed/" "http://zenzike.com/rss.xml" "http://lambda.jstolarek.com/feed/" "http://monoidal.blogspot.com/feeds/posts/default" "http://spire-lang.org/atom.xml" "http://typesandkinds.wordpress.com/feed/" "http://homotopytypetheory.org/feed/" "http://arcanesentiment.blogspot.com/feeds/posts/default" "http://paolocapriotti.com/atom.xml" "http://semantic-domain.blogspot.com/feeds/posts/default" "http://comonad.com/reader/feed/" "http://jozefg.bitbucket.org/rss.xml" "http://math.andrej.com/feed/" "http://www.lpw25.net/rss.xml" "http://ocaml.janestreet.com/?q=rss.xml" "http://jeremykun.wordpress.com/feed/" "http://twanvl.nl/feed" "http://bartoszmilewski.wordpress.com/feed/" "http://kwangyulseo.com/feed/" "http://www.haskellforall.com/feeds/posts/default" "http://conal.net/blog/feed/" "https://golem.ph.utexas.edu/category/atom10.xml" "http://requestforlogic.blogspot.com/feeds/posts/default" "http://chromaticleaves.com/rss.xml" "http://feeds.feedburner.com/ezyang" "http://raichoo.github.io/feed.rss" "http://bentnib.org/posts.rss.xml" "http://www.simonjf.com/wordpress/?feed=rss2" "http://gallium.inria.fr/~scherer/gagallium/index.rss" "http://anil.recoil.org/feeds/atom.xml" "http://blog.higher-order.com/atom.xml" "http://bitemyapp.com/rss.xml" "http://mazzo.li/rss.xml" "http://infinitecardinals.wordpress.com/feed/" "http://www.stephanboyer.com/feeds/posts/default")))
  '(fci-rule-color "#424242")
+ '(haskell-mode-hook (quote (turn-on-haskell-doc)) t)
+ '(haskell-process-auto-import-loaded-modules t)
+ '(haskell-process-log t)
+ '(haskell-process-suggest-remove-import-lines t)
+ '(haskell-process-type (quote stack-ghci))
  '(ido-everywhere t)
+ '(js2-include-jslint-globals t)
+ '(lisp-body-indent 2)
+ '(multi-term-buffer-name "term")
+ '(multi-term-program "/bin/zsh")
+ '(org-emphasis-alist
+   (quote
+    (("*" bold)
+     ("/" italic)
+     ("_" underline)
+     ("=" org-verbatim verbatim)
+     ("~" org-code verbatim)
+     ("+"
+      (:strike-through t)))))
+ '(org-taskjuggler-default-global-properties
+   "shift s40 \"Part time shift\" {
+  workinghours wed, thu, fri off
+}
+
+vacation \"Semana Santa\" 2016-03-21 - 2016-03-29
+vacation \"Actividades complementarias\" 2016-03-14 - 2016-03-19
+vacation \"Independencia madrid\" 2016-05-01 - 2016-05-03
+vacation \"Fiesta\" 2016-05-15 - 2016-05-17
+vacation \"fiesta 1\" 2016-03-07
+
+")
+ '(tegmacs-server-buffer-name "<tegmacs> {host}:{port}")
+ '(term-default-bg-color nil)
+ '(term-default-fg-color "#00FF05")
  '(tss-project nil)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
@@ -39,12 +78,15 @@
      (320 . "#e78c45")
      (340 . "#e7c547")
      (360 . "#b9ca4a"))))
- '(vc-annotate-very-old-color nil))
+ '(vc-annotate-very-old-color nil)
+ '(web-mode-css-indent-offset 2)
+ '(web-mode-enable-auto-expanding t)
+ '(web-mode-markup-indent-offset 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(web-mode-comment-face ((t (:foreground "#6c6c6c")))))
 
 ;; (provide 'custom-variables)
