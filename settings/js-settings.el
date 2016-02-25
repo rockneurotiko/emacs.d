@@ -28,7 +28,7 @@
     )
 
 (defun js-flycheck ()
-    (package-require 'flycheck)
+    ;; (package-require 'flycheck)
     (add-hook 'js-mode-hook
               (lambda () (flycheck-mode t)))
     )
