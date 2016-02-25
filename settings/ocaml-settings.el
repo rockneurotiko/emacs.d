@@ -11,23 +11,28 @@
 (setq opam-share (substring (shell-command-to-string "opam config var share 2> /dev/null") 0 -1))
 (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
 
-(require 'merlin)
-(require 'ocp-indent)
+(use-package merlin
+  :ensure t
+  :init
 
-(setq auto-mode-alist
-      (append '(("\\.ml[ily]?$" . tuareg-mode)
-                ("\\.topml$" . tuareg-mode))
-              auto-mode-alist))
+  :config
+  (setq auto-mode-alist
+        (append '(("\\.ml[ily]?$" . tuareg-mode)
+                  ("\\.topml$" . tuareg-mode))
+                auto-mode-alist))
+  ;; Automatically load utop.el
+  (autoload 'utop "utop" "Toplevel for OCaml" t)
+  (autoload 'utop-minor-mode "utop" "Minor mode for utop" t)
+  (add-hook 'tuareg-mode-hook 'merlin-mode)
+  (add-hook 'tuareg-mode-hook 'utop-minor-mode)
+  (add-hook 'caml-mode-hook 'merlin-mode t)
+  (setq merlin-use-auto-complete-mode 'easy)
+  (setq merlin-error-after-save nil)
+  (setq merlin-command 'opam))
 
 
-;; Automatically load utop.el
-(autoload 'utop "utop" "Toplevel for OCaml" t)
-(autoload 'utop-minor-mode "utop" "Minor mode for utop" t)
-(add-hook 'tuareg-mode-hook 'merlin-mode)
-(add-hook 'tuareg-mode-hook 'utop-minor-mode)
-(add-hook 'caml-mode-hook 'merlin-mode t)
-(setq merlin-use-auto-complete-mode 'easy)
-(setq merlin-error-after-save nil)
-(setq merlin-command 'opam)
+(use-package ocp-indent
+  :ensure t)
+
 
 (provide 'ocaml-settings)
