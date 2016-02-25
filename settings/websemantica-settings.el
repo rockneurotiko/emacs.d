@@ -1,5 +1,9 @@
 (defun set-turtle ()
-    (package-require 'ttl-mode)
+  ;; (package-require 'ttl-mode)
+  (use-package ttl-mode
+    :ensure t
+    :disabled t
+    :config
     (autoload 'ttl-mode "ttl-mode" "Major mode for OWL or Turtle files" t)
     (add-hook 'ttl-mode-hook    ; Turn on font lock when in ttl mode
               'turn-on-font-lock)
@@ -8,7 +12,6 @@
            (list
             '("\\.n3" . ttl-mode)
             '("\\.ttl" . ttl-mode))
-           auto-mode-alist))
-)
+           auto-mode-alist))))
 
 (provide 'websemantica-settings)

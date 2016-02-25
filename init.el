@@ -89,6 +89,7 @@
 ;;----------------;
 ;;    LANGUAGES   ;
 ;;----------------;
+(require 'flycheck-settings)
 (require 'programming-settings)
 
 ;;-------------------;

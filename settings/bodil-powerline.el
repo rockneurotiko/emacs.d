@@ -4,8 +4,8 @@
     :ensure t)
 ;; (use-package bodil-flycheck
 ;;     :ensure t)
-(use-package flycheck
-    :ensure t)
+;; (use-package flycheck
+;;     :ensure t)
 
 
 ;; (package-require 'powerline)

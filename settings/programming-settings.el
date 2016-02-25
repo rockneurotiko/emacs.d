@@ -58,7 +58,7 @@
 (require 'python-settings)
 (set-ipython)
 (set-pycomplete)
-(set-flymake)
+;; (set-flymake)
 (set-virtualenv)
 
 ;;--TypeScript

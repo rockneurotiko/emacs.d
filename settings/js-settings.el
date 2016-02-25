@@ -61,6 +61,7 @@
     ;; (package-require 'flycheck)
     ;; (add-hook 'js-mode-hook
     ;;           (lambda () (flycheck-mode t)))
+    ;; (package-require 'flycheck)
     )
 
 (defun use-js2 ()

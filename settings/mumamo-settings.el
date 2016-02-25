@@ -1,6 +1,6 @@
-;---------------------;
+;;---------------------;
 ;;; MuMaMo / nxhtml ;;;
-;---------------------;
+;;---------------------;
 
 (load (make-plugin-path "nxhtml/autostart.el"))
 ;; Workaround the annoying warnings:
