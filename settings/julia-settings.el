@@ -1,6 +1,8 @@
 ;;JULIA
-(package-require 'ess)
+(use-package ess
+  :ensure t
+  :init (setq inferior-julia-program-name "julia"))
+
 (load "~/.emacs.d/plugins/ESS/lisp/ess-site.el")
-(setq inferior-julia-program-name "julia")
 
 (provide 'julia-settings)
