@@ -1,12 +1,17 @@
+;;; package -- summary
+
+;;; Commentary:
+
+;;; Code:
 ;;--PROLOG
 ;; (require 'prolog-settings)
 
 ;;--JAVASCRIPT && WEB
 (require 'js-settings)
+(load-web-mode)
 (use-js2)
 (load-tern)
 (js-flycheck)
-(load-web-mode)
 (set-emmet)
 ;; (load-angular)
 
@@ -77,4 +82,8 @@
 ;;--ELM
 (require 'elm-settings)
 
+;; Flycheck
+(require 'flycheck-settings)
+
 (provide 'programming-settings)
+;;; programming-settings.el ends here
