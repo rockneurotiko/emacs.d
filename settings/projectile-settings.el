@@ -1,8 +1,11 @@
-(package-require 'projectile)
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-global-mode))
 
-(projectile-global-mode)
-
-(package-require 'helm-projectile)
-(helm-projectile-on)
+(use-package helm-projectile
+  :ensure t
+  :config
+  (helm-projectile-on))
 
 (provide 'projectile-settings)
