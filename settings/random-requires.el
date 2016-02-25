@@ -94,12 +94,12 @@
 
 ;; Enable guide-key-mode
 (use-package guide-key
+    :disabled t
     :defer t
     :diminish guide-key-mode
     :config
-    (progn
-        (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c"))
-        (guide-key-mode 1)))
+    (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c"))
+    (guide-key-mode 1))
 
 
 (use-package switch-window
