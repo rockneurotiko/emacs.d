@@ -1,9 +1,11 @@
 ;; GO
 (use-package go-autocomplete
-    :ensure t)
+    :ensure t
+    :config
+    (require 'auto-complete-config))
 
 ;; (require 'go-autocomplete)
-(require 'auto-complete-config)
+;; (require 'auto-complete-config)
 
 (setenv "GOPATH" "/home/rock/go")
 
@@ -27,7 +29,7 @@
     (add-hook 'before-save-hook 'gofmt-before-save)
     (local-set-key (kbd "M-.") 'godef-jump))
 
-(add-hook 'go-mode-hook 'my-go-mode-hook
+(add-hook 'go-mode-hook 'my-go-mode-hook)
 
 
 (provide 'go-settings)
