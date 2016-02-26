@@ -4,6 +4,8 @@
   (setq magit-last-seen-setup-instructions "1.4.0")
   :bind ("C-c g" . magit-status))
 
+;; ("C-c C-c" . with-editor-finish) ??
+
 (use-package magit-gh-pulls
   :ensure t
   :config
