@@ -76,8 +76,12 @@
         :config
         (add-hook 'js2-mode-hook 'ac-js2-mode)
         (add-hook 'js2-mode-hook 'jasminejs-mode)
-        (add-hook 'js2-mode-hook #'js2-refactor-mode)
-        (js2r-add-keybindings-with-prefix "C-c C-m")
+	(use-package js2-refactor
+	    :ensure t
+	    :config
+	    (add-hook 'js2-mode-hook #'js2-refactor-mode)
+            (js2r-add-keybindings-with-prefix "C-c C-m"))
+
         (js2-imenu-extras-mode)
         (apply #'derived-mode-p '(org-mode web-mode))
 

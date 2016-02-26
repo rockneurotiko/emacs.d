@@ -4,14 +4,15 @@
 (add-to-list 'load-path "~/.emacs.d/plugins")
 (add-to-list 'load-path "~/.emacs.d/settings")
 
+;; Package
+(require 'package-settings)
+
+
 (require 'rock-defuns)
 (require 'general-settings)
 
 ;; IRC
 ;; (require 'irc-settings)
-
-;; Package
-(require 'package-settings)
 
 
 ;; ido and flx
@@ -107,7 +108,7 @@
     (add-to-list 'load-path "~/Git/tegmacs")
     (load-file "/home/rock/Git/tegmacs/tegmacs.el")
     (require 'tegmacs))
-(tegmacs-load)
+;; (tegmacs-load)
 
 (require 'ox-taskjuggler)
 
