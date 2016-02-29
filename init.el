@@ -105,10 +105,10 @@
 
 ;; MINE SHIT
 (defun tegmacs-load ()
-    (add-to-list 'load-path "~/Git/tegmacs")
-    (load-file "/home/rock/Git/tegmacs/tegmacs.el")
+    (add-to-list 'load-path "~/git/myrepos/tegmacs")
+    (load-file "~/git/myrepos/tegmacs/tegmacs.el")
     (require 'tegmacs))
-;; (tegmacs-load)
+(tegmacs-load)
 
 (require 'ox-taskjuggler)
 
