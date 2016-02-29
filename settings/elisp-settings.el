@@ -1,4 +1,5 @@
 (setq lisp-body-indent 2)
+;; (setq elisp-mode-indent-level 2)
 
 (use-package rainbow-delimiters
   :ensure t

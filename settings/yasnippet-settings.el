@@ -1,10 +1,9 @@
 ;;---------------;
 ;;; yasnippet ;;;
 ;;---------------;
-
 (use-package yasnippet
   :ensure t
-  :diminish yasnippet-mode
+  :diminish yas-minor-mode
   :config
   (add-to-list 'load-path "~/.emacs.d/es6-snippets")
   (require 'es6-snippets)
@@ -15,3 +14,4 @@
 
 
 (provide 'yasnippet-settings)
+;;; yasnippet-settings.el ends here

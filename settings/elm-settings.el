@@ -22,3 +22,4 @@
 ;; auto-indent-disabled-modes-list
 
 (provide 'elm-settings)
+;;; elm-settings.el ends here
