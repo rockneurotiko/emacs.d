@@ -53,6 +53,7 @@
 ;; but give the emacs window a still good shape !
 (setq initial-frame-alist '((width . 90) (height . 45))) ; .Xdefaults
 
+(setq-default indent-tabs-mode nil)
 (setq auto-indent-on-visit-file t) ;; If you want auto-indent on for files
 ;; (setq linum-format "%4d \u2502") ;; theme
 
