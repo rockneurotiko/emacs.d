@@ -2,13 +2,14 @@
 ;;; yasnippet ;;;
 ;;---------------;
 
+;;; Code:
 (add-to-list 'load-path "~/.emacs.d/es6-snippets")
 (require 'es6-snippets)
 
 
 (use-package yasnippet
   :ensure t
-  :diminish yasnippet-mode
+  :diminish yas-minor-mode
   :config
   (define-key yas-minor-mode-map (kbd "<tab>") nil)
   (define-key yas-minor-mode-map (kbd "TAB") nil)
@@ -17,3 +18,4 @@
 
 
 (provide 'yasnippet-settings)
+;;; yasnippet-settings.el ends here

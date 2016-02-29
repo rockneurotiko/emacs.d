@@ -107,11 +107,13 @@
 
     (use-package jasminejs-mode
         :ensure t
+        :diminish jasminejs-mode
         :config
         (add-hook 'jasminejs-mode-hook (lambda () (jasminejs-add-snippets-to-yas-snippet-dirs))))
 
     (use-package js2-refactor
-        :ensure t)
+        :ensure t
+        :diminish js2-refactor-mode)
 
     (add-to-list 'auto-mode-alist
                  '("\\.p?html\\(\\.[a-z]\\{2\\}\\)?\\'" . html-mode))

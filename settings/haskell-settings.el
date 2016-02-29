@@ -49,7 +49,7 @@
     (autoload 'ghc-init "ghc" nil t)
     (autoload 'ghc-debug "ghc" nil t)
     (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
-    (require 'company)
+    (package-require 'company)
     (add-hook 'after-init-hook 'global-company-mode)
     (add-to-list 'company-backends 'company-ghc)
     (custom-set-variables '(company-ghc-show-info t)))
@@ -173,3 +173,4 @@
 ;; (setup-haskell-arrows 'idris-mode idris-mode-map)
 
 (provide 'haskell-settings)
+;;; haskell-settings.el ends here

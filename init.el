@@ -1,3 +1,7 @@
+;;; package: --- Summary
+;;; Commentary:
+;;; Code:
+
 (package-initialize nil)
 
 ;; MY PATH
@@ -44,7 +48,9 @@
 (helm-org)
 (set-ditaa)
 (enable-beamer)
+(require 'ox-taskjuggler)
 ;; (set-org-babel)
+
 (require 'presentation-settings)
 
 
@@ -89,6 +95,7 @@
 ;;----------------;
 ;;    LANGUAGES   ;
 ;;----------------;
+(require 'company-settings)
 (require 'flycheck-settings)
 (require 'programming-settings)
 
@@ -106,9 +113,9 @@
 (defun tegmacs-load ()
     (add-to-list 'load-path "~/Git/tegmacs")
     (load-file "/home/rock/Git/tegmacs/tegmacs.el")
-    (require 'tegmacs))
+    (require 'tegmacs)
+    (setq tegmacs-message-mark-as-read nil))
 (tegmacs-load)
 
-(require 'ox-taskjuggler)
-
 ;; (require 'exwm-settings)
+;;; init.el ends here

@@ -7,7 +7,7 @@
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
    (vector "#eaeaea" "#d54e53" "#b9ca4a" "#e7c547" "#7aa6da" "#c397d8" "#70c0b1" "#000000"))
- '(auto-indent-assign-indent-level 4)
+ '(auto-indent-assign-indent-level 2)
  '(auto-indent-disabled-indent-functions (quote (indent-relative indent-relative-maybe)))
  '(auto-indent-disabled-modes-list
    (quote
