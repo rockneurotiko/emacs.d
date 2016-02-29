@@ -30,13 +30,12 @@
                 (setq term-buffer-maximum-size 10000)))
     (add-hook 'term-mode-hook
               (lambda ()
-                (setq show-trailing-whitespace nil)
-                (autopair-mode -1)))
+		(setq show-trailing-whitespace nil)
+		(when (featurep 'autopair-mode)
+		  (autopair-mode -1))))
     (add-hook 'term-mode-hook
               (lambda ()
                 (define-key term-raw-map (kbd "C-y") 'term-paste)))))
-
-
 
 
 (defun emux-default-sessions ()
