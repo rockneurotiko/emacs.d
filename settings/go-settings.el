@@ -7,11 +7,17 @@
 ;; (require 'go-autocomplete)
 ;; (require 'auto-complete-config)
 
-(setenv "GOPATH" "/home/rock/go")
+(setenv "GOPATH" (expand-file-name "~/go"))
 
-(load-file "$GOPATH/src/golang.org/x/tools/cmd/oracle/oracle.el")
-(add-to-list 'load-path "~/go/src/github.com/dougm/goflymake")
-(require 'go-flymake)
+;; If with warning print?
+(when (file-exists-p (expand-file-name "$GOPATH/src/golang.org/x/tools/cmd/oracle/oracle.el"))
+    (load-file "$GOPATH/src/golang.org/x/tools/cmd/oracle/oracle.el"))
+
+;; If with warning print?
+(when (file-exists-p (expand-file-name "$GOPATH/src/github.com/dougm/goflymake"))
+    (add-to-list 'load-path "$GOPATH/src/github.com/dougm/goflymake")
+    (require 'go-flymake))
+
 
 (defun my-go-mode-hook ()
     (setq gofmt-command "goimports")

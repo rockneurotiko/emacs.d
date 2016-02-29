@@ -38,11 +38,11 @@
 (use-package plantuml-mode
     :ensure t
     :init
-    (setq org-plantuml-jar-path
-          (expand-file-name "/opt/plantuml/plantuml.jar"))
+    (setq org-plantuml-jar-path (expand-file-name "/opt/plantuml/plantuml.jar"))
+    (setq plantuml-jar-path (expand-file-name "/opt/plantuml/plantuml.jar"))
     :config
-    ;; active Org-babel languages
     (org-babel-do-load-languages
+     ;; active Org-babel languages
      'org-babel-load-languages
      '(;; other Babel languages
        (plantuml . t))))
@@ -210,8 +210,11 @@
 (defun set-pair ()
     ;; (package-require 'autopair)
     ;; (autopair-global-mode)
-    (require 'smartparens-config)
-    (smartparens-global-mode))
+    (use-package smartparens
+	:ensure t
+	:config
+        (require 'smartparens-config)
+        (smartparens-global-mode)))
 
 (defun set-multiple-cursors ()
     ;; (package-require 'multiple-cursors)

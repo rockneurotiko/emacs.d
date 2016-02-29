@@ -8,14 +8,15 @@
 (add-to-list 'load-path "~/.emacs.d/plugins")
 (add-to-list 'load-path "~/.emacs.d/settings")
 
+;; Package
+(require 'package-settings)
+
+
 (require 'rock-defuns)
 (require 'general-settings)
 
 ;; IRC
 ;; (require 'irc-settings)
-
-;; Package
-(require 'package-settings)
 
 
 ;; ido and flx
@@ -115,6 +116,7 @@
     (load-file "/home/rock/Git/tegmacs/tegmacs.el")
     (require 'tegmacs)
     (setq tegmacs-message-mark-as-read nil))
+
 (tegmacs-load)
 
 ;; (require 'exwm-settings)
