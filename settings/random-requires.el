@@ -112,7 +112,8 @@
     (setq ranger-parent-depth 2)
     (setq ranger-excluded-extensions '("mkv" "iso" "mp4" "mp3"))
     (setq ranger-max-preview-size 10)
-    (setq ranger-override-dired t))
+    (setq ranger-override-dired t)
+    :bind ("C-c d" . ranger))
 
 (use-package smartscan
     :defer t
