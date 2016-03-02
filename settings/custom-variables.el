@@ -13,6 +13,11 @@
    (quote
     (compilation-mode conf-windows-mode diff-mode inferior-ess-mode dired-mode eshell-mode markdown-mode fundamental-mode log-edit-mode makefile-gmake-mode org-mode snippet-mode texinfo-mode text-mode wl-summary-mode elm-mode)))
  '(auto-indent-on-visit-file t)
+ '(company-backends
+   (quote
+    (company-elm company-ghc merlin-company-backend company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
+                 (company-dabbrev-code company-gtags company-keywords)
+                 company-oddmuse company-dabbrev)))
  '(company-ghc-show-info t)
  '(custom-enabled-themes (quote (sanityinc-tomorrow-eighties)))
  '(custom-safe-themes
@@ -30,8 +35,8 @@
  '(ido-everywhere t)
  '(js2-include-jslint-globals t)
  '(lisp-body-indent 2)
- '(multi-term-buffer-name "term")
- '(multi-term-program "/bin/zsh")
+ '(multi-term-buffer-name "term" t)
+ '(multi-term-program "/bin/zsh" t)
  '(org-emphasis-alist
    (quote
     (("*" bold)

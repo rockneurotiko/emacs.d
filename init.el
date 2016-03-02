@@ -55,7 +55,7 @@
 (require 'presentation-settings)
 
 
-(require 'tags-settings)
+
 
 (require 'random-requires) ;; Functions for some modes and other things
 (set-undo) ;; Ctrl-z powered
@@ -85,6 +85,8 @@
 (require 'yasnippet-settings)
 (require 'acejump-settings)
 (require 'font-settings)
+
+(require 'tags-settings)
 
 ;; (require 'camelcase-settings)
 (require 'cheatsheet-settings)
