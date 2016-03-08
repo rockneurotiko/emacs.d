@@ -6,6 +6,9 @@
 ;;--PROLOG
 ;; (require 'prolog-settings)
 
+;; Flycheck
+(require 'flycheck-settings)
+
 ;;--JAVASCRIPT && WEB
 (require 'js-settings)
 (load-web-mode)
@@ -82,8 +85,9 @@
 ;;--ELM
 (require 'elm-settings)
 
-;; Flycheck
-(require 'flycheck-settings)
+
+;; Other langs
+(require 'otherlangs-settings)
 
 (provide 'programming-settings)
 ;;; programming-settings.el ends here
