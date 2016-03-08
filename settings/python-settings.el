@@ -1,6 +1,6 @@
-                                        ;------------------------;
+;;------------------------;
 ;;; Python Programming ;;;
-                                        ;------------------------;
+;;------------------------;
 
 ;; -----------------------
 ;; python.el configuration
@@ -9,6 +9,8 @@
 ;; from python.el
 (use-package python
   :ensure t
+  :init
+  (setq python-indent-offset 4)
   :config
   (setq auto-mode-alist
         (append

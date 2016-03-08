@@ -18,6 +18,9 @@
      (reusable-frames . 0)
      (window-height . 8) (window-width . nil))))
 
+(use-package scala-mode2
+  :ensure t)
+
 (use-package ensime
   :ensure t
   :config

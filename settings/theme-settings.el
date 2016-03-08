@@ -18,8 +18,8 @@
   (moe-theme-set-color 'magenta))
 
 (use-package linum
-    :ensure t
-    :diminish linum-mode
+  :ensure t
+  :diminish linum-mode
   :init (setq linum-disabled-modes-list '(mu4e-headers-mode))
   :config
   (global-linum-mode 1)
@@ -27,13 +27,19 @@
     (unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
       (linum-mode 1))))
 
+(use-package linum-relative
+  :ensure t
+  :diminish linum-relative-mode
+  :config
+  (linum-relative-global-mode))
+
 (defun set-powerline ()
     ;; (require 'powerline) ;; Yeah! line :)
     ;; (powerline-default-theme)
     )
 
 (defun set-random-theme ()
-    ;; Select one random from:
+  ;; Select one random from:
     ;; [spolsky, granger, cyberpunk, ample, grandshell, monokai, sanityinc-tomorrow-night, sanityinc-tomorrow-eighties]
     (load-theme
      (random-elt

@@ -35,8 +35,8 @@
  '(ido-everywhere t)
  '(js2-include-jslint-globals t)
  '(lisp-body-indent 2)
- '(multi-term-buffer-name "term" t)
- '(multi-term-program "/bin/zsh" t)
+ '(multi-term-buffer-name "term")
+ '(multi-term-program "/bin/zsh")
  '(org-emphasis-alist
    (quote
     (("*" bold)
@@ -58,6 +58,11 @@ vacation \"Fiesta\" 2016-05-15 - 2016-05-17
 vacation \"fiesta 1\" 2016-03-07
 
 ")
+ '(python-indent-guess-indent-offset nil)
+ '(python-indent-offset 4)
+ '(python-shell-interpreter "ipython")
+ '(python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: ")
+ '(python-shell-prompt-regexp "In \\[[0-9]+\\]: ")
  '(tegmacs-server-buffer-name "<tegmacs> {host}:{port}")
  '(term-default-bg-color nil)
  '(term-default-fg-color "#00FF05")
