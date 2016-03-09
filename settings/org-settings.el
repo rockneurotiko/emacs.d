@@ -11,6 +11,12 @@
 (require 'org-agenda)
 (setq org-agenda-span 14)
 
+(setq org-agenda-files (list "~/Dropbox/ORG/work.org"
+                             "~/Dropbox/ORG/school.org"
+                             "~/Dropbox/ORG/home.org"
+                             "~/.emacs.d/agenda/basic.org"))
+(setq org-agenda-include-diary t)
+
 (defun my-org-autodone (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
   (let (org-log-done org-log-states)   ; turn off logging

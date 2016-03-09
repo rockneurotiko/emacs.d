@@ -149,6 +149,13 @@
     :ensure t
     :defer t)
 
+
+(setq calendar-latitude 40.1)
+(setq calendar-longitude 3)
+(setq calendar-location-name "Pozuelo de Alarcon")
+
+(setq diary-file "~/Dropbox/diary")
+
 ;; ++Old way++
 ;; (when (fboundp 'winner-mode)
 ;;     (winner-mode 1))
