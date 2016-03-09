@@ -20,6 +20,10 @@
   (define-key python-mode-map (kbd "C-c !") 'python-shell-switch-to-shell)
   (define-key python-mode-map (kbd "C-c |") 'python-shell-send-region))
 
+(use-package elpy
+  :ensure t
+  :config
+  (elpy-enable))
 ;; -----------------------------
 ;; emacs IPython notebook config
 ;; -----------------------------

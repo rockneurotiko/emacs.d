@@ -63,7 +63,6 @@
 (set-pycomplete)
 ;; (set-flymake)
 (set-virtualenv)
-(elpy-enable)
 
 ;;--TypeScript
 ;; (require 'tss-settings)
