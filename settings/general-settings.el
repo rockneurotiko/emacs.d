@@ -132,9 +132,12 @@
 ;; (global-aggressive-indent-mode 1)
 ;; (nyan-mode 1)
 
-(setq browse-url-browser-function 'browse-url-firefox
-      browse-url-new-window-flag  t
-      browse-url-firefox-new-window-is-tab t)
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "xdg-open")
+
+;; (setq browse-url-browser-function 'browse-url-firefox
+;;       browse-url-new-window-flag  t
+;;       browse-url-firefox-new-window-is-tab t)
 
 ;; (setq browse-url-browser-function 'browse-url-generic)
 ;; (setq browse-url-generic-program "firefox")
