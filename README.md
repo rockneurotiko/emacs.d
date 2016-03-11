@@ -6,6 +6,12 @@ I try to do it really modular and self-contained, so I can just clone and everyt
 
 Let me know if I missed some auto-install or optional dependency =D
 
+# Show me!
+
+Ok, ok! This is how it looks like:
+
+![Looks like](images/lookslike.png)
+
 # Clone
 
 - Directly in your .emacs.d
