@@ -6,7 +6,7 @@
  ;; If there is more than one, they won't work right.
  )
 
-; color theme
+                                        ; color theme
 (add-to-list 'custom-theme-load-path (make-plugin-path "color-theme-solarized"))
 (load-theme 'solarized-dark 1)
 (setq solarized-termcolors 256)
@@ -14,7 +14,7 @@
 (require 'faces)
 (if (system-is-mac)
     (set-face-attribute 'default nil
-			:foundry "apple" 
+			:foundry "apple"
 			:family "DejaVu_Sans_Mono"))
 
 (custom-set-faces
@@ -48,4 +48,3 @@
      '(mode-line ((t (:background "#0a2832" :foreground "#eee8d4" :inverse-video t :box nil :underline nil :slant normal :weight normal)))))
  '(mumamo-background-chunk-major ((t (:background "#002b36"))))
  '(py-variable-name-face ((t (:inherit default :foreground "#268bd2")))))
-

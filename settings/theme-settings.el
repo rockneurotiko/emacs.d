@@ -2,13 +2,13 @@
 ;; Functions to apply themes :)
 
 (defun random-elt (choices)
-    "Choose an element from a list at random."
-    (elt choices (random (length choices))))
+  "Choose an element from a list at random."
+  (elt choices (random (length choices))))
 
 (use-package powerline
-    :ensure t
-    :config
-    (powerline-default-theme))
+  :ensure t
+  :config
+  (powerline-default-theme))
 
 (use-package moe-theme
   :ensure t
@@ -34,23 +34,23 @@
   (linum-relative-global-mode))
 
 (defun set-powerline ()
-    ;; (require 'powerline) ;; Yeah! line :)
-    ;; (powerline-default-theme)
-    )
+  ;; (require 'powerline) ;; Yeah! line :)
+  ;; (powerline-default-theme)
+  )
 
 (defun set-random-theme ()
   ;; Select one random from:
-    ;; [spolsky, granger, cyberpunk, ample, grandshell, monokai, sanityinc-tomorrow-night, sanityinc-tomorrow-eighties]
-    (load-theme
-     (random-elt
-      '(spolsky
-        granger
-        cyberpunk
-        ample
-        grandshell
-        monokai
-        sanityinc-tomorrow-night
-        sanityinc-tomorrow-eighties)) t))
+  ;; [spolsky, granger, cyberpunk, ample, grandshell, monokai, sanityinc-tomorrow-night, sanityinc-tomorrow-eighties]
+  (load-theme
+   (random-elt
+    '(spolsky
+      granger
+      cyberpunk
+      ample
+      grandshell
+      monokai
+      sanityinc-tomorrow-night
+      sanityinc-tomorrow-eighties)) t))
 
 
 ;; Moe Worth!
@@ -65,18 +65,18 @@
   )
 
 (defun set-full-paren ()
-    (show-paren-mode t)
-    (setq show-paren-style 'expression))
+  (show-paren-mode t)
+  (setq show-paren-style 'expression))
 
 (defun set-linum ()
-    ;; Numero de lineas
-    ;; (require 'linum)
-    ;; (global-linum-mode 1)
-    ;; (setq linum-disabled-modes-list '(mu4e-headers-mode))
-    ;; (defun linum-on ()
-    ;;     (unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
-    ;;         (linum-mode 1)))
-    )
+  ;; Numero de lineas
+  ;; (require 'linum)
+  ;; (global-linum-mode 1)
+  ;; (setq linum-disabled-modes-list '(mu4e-headers-mode))
+  ;; (defun linum-on ()
+  ;;     (unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
+  ;;         (linum-mode 1)))
+  )
 
 
 (set-face-attribute 'default nil

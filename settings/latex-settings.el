@@ -25,12 +25,12 @@
 
   (if (system-is-linux)
       (setq TeX-view-program-selection
-	     (quote (((output-dvi style-pstricks) "dvips and gv")
-		     (output-dvi "xdvi")
-		     (output-pdf "evince")
-		     (output-html "xdg-open"))))))
+            (quote (((output-dvi style-pstricks) "dvips and gv")
+                    (output-dvi "xdvi")
+                    (output-pdf "evince")
+                    (output-html "xdg-open"))))))
 
-; always start the server for inverse search
+                                        ; always start the server for inverse search
 (setq-default TeX-source-correlate-start-server 0)
 
 (add-hook 'LaTeX-mode-hook

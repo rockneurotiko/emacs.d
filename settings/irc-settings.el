@@ -8,9 +8,9 @@
 ;;                '(("freenode.net" "##plig" ))))) ;; "#python" "#haskell" "##typetheory" "#scala" "#julia" )))))
 
 (defun my-erc ()
-    "Connect IRC with SSL"
-    ;; (interactive)
-    ;; (erc-tls :server "irc.freenode.net" :port 7000)
-    )
+  "Connect IRC with SSL"
+  ;; (interactive)
+  ;; (erc-tls :server "irc.freenode.net" :port 7000)
+  )
 
 (provide 'irc-settings)
