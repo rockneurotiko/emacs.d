@@ -14,7 +14,8 @@
 (setq org-agenda-files (list "~/Dropbox/ORG/work.org"
                              "~/Dropbox/ORG/school.org"
                              "~/Dropbox/ORG/home.org"
-                             "~/.emacs.d/agenda/basic.org"))
+                             ;; "~/.emacs.d/agenda/basic.org"
+                             "~/.emacs.d/agenda/gcal.org"))
 (setq org-agenda-include-diary t)
 
 (defun my-org-autodone (n-done n-not-done)

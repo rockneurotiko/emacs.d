@@ -87,6 +87,53 @@
     (cheatsheet-add :group 'js2Refactor
                     :key "C-c C-m k"
                     :description "kill: Kills to the end of the line, but does not cross semantic boundaries.")
+
+
+    (cheatsheet-add :group 'PageMovement :key "C-v" :description "Siguiente")
+    (cheatsheet-add :group 'PageMovement :key "M-v" :description "Anterior")
+
+    (cheatsheet-add :group 'TextMovement :key "C-f" :description "Moverse un caracter hacia adelante")
+    (cheatsheet-add :group 'TextMovement :key "C-b" :description "Moverse un caracter hacia atrás")
+    (cheatsheet-add :group 'TextMovement :key "M-f" :description "Moverse una palabra hacia adelante")
+    (cheatsheet-add :group 'TextMovement :key "M-b" :description "Moverse una palabra hacia atrás")
+    (cheatsheet-add :group 'TextMovement :key "C-n" :description "Moverse a la siguiente línea")
+    (cheatsheet-add :group 'TextMovement :key "C-p" :description "Moverse a la línea anterior")
+    (cheatsheet-add :group 'TextMovement :key "C-a" :description "Moverse al comienzo de una líneas")
+    (cheatsheet-add :group 'TextMovement :key "C-e" :description "Moverse al final de una línea")
+    (cheatsheet-add :group 'TextMovement :key "M-a" :description "Moverse al inicio de una oracion")
+    (cheatsheet-add :group 'TextMovement :key "M-e" :description "Moverse al final de una oracion")
+
+    (cheatsheet-add :group 'ModifyText :key "C-k" :description "mata el texto, pero puede ser recuperado con C-y")
+    (cheatsheet-add :group 'ModifyText :key "C-d" :description "Borra un caracter (no puede ser recuperado)")
+    (cheatsheet-add :group 'ModifyText :key "M-d" :description "Borra una plabra")
+    (cheatsheet-add :group 'ModifyText :key "C-Spa" :description "Marca el texto")
+    (cheatsheet-add :group 'ModifyText :key "C-w" :description "Corta el texto seleccionado")
+    (cheatsheet-add :group 'ModifyText :key "M-w" :description "Copia el texto seleccionado")
+    (cheatsheet-add :group 'ModifyText :key "C-h" :description "Marca todo el buffer")
+    (cheatsheet-add :group 'ModifyText :key "C-y" :description "Pega el texto copiado")
+    (cheatsheet-add :group 'ModifyText :key "M-y" :description "Recorre los textos copiados/pegados")
+    (cheatsheet-add :group 'ModifyText :key "C-g" :description "Cancelar comando")
+    (cheatsheet-add :group 'ModifyText :key "C-x-u" :description "Deshacer")
+    (cheatsheet-add :group 'ModifyText :key "C-/" :description "Deshacer ")
+
+
+    (cheatsheet-add :group 'ControlXs :key "C-x C-f" :description "Abrir/crear un archivo")
+    (cheatsheet-add :group 'ControlXs :key "C-x C-x" :description "Listar Buffers")
+    (cheatsheet-add :group 'ControlXs :key "C-x-k" :description "Cerrar el buffer")
+    (cheatsheet-add :group 'ControlXs :key "C-x C-s" :description "Guardar un archivo")
+    (cheatsheet-add :group 'ControlXs :key "C-x-s" :description "Guardar Buffers")
+    (cheatsheet-add :group 'ControlXs :key "C-x C-c" :description "Salir de Emacs")
+    (cheatsheet-add :group 'ControlXs :key "C-z" :description "Suspende la sesion de Emacs")
+    (cheatsheet-add :group 'ControlXs :key "M-x" :description "Abir Comandos")
+    (cheatsheet-add :group 'ControlXs :key "C-s" :description "Buscar string (Hacia delante)")
+    (cheatsheet-add :group 'ControlXs :key "C-r" :description "Buscar string (Hacia detras)")
+    (cheatsheet-add :group 'ControlXs :key "M-%" :description "Reemplazar string")
+    (cheatsheet-add :group 'ControlXs :key "C-x-2" :description "Dividir la ventana en 2 (Horizontal)")
+    (cheatsheet-add :group 'ControlXs :key "C-x-3" :description "Dividir la ventana en 2 (Vertical)")
+    (cheatsheet-add :group 'ControlXs :key "C-x-1" :description "Ventana unica")
+    (cheatsheet-add :group 'ControlXs :key "C-x-o" :description "Cambiar el cursor de una ventana a otra")
+
+
     :bind ("C-c C-s" . cheatsheet-show))
 ;; (package-require 'cheatsheet)
 

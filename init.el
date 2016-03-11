@@ -54,7 +54,7 @@
 
 (require 'presentation-settings)
 
-
+(require 'calendar-settings)
 
 
 (require 'random-requires) ;; Functions for some modes and other things
