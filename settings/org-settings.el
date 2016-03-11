@@ -103,10 +103,7 @@
 (defun set-org-reveal ()
   (use-package ox-reveal
     :ensure t
-    :init (setq org-reveal-root "file:///home/rock/Descargas/revealjs/reveal.js-3.0.0"))
-  ;; (require 'ox-reveal)
-  ;; (setq org-reveal-root "file:///home/rock/Descargas/revealjs/reveal.js-3.0.0")
-  )
+    :init (setq org-reveal-root (concat "file://" (expand-file-name "~/.emacs.d/plugins/revealjs")))))
 
 (defun set-ditaa ()
   (setq org-ditaa-jar-path "/usr/share/java/ditaa/ditaa-0_9.jar")

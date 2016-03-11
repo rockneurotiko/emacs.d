@@ -4,31 +4,31 @@
 
 ;;; Code:
 (use-package auto-complete
-    :ensure t
-    :init
-    ;; (setq ac-directory (make-elget-path "auto-complete"))
-    ;; (add-to-list 'load-path ac-directory)
-    (require 'auto-complete-config)
-    :config
-    (global-auto-complete-mode 1)
-    (setq-default
-     ac-sources '(ac-source-yasnippet
-                  ac-source-abbrev
-                  ac-source-dictionary
-                  ac-source-words-in-same-mode-buffers))
+  :ensure t
+  :init
+  ;; (setq ac-directory (make-elget-path "auto-complete"))
+  ;; (add-to-list 'load-path ac-directory)
+  (require 'auto-complete-config)
+  :config
+  (global-auto-complete-mode 1)
+  (setq-default
+   ac-sources '(ac-source-yasnippet
+                ac-source-abbrev
+                ac-source-dictionary
+                ac-source-words-in-same-mode-buffers))
 
                                         ; hack to fix ac-sources after pycomplete.el breaks it
-    (add-hook 'python-mode-hook
-              '(lambda ()
-                   (setq ac-sources '(ac-source-pycomplete
-                                      ac-source-yasnippet
-                                      ac-source-abbrev
-                                      ac-source-dictionary
-                                      ac-source-words-in-same-mode-buffers))))
-    (ac-set-trigger-key "TAB")
-    (ac-set-trigger-key "<tab>")
-    (setq ac-auto-start 2)
-    (setq ac-ignore-case nil))
+  (add-hook 'python-mode-hook
+            '(lambda ()
+               (setq ac-sources '(ac-source-pycomplete
+                                  ac-source-yasnippet
+                                  ac-source-abbrev
+                                  ac-source-dictionary
+                                  ac-source-words-in-same-mode-buffers))))
+  (ac-set-trigger-key "TAB")
+  (ac-set-trigger-key "<tab>")
+  (setq ac-auto-start 2)
+  (setq ac-ignore-case nil))
 
 ;; (setq ac-directory (make-elget-path "auto-complete"))
 ;; (add-to-list 'load-path ac-directory)

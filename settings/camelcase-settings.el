@@ -27,7 +27,7 @@
                       (replace-match (upcase (match-string 1))))))
 
 ;; cadged largely from http://xahlee.org/emacs/elisp_idioms.html:
-;; 
+;;
 (defun camelcase-word-or-region ()
   "Changes word or region from snake_case to camelCase"
   (interactive)
@@ -41,7 +41,7 @@
 
 ;; snakecase-region Given a region of text in camelCase format,
 ;; changes it to snake_case.
-;; 
+;;
 ;; BUG: This is actually just a repeat of camelcase-region!
 (defun snakecase-region (start end)
   "Changes region from camelCase to snake_case"
@@ -64,7 +64,7 @@
         (setq pos1 (car bds) pos2 (cdr bds))))
     (snakecase-region pos1 pos2)))
 
-; camelcase and snakecase
+                                        ; camelcase and snakecase
 (global-set-key (kbd "C-c C--") 'camelcase-word-or-region)
 (global-set-key (kbd "C-c C-_") 'snakecase-word-or-region)
 

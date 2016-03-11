@@ -37,7 +37,7 @@
       (indent-rigidly region-start region-finish numcols))))
 
 (defun eval-and-replace ()
-    "Replace the preceding sexp with its value."
+  "Replace the preceding sexp with its value."
   (interactive)
   (backward-kill-sexp)
   (condition-case nil
@@ -70,9 +70,9 @@
 
 
 (defun package-require (pkg)
-    "Install a package only if it's not already installed."
-    (when (not (package-installed-p pkg))
-        (package-install pkg)))
+  "Install a package only if it's not already installed."
+  (when (not (package-installed-p pkg))
+    (package-install pkg)))
 
 ;; MINE
 
@@ -94,62 +94,62 @@
 
 
 (defun move-text-internal (arg)
-    (cond
-     ((and mark-active transient-mark-mode)
-      (if (> (point) (mark))
-              (exchange-point-and-mark))
-      (let ((column (current-column))
-            (text (delete-and-extract-region (point) (mark))))
-          (forward-line arg)
-          (move-to-column column t)
-          (set-mark (point))
-          (insert text)
-          (exchange-point-and-mark)
-          (setq deactivate-mark nil)))
-     (t
-      (beginning-of-line)
-      (when (or (> arg 0) (not (bobp)))
-          (forward-line)
-          (when (or (< arg 0) (not (eobp)))
-              (transpose-lines arg))
-          (forward-line -1)
-          (if (< arg 0)
-                  (forward-line -1))
-          (indent-according-to-mode)))
-     (indent-according-to-mode)))
+  (cond
+   ((and mark-active transient-mark-mode)
+    (if (> (point) (mark))
+        (exchange-point-and-mark))
+    (let ((column (current-column))
+          (text (delete-and-extract-region (point) (mark))))
+      (forward-line arg)
+      (move-to-column column t)
+      (set-mark (point))
+      (insert text)
+      (exchange-point-and-mark)
+      (setq deactivate-mark nil)))
+   (t
+    (beginning-of-line)
+    (when (or (> arg 0) (not (bobp)))
+      (forward-line)
+      (when (or (< arg 0) (not (eobp)))
+        (transpose-lines arg))
+      (forward-line -1)
+      (if (< arg 0)
+          (forward-line -1))
+      (indent-according-to-mode)))
+   (indent-according-to-mode)))
 
 (defun move-text-down (arg)
-    "Move region (transient-mark-mode active) or current line
+  "Move region (transient-mark-mode active) or current line
   arg lines down."
-    (interactive "*p")
-    (move-text-internal arg))
+  (interactive "*p")
+  (move-text-internal arg))
 
 (defun move-text-up (arg)
-    "Move region (transient-mark-mode active) or current line
+  "Move region (transient-mark-mode active) or current line
   arg lines up."
-    (interactive "*p")
-    (move-text-internal (- arg)))
+  (interactive "*p")
+  (move-text-internal (- arg)))
 
 
 ;; Ctrl enter, new line
 (defun sublime-new-line ()
-    "Go to next line and indent wherever you are in a line"
-    (interactive)
-    (end-of-line)
-    (newline-and-indent))
+  "Go to next line and indent wherever you are in a line"
+  (interactive)
+  (end-of-line)
+  (newline-and-indent))
 ;; (global-set-key [C-return] 'sublime-new-line)
 
 ;; Comment/uncomment region
 (defun comment-or-uncomment-region-or-line ()
-    "Like comment-or-uncomment-region, but if there's no mark \(that means no
+  "Like comment-or-uncomment-region, but if there's no mark \(that means no
 region\) apply comment-or-uncomment to the current line"
-    (interactive)
-    (if (not mark-active)
-            (comment-or-uncomment-region
-             (line-beginning-position) (line-end-position))
-        (if (< (point) (mark))
-                (comment-or-uncomment-region (point) (mark))
-            (comment-or-uncomment-region (mark) (point)))))
+  (interactive)
+  (if (not mark-active)
+      (comment-or-uncomment-region
+       (line-beginning-position) (line-end-position))
+    (if (< (point) (mark))
+        (comment-or-uncomment-region (point) (mark))
+      (comment-or-uncomment-region (mark) (point)))))
 
 
 (provide 'rock-defuns)

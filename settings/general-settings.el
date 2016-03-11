@@ -1,6 +1,6 @@
-;--------------------------------;
+                                        ;--------------------------------;
 ;;; General or Global Settings ;;;
-;--------------------------------;
+                                        ;--------------------------------;
 
 ;; set PATH, because we don't load .bashrc
 ;; function from https://gist.github.com/jakemcc/3887459
@@ -146,8 +146,8 @@
 
 ;; winner-mode https://www.emacswiki.org/emacs/WinnerMode
 (use-package winner
-    :ensure t
-    :defer t)
+  :ensure t
+  :defer t)
 
 
 (setq calendar-latitude 40.1)
