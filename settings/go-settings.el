@@ -1,4 +1,16 @@
 ;; GO
+(setenv "GOPATH" (expand-file-name "~/go"))
+
+(use-package go-mode
+  :ensure t)
+
+(use-package go-projectile
+  :ensure t
+  :bind ("C-c p N" . go-projectile-get))
+
+(use-package go-snippets
+  :ensure t)
+
 (use-package go-autocomplete
   :ensure t
   :config
@@ -7,7 +19,7 @@
 ;; (require 'go-autocomplete)
 ;; (require 'auto-complete-config)
 
-(setenv "GOPATH" (expand-file-name "~/go"))
+
 
 ;; If with warning print?
 (when (file-exists-p (expand-file-name "$GOPATH/src/golang.org/x/tools/cmd/oracle/oracle.el"))
