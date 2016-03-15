@@ -80,7 +80,7 @@
 
 
 ;;--RUST
-;; (require 'rust-settings)
+(require 'rust-settings)
 
 ;;--ELM
 (require 'elm-settings)

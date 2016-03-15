@@ -46,3 +46,7 @@ Ok, ok! This is how it looks like:
     (setq gcal-client-secret "YOUR_CLIENT_SECRET")
     (setq gcal-email "YOUR_EMAIL")
     ```
+
+- racer
+
+    `cargo install racer`
