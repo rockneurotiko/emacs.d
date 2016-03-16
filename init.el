@@ -32,8 +32,9 @@
 (require 'theme-settings)
 (set-linum)
 (set-full-paren)
-(set-powerline)
-(set-moe)
+(set-sanityinc)
+;; (set-moe)
+
 ;; (set-random-theme)
 
 ;;------------;
@@ -49,9 +50,11 @@
 (helm-org)
 (set-ditaa)
 (enable-beamer)
+(set-org-babel)
 (require 'ox-taskjuggler)
-;; (set-org-babel)
 
+;; https://github.com/eschulte/epresent
+(load-file (expand-file-name "~/.emacs.d/plugins/epresent/epresent.el"))
 (require 'presentation-settings)
 
 (require 'calendar-settings)
@@ -59,7 +62,6 @@
 
 (require 'random-requires) ;; Functions for some modes and other things
 (set-undo) ;; Ctrl-z powered
-;; (set-outline) ;; outline mode
 (set-autoindent) ;; Thanks for indent!
 (set-git-gutter-fringe+) ;; Simbols in left :)
 (set-auto-complete) ;; Auto complete with local definitions
@@ -68,6 +70,8 @@
 (set-pair)  ;; How to pair? autopair or smartparens?
 (set-multiple-cursors)  ;; The more, the better
 (set-uniquify)  ;; Buffer names uniques! (set-auto-package) ;; Auto update all
+
+;; (set-outline) ;; outline mode
 ;; packages (set-zone) ;; Zone the code (set-uml-plantuml) ;; UML from text
 ;; (set-uml-plantuml)  ;; UML from text biatch!
 
@@ -80,7 +84,8 @@
 ;; (set-libreoffice) ;; You don't need libreoffice biatch
 ;; (set-mochi)  ;; I tried to do it.. not good XD
 
-;; (require 'projectile-settings)
+(require 'projectile-settings)
+
 
 (require 'yasnippet-settings)
 (require 'acejump-settings)
@@ -88,8 +93,8 @@
 
 (require 'tags-settings)
 
-;; (require 'camelcase-settings)
 (require 'cheatsheet-settings)
+
 ;;----------------;
 ;;      MAGIT     ;
 ;;----------------;

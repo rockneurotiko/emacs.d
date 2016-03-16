@@ -64,6 +64,10 @@
   (use-package pydoc-info
     :ensure t)
 
+
+  ;; (add-hook 'python-mode-hook 'jedi:setup)
+  ;; (add-hook 'python-mode-hook 'jedi:ac-setup)
+  ;; (setq jedi:complete-on-dot t)
   ;; ; jedi python completion
   ;; (include-elget-plugin "ctable")   ; required for epc
   ;; (include-elget-plugin "deferred") ; required for epc

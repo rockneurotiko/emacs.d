@@ -10,13 +10,6 @@
   :config
   (powerline-default-theme))
 
-(use-package moe-theme
-  :ensure t
-  :config
-  (powerline-moe-theme)
-  (moe-dark)
-  (moe-theme-set-color 'magenta))
-
 (use-package linum
   :ensure t
   :diminish linum-mode
@@ -33,10 +26,10 @@
   :config
   (linum-relative-global-mode))
 
-(defun set-powerline ()
-  ;; (require 'powerline) ;; Yeah! line :)
-  ;; (powerline-default-theme)
-  )
+;; (defun set-powerline ()
+;;   ;; (require 'powerline) ;; Yeah! line :)
+;;   ;; (powerline-default-theme)
+;;   )
 
 (defun set-random-theme ()
   ;; Select one random from:
@@ -53,16 +46,20 @@
       sanityinc-tomorrow-eighties)) t))
 
 
+(defun set-sanityinc ()
+  (use-package color-theme-sanityinc-tomorrow
+    :ensure t
+    :config
+    (color-theme-sanityinc-tomorrow-eighties)))
+
 ;; Moe Worth!
 (defun set-moe ()
-  ;; (require 'moe-theme)
-  ;; (powerline-moe-theme)
-  ;; ;; (setq moe-theme-highlight-buffer-id nil)
-  ;; (moe-dark)
-  ;; (moe-theme-set-color 'magenta)
-  ;; ;; (moe-theme-set-color 'purple)
-  ;; ;; (moe-theme-random-color)
-  )
+  (use-package moe-theme
+  :ensure t
+  :config
+  (powerline-moe-theme)
+  (moe-dark)
+  (moe-theme-set-color 'magenta)))
 
 (defun set-full-paren ()
   (show-paren-mode t)

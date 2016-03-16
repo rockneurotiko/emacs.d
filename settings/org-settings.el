@@ -87,12 +87,8 @@
           (cl-remove-if 'file-directory-p
                         (f-files path (lambda (p) t) t))))
 
-
-  (defvar my/org-babel-evaluated-languages
-    '(emacs-lisp)
-    '(python)
-    '(julia)
-    '(haskell))
+  (setq my/org-babel-evaluated-languages
+    '(emacs-lisp python haskell sh))
 
   (org-babel-do-load-languages
    'org-babel-load-languages

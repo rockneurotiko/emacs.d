@@ -28,3 +28,6 @@
 [submodule "plugins/emacs-livedown"]
 	path = plugins/emacs-livedown
 	url = https://github.com/shime/emacs-livedown.git
+[submodule "plugins/epresent"]
+	path = plugins/epresent
+	url = https://github.com/eschulte/epresent.git
