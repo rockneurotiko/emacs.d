@@ -59,6 +59,7 @@
 
 (require 'calendar-settings)
 
+(require 'rol-settings)
 
 (require 'random-requires) ;; Functions for some modes and other things
 (set-undo) ;; Ctrl-z powered
