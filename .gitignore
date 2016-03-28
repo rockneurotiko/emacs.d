@@ -45,3 +45,4 @@ savehist
 /tokens.el
 /agenda/*.org
 gotools
+.sx
