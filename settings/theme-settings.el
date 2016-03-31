@@ -75,13 +75,6 @@
   ;;         (linum-mode 1)))
   )
 
-
-(set-face-attribute 'default nil
-                    :family "Source Code Pro"
-                    :height 90
-                    :weight 'normal
-                    :width 'normal)
-
 ;; Instantly but if start maximized, then minimize
 (toggle-frame-maximized)
 ;; Maximize at end

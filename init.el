@@ -7,7 +7,7 @@
 ;; MY PATH
 (add-to-list 'load-path "~/.emacs.d/plugins")
 (add-to-list 'load-path "~/.emacs.d/settings")
-
+(require 'font-settings)
 ;; Package
 (require 'package-settings)
 
@@ -54,7 +54,7 @@
 (require 'ox-taskjuggler)
 
 ;; https://github.com/eschulte/epresent
-(load-file (expand-file-name "~/.emacs.d/plugins/epresent/epresent.el"))
+;; (load-file (expand-file-name "~/.emacs.d/plugins/epresent/epresent.el"))
 (require 'presentation-settings)
 
 (require 'calendar-settings)

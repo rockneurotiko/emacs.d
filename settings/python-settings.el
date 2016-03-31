@@ -6,11 +6,17 @@
 ;; python.el configuration
 ;; -----------------------
 
+(defun python-hook ()
+  (setq python-indent-offset 4)
+  (make-local-variable 'auto-indent-assign-indent-level)
+  (setq auto-indent-assign-indent-level 4)
+  (setq tab-width 4))
+
 ;; from python.el
 (use-package python
   :ensure t
   :init
-  (setq python-indent-offset 4)
+
   :config
   (setq auto-mode-alist
         (append
@@ -18,12 +24,23 @@
                '("SConstruct" . python-mode))
          auto-mode-alist))
   (define-key python-mode-map (kbd "C-c !") 'python-shell-switch-to-shell)
-  (define-key python-mode-map (kbd "C-c |") 'python-shell-send-region))
+  (define-key python-mode-map (kbd "C-c |") 'python-shell-send-region)
+
+  (setq interpreter-mode-alist
+        (cons '("python" . python-mode)
+              interpreter-mode-alist)
+        python-mode-hook
+        '(lambda () (progn
+                      (set-variable 'py-indent-offset 4)
+                      (set-variable 'indent-tabs-mode nil))))
+
+  (add-hook 'python-mode-hook 'python-hook))
 
 (use-package elpy
   :ensure t
   :config
   (elpy-enable))
+
 ;; -----------------------------
 ;; emacs IPython notebook config
 ;; -----------------------------
