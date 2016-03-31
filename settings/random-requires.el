@@ -20,10 +20,12 @@
 (use-package auto-indent-mode
   ;; :disabled t
   :ensure t
-  :init (setq tab-width 4)
+  :init
   :config
   (auto-indent-global-mode)
-  (add-to-list 'auto-indent-disabled-modes-list 'ponylang-mode))
+  (setq tab-width 4)
+  (add-to-list 'auto-indent-disabled-modes-list 'ponylang-mode)
+  (add-to-list 'auto-indent-disabled-modes-list 'python-mode))
 
 (use-package git-gutter-fringe+
   :ensure t
