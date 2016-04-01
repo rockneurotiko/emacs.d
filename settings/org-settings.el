@@ -97,6 +97,9 @@
            my/org-babel-evaluated-languages)))
 
 (defun set-org-reveal ()
+  ;; This will let us use syntax colors in code blocks
+  (use-package htmlize
+    :ensure t)
   (use-package ox-reveal
     :ensure t
     :init (setq org-reveal-root (concat "file://" (expand-file-name "~/.emacs.d/plugins/revealjs")))))
