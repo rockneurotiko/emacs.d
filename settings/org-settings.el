@@ -17,6 +17,7 @@
                              ;; "~/.emacs.d/agenda/basic.org"
                              "~/.emacs.d/agenda/gcal.org"))
 (setq org-agenda-include-diary t)
+(setq org-hide-emphasis-markers t)
 
 (defun my-org-autodone (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -44,6 +45,11 @@
   :ensure t
   :config
   (add-hook 'org-mode-hook 'flyspell-mode))
+
+(use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 (add-hook 'org-mode-hook 'visual-line-mode)
 (add-hook 'org-mode-hook
