@@ -12,8 +12,7 @@
     ;; (add-hook 'js2-mode-hook 'tern-mode)
     ;; (add-hook 'web-mode-hook 'tern-mode)
     (require 'tern-auto-complete)
-    (tern-ac-setup)
-    )
+    (tern-ac-setup))
 
   ;; (use-package tern-auto-complete
   ;;     :ensure t
@@ -235,5 +234,13 @@
   ;; (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
   ;; (define-key web-mode-map (kbd "M-TAB") 'emmet-expand-line)
   )
+
+(use-package nodejs-repl
+  :ensure t
+  :config
+  (defun my-jscallback ()
+    (local-set-key (kbd "C-c C-e") 'nodejs-repl-send-buffer))
+
+  (add-hook 'js-mode-hook 'my-jscallback))
 
 (provide 'js-settings)
