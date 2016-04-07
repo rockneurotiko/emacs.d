@@ -31,3 +31,6 @@
 [submodule "plugins/epresent"]
 	path = plugins/epresent
 	url = https://github.com/eschulte/epresent.git
+[submodule "plugins/helm-spotify"]
+	path = plugins/helm-spotify
+	url = https://github.com/pschorf/helm-spotify.git

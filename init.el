@@ -45,8 +45,6 @@
 ;; (set-emux)
 ;; (emux-default-sessions)
 
-(require 'spotify-settings)
-
 (require 'org-settings)
 (set-org-reveal)
 (helm-org)
@@ -102,6 +100,11 @@
 ;;      MAGIT     ;
 ;;----------------;
 (require 'magit-settings)
+
+;;----------------;
+;;    SPOTIFY     ;
+;;----------------;
+(require 'spotify-settings)
 
 ;;----------------;
 ;;    LANGUAGES   ;
