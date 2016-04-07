@@ -10,7 +10,7 @@
   (define-key org-tree-slide-mode-map (kbd "C-c C-t")
     'org-tree-slide-play-with-timer)
   (org-tree-slide-narrowing-control-profile)
-  (setq org-tree-slide-skip-outline-level 4)
+  (setq org-tree-slide-skip-outline-level 0)
   (setq org-tree-slide-header t)
   (setq org-tree-slide-slide-in-effect nil)
   (setq org-tree-slide-heading-emphasis t)
