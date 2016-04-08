@@ -8,6 +8,8 @@
          ("C-c s v" . spotify-enable-song-notifications)
          ("C-c s m" . spotify-disable-song-notifications)))
 
+(use-package multi
+  :ensure t)
 (load "~/.emacs.d/plugins/helm-spotify/helm-spotify.el")
 (require 'helm-spotify)
 (global-set-key (kbd "C-c s h") 'helm-spotify)
