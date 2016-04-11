@@ -145,18 +145,24 @@
   )
 
 (defun set-emmet ()
-  (use-package emmet-mode
-    :ensure t
-    :config
-    (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
-    (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
-    :bind ("M-TAB" . emmet-expand-line))
+
   ;; (require 'web-mode)
   ;; (package-require 'emmet-mode)
   ;; (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
   ;; (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
   ;; (define-key web-mode-map (kbd "M-TAB") 'emmet-expand-line)
   )
+
+(use-package emmet-mode
+  :ensure t
+  :config
+  (defun emmet-hook()
+    (emmet-mode)
+    (local-set-key (kbd "M-TAB") 'emmet-expand-line))
+  ;; Auto-start on any markup modes
+  (add-hook 'sgml-mode-hook 'emmet-hook)
+  ;; enable Emmet's css abbreviation.
+  (add-hook 'css-mode-hook  'emmet-hook))
 
 (use-package nodejs-repl
   :ensure t
