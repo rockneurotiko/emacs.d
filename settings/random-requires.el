@@ -72,6 +72,18 @@
          ("C-<" . mc/mark-previous-like-this)
          ("C-c C-<" . mc/mark-all-like-this)))
 
+(use-package which-key
+  :ensure t
+  :init
+  (which-key-mode)
+  :config
+  (which-key-setup-side-window-right))
+
+(use-package discover-my-major
+  :ensure t
+  :bind (("C-h M-m" . discover-my-major)
+         ("C-h M-S-m" . discover-my-mode)))
+
 (use-package edit-server
   :disabled t
   :ensure t

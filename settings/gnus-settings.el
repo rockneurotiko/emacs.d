@@ -1,5 +1,9 @@
 (require 'gnus)
 
+;; Pointers!
+;; https://github.com/redguardtoo/mastering-emacs-in-one-year-guide/blob/master/gnus-guide-en.org
+;; https://www.emacswiki.org/emacs/GnusGmail
+
 (setq user-mail-address "miguelglafuente@gmail.com"
       user-full-name    "Rock Neurotiko")
 

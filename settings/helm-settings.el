@@ -68,8 +68,8 @@
 
 (use-package ace-jump-helm-line
   ;; :disabled t
-  :commands helm-mode
   :ensure t
+  :commands helm-mode
   :init (define-key helm-map (kbd "C-'") 'ace-jump-helm-line))
 
 
