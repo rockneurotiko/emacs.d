@@ -107,6 +107,11 @@
 (require 'spotify-settings)
 
 ;;----------------;
+;;      MAIL      ;
+;;----------------;
+(require 'gnus-settings)
+
+;;----------------;
 ;;    LANGUAGES   ;
 ;;----------------;
 (require 'company-settings)

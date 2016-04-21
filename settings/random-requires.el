@@ -72,6 +72,12 @@
          ("C-<" . mc/mark-previous-like-this)
          ("C-c C-<" . mc/mark-all-like-this)))
 
+(use-package edit-server
+  :disabled t
+  :ensure t
+  :init
+  (edit-server-start))
+
 (use-package zone
   :disabled t
   :ensure t
