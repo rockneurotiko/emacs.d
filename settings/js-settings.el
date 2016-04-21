@@ -17,7 +17,7 @@
 
   (defun delete-tern-process ()
     (interactive)
-    (delete-process "Tern"))
+    (delete-process "Tern")))
 
 (defun load-angular ()
   (use-package angular-snippets
