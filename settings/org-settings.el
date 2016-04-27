@@ -185,6 +185,54 @@
 
 (setq org-default-notes-file "~/docs/org/organizer.org")
 
+(setq org-latex-pdf-process
+      '("pdflatex -interaction nonstopmode -output-directory %o %f"
+        "bibtex %b"
+        "pdflatex -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -interaction nonstopmode -output-directory %o %f"))
+
+(setq bibtex-autokey-year-length 4
+      bibtex-autokey-name-year-separator "-"
+      bibtex-autokey-year-title-separator "-"
+      bibtex-autokey-titleword-separator "-"
+      bibtex-autokey-titlewords 2
+      bibtex-autokey-titlewords-stretch 1
+      bibtex-autokey-titleword-length 5)
+
+(setq org-latex-default-packages-alist
+      (-remove-item
+       '("" "hyperref" nil)
+       org-latex-default-packages-alist))
+
+(add-to-list 'org-latex-default-packages-alist '("" "natbib" "") t)
+(add-to-list 'org-latex-default-packages-alist
+             '("linktocpage,pdfstartview=FitH,colorlinks,
+linkcolor=blue,anchorcolor=blue,
+citecolor=blue,filecolor=blue,menucolor=blue,urlcolor=blue"
+               "hyperref" nil)
+             t)
+
+(use-package helm-bibtex
+  :ensure t
+  :config
+  (setq helm-bibtex-bibliography "~/Dropbox/ORG/bibliography/references.bib")
+  (setq helm-bibtex-library-path "~/Dropbox/ORG/bibliography/bibtex-pdfs")
+  (setq helm-bibtex-pdf-open-function
+        (lambda (fpath)
+          (start-process "evince" "*open*" "open" fpath)))
+  (setq helm-bibtex-notes-path "~/Dropbox/bibliography/helm-bibtex-notes"))
+
+(use-package org-ref
+  :ensure t
+  :init
+  (require 'org-ref-pdf)
+  (require 'org-ref-url-utils)
+  :config
+  (setq org-ref-bibliography-notes "~/Dropbox/ORG/bibliography/notes.org"
+        org-ref-default-bibliography '("~/Dropbox/ORG/bibliography/references.bib")
+        org-ref-pdf-directory "~/Dropbox/ORG/bibliography/bibtex-pdfs/"))
+
+
 ;; (defun my/yank-more ()
 ;;     (interactive)
 ;;     (insert "[[")
