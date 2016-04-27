@@ -1,6 +1,11 @@
 (use-package org-tree-slide
   :ensure t
   :config
+  (define-key org-tree-slide-mode-map (kbd "C-M-<left>")
+    'org-tree-slide-move-previous-tree)
+  (define-key org-tree-slide-mode-map (kbd "C-M-<right>")
+    'org-tree-slide-move-next-tree)
+
   (define-key org-tree-slide-mode-map (kbd "<f9>")
     'org-tree-slide-move-previous-tree)
   (define-key org-tree-slide-mode-map (kbd "<f10>")
@@ -9,6 +14,7 @@
     'org-tree-slide-content)
   (define-key org-tree-slide-mode-map (kbd "C-c C-t")
     'org-tree-slide-play-with-timer)
+
   (org-tree-slide-narrowing-control-profile)
   (setq org-tree-slide-skip-outline-level 0)
   (setq org-tree-slide-header t)
