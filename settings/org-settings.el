@@ -8,6 +8,23 @@
 ;; Stop org-mode from highjacking shift-cursor keys
 (setq org-replace-disputed-keys t)
 
+(require 'dash)
+(setq org-latex-default-packages-alist
+      (-remove-item
+       '("" "hyperref" nil)
+       org-latex-default-packages-alist))
+
+;; Append new packages
+(add-to-list 'org-latex-default-packages-alist '("" "natbib" "") t)
+(add-to-list 'org-latex-default-packages-alist
+             '("linktocpage,pdfstartview=FitH,colorlinks,
+linkcolor=blue,anchorcolor=blue,
+citecolor=blue,filecolor=blue,menucolor=blue,urlcolor=blue"
+               "hyperref" nil)
+             t)
+
+
+
 (require 'org-agenda)
 (setq org-agenda-span 14)
 
@@ -217,6 +234,7 @@ citecolor=blue,filecolor=blue,menucolor=blue,urlcolor=blue"
   :config
   (setq helm-bibtex-bibliography "~/Dropbox/ORG/bibliography/references.bib")
   (setq helm-bibtex-library-path "~/Dropbox/ORG/bibliography/bibtex-pdfs")
+
   (setq helm-bibtex-pdf-open-function
         (lambda (fpath)
           (start-process "evince" "*open*" "open" fpath)))
@@ -231,7 +249,6 @@ citecolor=blue,filecolor=blue,menucolor=blue,urlcolor=blue"
   (setq org-ref-bibliography-notes "~/Dropbox/ORG/bibliography/notes.org"
         org-ref-default-bibliography '("~/Dropbox/ORG/bibliography/references.bib")
         org-ref-pdf-directory "~/Dropbox/ORG/bibliography/bibtex-pdfs/"))
-
 
 ;; (defun my/yank-more ()
 ;;     (interactive)

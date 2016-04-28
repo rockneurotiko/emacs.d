@@ -14,6 +14,17 @@
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587)
 
+(setq gnus-thread-sort-functions
+      '(gnus-thread-sort-by-number
+        gnus-thread-sort-by-most-recent-date)
+      gnus-sort-gathered-threads-function 'gnus-thread-sort-by-date)
+
+;; (setq gnus-thread-sort-functions
+;;       '(gnus-thread-sort-by-most-recent-date
+;;         gnus-thread-sort-by-number
+;;         gnus-thread-sort-by-subject
+;;         (not gnus-thread-sort-by-total-score)))
+
 
 (require 'gnus-autocheck)
 

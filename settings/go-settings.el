@@ -9,7 +9,9 @@
   :bind ("C-c p N" . go-projectile-get))
 
 (use-package go-snippets
-  :ensure t)
+  :ensure t
+  :config
+  (setq go-snippets-dir "~/.emacs.d"))
 
 (use-package go-autocomplete
   :ensure t

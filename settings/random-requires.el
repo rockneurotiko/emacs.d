@@ -49,10 +49,6 @@
    '(;; other Babel languages
      (plantuml . t))))
 
-(use-package odf-mode
-  :disabled t
-  :ensure t)
-
 (use-package smooth-scrolling
   :ensure t)
 
@@ -83,6 +79,13 @@
   :ensure t
   :bind (("C-h M-m" . discover-my-major)
          ("C-h M-S-m" . discover-my-mode)))
+
+(use-package helm-systemd
+  :ensure t)
+
+(use-package odf-mode
+  :disabled t
+  :ensure t)
 
 (use-package edit-server
   :disabled t
