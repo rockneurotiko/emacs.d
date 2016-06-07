@@ -57,6 +57,7 @@
   :config (global-auto-complete-mode t))
 
 (use-package indent-guide
+  :disabled t
   :ensure t
   :init (setq indent-guide-recursive t)
   :config (indent-guide-global-mode))

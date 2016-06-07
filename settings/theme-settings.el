@@ -12,6 +12,7 @@
 
 (use-package linum
   :ensure t
+  :disabled t
   :diminish linum-mode
   :init (setq linum-disabled-modes-list '(mu4e-headers-mode))
   :config
@@ -22,6 +23,7 @@
 
 (use-package linum-relative
   :ensure t
+  :disabled t
   :diminish linum-relative-mode
   :config
   (linum-relative-global-mode))

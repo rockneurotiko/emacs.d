@@ -85,6 +85,8 @@
 ;;--ELM
 (require 'elm-settings)
 
+;;--CLOJURE
+(require 'clojure-settings)
 
 ;; Other langs
 (require 'otherlangs-settings)
