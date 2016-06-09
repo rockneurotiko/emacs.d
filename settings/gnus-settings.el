@@ -34,12 +34,11 @@
 ;; autocheck should not run between 8:30AM and 6PM during work days
 (setq gnus-autocheck-active-periods '(("08:00" "14:00") ("14:00" "20:00")))
 
-(use-package gnus-desktop-notify
-  :ensure t
-  :init
-  (gnus-desktop-notify-mode)
-  (gnus-demon-add-scanmail))
-
+;; (use-package gnus-desktop-notify
+;;   :ensure t
+;;   :init
+;;   (gnus-desktop-notify-mode)
+;;   (gnus-demon-add-scanmail))
 
 (defun setimap ()
   (setq nnml-directory "~/gmail")

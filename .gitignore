@@ -46,3 +46,4 @@ savehist
 /agenda/*.org
 gotools
 .sx
+/cider-history
