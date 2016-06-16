@@ -12,10 +12,11 @@
 (setq org-latex-default-packages-alist
       (-remove-item
        '("" "hyperref" nil)
-       org-latex-default-packages-alist))
+       (if (boundp 'org-latex-default-packages-alist) org-latex-default-packages-alist '())))
 
 ;; Append new packages
 (add-to-list 'org-latex-default-packages-alist '("" "natbib" "") t)
+(add-to-list 'org-latex-default-packages-alist '("utf8" "inputenc" "") t)
 (add-to-list 'org-latex-default-packages-alist
              '("linktocpage,pdfstartview=FitH,colorlinks,
 linkcolor=blue,anchorcolor=blue,
@@ -202,11 +203,14 @@ citecolor=blue,filecolor=blue,menucolor=blue,urlcolor=blue"
 
 (setq org-default-notes-file "~/docs/org/organizer.org")
 
+(add-to-list 'org-latex-packages-alist '("newfloat" "minted"))
+(setq org-latex-listings 'minted)
+
 (setq org-latex-pdf-process
-      '("pdflatex -interaction nonstopmode -output-directory %o %f"
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "bibtex %b"
-        "pdflatex -interaction nonstopmode -output-directory %o %f"
-        "pdflatex -interaction nonstopmode -output-directory %o %f"))
+        ;; "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
 (setq bibtex-autokey-year-length 4
       bibtex-autokey-name-year-separator "-"
