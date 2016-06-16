@@ -1,9 +1,9 @@
 (use-package org-tree-slide
   :ensure t
   :config
-  (define-key org-tree-slide-mode-map (kbd "C-M-<left>")
+  (define-key org-tree-slide-mode-map (kbd "C-S-<left>")
     'org-tree-slide-move-previous-tree)
-  (define-key org-tree-slide-mode-map (kbd "C-M-<right>")
+  (define-key org-tree-slide-mode-map (kbd "C-S-<right>")
     'org-tree-slide-move-next-tree)
 
   (define-key org-tree-slide-mode-map (kbd "<f9>")

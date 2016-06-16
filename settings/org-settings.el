@@ -8,21 +8,20 @@
 ;; Stop org-mode from highjacking shift-cursor keys
 (setq org-replace-disputed-keys t)
 
-(require 'dash)
-(setq org-latex-default-packages-alist
-      (-remove-item
-       '("" "hyperref" nil)
-       (if (boundp 'org-latex-default-packages-alist) org-latex-default-packages-alist '())))
+;; (require 'dash)
+;; (setq org-latex-default-packages-alist
+;;       (-remove-item
+;;        '("" "hyperref" nil)
+;;        org-latex-default-packages-alist))
 
-;; Append new packages
-(add-to-list 'org-latex-default-packages-alist '("" "natbib" "") t)
-(add-to-list 'org-latex-default-packages-alist '("utf8" "inputenc" "") t)
-(add-to-list 'org-latex-default-packages-alist
-             '("linktocpage,pdfstartview=FitH,colorlinks,
-linkcolor=blue,anchorcolor=blue,
-citecolor=blue,filecolor=blue,menucolor=blue,urlcolor=blue"
-               "hyperref" nil)
-             t)
+;; ;; Append new packages
+;; (add-to-list 'org-latex-default-packages-alist '("" "natbib" "") t)
+;; (add-to-list 'org-latex-default-packages-alist
+;;              '("linktocpage,pdfstartview=FitH,colorlinks,
+;; linkcolor=blue,anchorcolor=blue,
+;; citecolor=blue,filecolor=blue,menucolor=blue,urlcolor=blue"
+;;                "hyperref" nil)
+;;              t)
 
 
 
@@ -226,6 +225,7 @@ citecolor=blue,filecolor=blue,menucolor=blue,urlcolor=blue"
        org-latex-default-packages-alist))
 
 (add-to-list 'org-latex-default-packages-alist '("" "natbib" "") t)
+
 (add-to-list 'org-latex-default-packages-alist
              '("linktocpage,pdfstartview=FitH,colorlinks,
 linkcolor=blue,anchorcolor=blue,

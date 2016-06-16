@@ -16,7 +16,7 @@
   :diminish linum-mode
   :init (setq linum-disabled-modes-list '(mu4e-headers-mode))
   :config
-  (global-linum-mode 1)
+  (global-linum-mode)
   (defun linum-on ()
     (unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
       (linum-mode 1))))
@@ -47,6 +47,16 @@
       sanityinc-tomorrow-night
       sanityinc-tomorrow-eighties)) t))
 
+
+(defun set-darkokai ()
+  (use-package darkokai-theme
+    :ensure t
+    :config (load-theme 'darkokai t)))
+
+(defun set-cyberpunk ()
+  (use-package cyberpunk-theme
+    :ensure t
+    :config (load-theme 'cyberpunk t)))
 
 (defun set-sanityinc ()
   (use-package color-theme-sanityinc-tomorrow
