@@ -10,8 +10,9 @@
 
 (use-package multi
   :ensure t)
-(load "~/.emacs.d/plugins/helm-spotify/helm-spotify.el")
-(require 'helm-spotify)
-(global-set-key (kbd "C-c s h") 'helm-spotify)
+
+(use-package helm-spotify
+  :ensure t
+  :bind (("C-c s h" . helm-spotify)))
 
 (provide 'spotify-settings)

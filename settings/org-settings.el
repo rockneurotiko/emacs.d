@@ -55,8 +55,8 @@
 (setq org-file-apps '((auto-mode . emacs24)
                       ("\\.mp4\\'" . "xdg-open %s")
                       ("\\.pdf\\'" . "xdg-open %s")))
-(setq org-startup-with-latex-preview)
-(setq org-startup-with-inline-images)
+(setq org-startup-with-latex-preview t)
+(setq org-startup-with-inline-images t)
 
 (use-package flyspell
   :ensure t

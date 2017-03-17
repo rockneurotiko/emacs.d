@@ -135,7 +135,7 @@
     (require 'tegmacs)
     (setq tegmacs-message-mark-as-read nil))
 
-(tegmacs-load)
+;; (tegmacs-load)
 
 ;; (require 'exwm-settings)
 ;;; init.el ends here

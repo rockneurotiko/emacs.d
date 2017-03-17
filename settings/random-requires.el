@@ -49,14 +49,12 @@
    '(;; other Babel languages
      (plantuml . t))))
 
-(use-package puml-mode
+(use-package plantuml-mode
   :ensure t
   :config
   ;; Enable puml-mode for PlantUML files
-  (add-to-list 'auto-mode-alist '("\\.puml\\'" . puml-mode))
-  (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . puml-mode))
-  (add-to-list
-   'org-src-lang-modes '("plantuml" . puml)))
+  (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
+  (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode)))
 
 (use-package smooth-scrolling
   :ensure t)

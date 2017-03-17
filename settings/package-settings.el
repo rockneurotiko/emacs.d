@@ -13,7 +13,7 @@
                '("elpy" . "https://jorgenschaefer.github.io/packages/")))
 
 ;; Comment this after first run!
-;; (package-refresh-contents)
+(package-refresh-contents)
 
 ;; use-package (https://github.com/jwiegley/use-package)
 (unless (package-installed-p 'use-package)

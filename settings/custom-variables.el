@@ -27,7 +27,7 @@
    (quote
     ("http://prog21.dadgum.com/atom.xml" "http://syntaxexclamation.wordpress.com/feed/" "http://blog.emillon.org/rss.xml" "http://why-lambda.blogspot.com/feeds/posts/default" "http://sigfpe.blogspot.com/feeds/posts/default" "http://psnively.github.com/atom.xml" "http://edwinb.wordpress.com/feed/" "http://existentialtype.wordpress.com/feed/" "http://brianmckenna.org/blog/feed" "http://queuea9.wordpress.com/feed/" "http://zenzike.com/rss.xml" "http://lambda.jstolarek.com/feed/" "http://monoidal.blogspot.com/feeds/posts/default" "http://spire-lang.org/atom.xml" "http://typesandkinds.wordpress.com/feed/" "http://homotopytypetheory.org/feed/" "http://arcanesentiment.blogspot.com/feeds/posts/default" "http://paolocapriotti.com/atom.xml" "http://semantic-domain.blogspot.com/feeds/posts/default" "http://comonad.com/reader/feed/" "http://jozefg.bitbucket.org/rss.xml" "http://math.andrej.com/feed/" "http://www.lpw25.net/rss.xml" "http://ocaml.janestreet.com/?q=rss.xml" "http://jeremykun.wordpress.com/feed/" "http://twanvl.nl/feed" "http://bartoszmilewski.wordpress.com/feed/" "http://kwangyulseo.com/feed/" "http://www.haskellforall.com/feeds/posts/default" "http://conal.net/blog/feed/" "https://golem.ph.utexas.edu/category/atom10.xml" "http://requestforlogic.blogspot.com/feeds/posts/default" "http://chromaticleaves.com/rss.xml" "http://feeds.feedburner.com/ezyang" "http://raichoo.github.io/feed.rss" "http://bentnib.org/posts.rss.xml" "http://www.simonjf.com/wordpress/?feed=rss2" "http://gallium.inria.fr/~scherer/gagallium/index.rss" "http://anil.recoil.org/feeds/atom.xml" "http://blog.higher-order.com/atom.xml" "http://bitemyapp.com/rss.xml" "http://mazzo.li/rss.xml" "http://infinitecardinals.wordpress.com/feed/" "http://www.stephanboyer.com/feeds/posts/default")))
  '(fci-rule-color "#424242")
- '(haskell-mode-hook (quote (turn-on-haskell-doc)) t)
+ '(haskell-mode-hook (quote (turn-on-haskell-doc)))
  '(haskell-process-auto-import-loaded-modules t)
  '(haskell-process-log t)
  '(haskell-process-suggest-remove-import-lines t)
@@ -35,8 +35,8 @@
  '(ido-everywhere t)
  '(js2-include-jslint-globals t)
  '(lisp-body-indent 2)
- '(multi-term-buffer-name "term")
- '(multi-term-program "/bin/zsh")
+ '(multi-term-buffer-name "term" t)
+ '(multi-term-program "/bin/zsh" t)
  '(org-emphasis-alist
    (quote
     (("*" bold)
@@ -58,6 +58,9 @@ vacation \"Fiesta\" 2016-05-15 - 2016-05-17
 vacation \"fiesta 1\" 2016-03-07
 
 ")
+ '(package-selected-packages
+   (quote
+    (emojify lua-mode cider clojure-mode-extra-font-locking paredit clojure-mode flycheck-elm elm-mode racer rust-mode flycheck-haskell shm hindent hi2 ghc haskell-mode virtualenvwrapper pydoc-info ein elpy rainbow-delimiters emacs-eclim ensime scala-mode scala-mode2 go-autocomplete go-snippets go-projectile go-mode tern jasminejs-mode json-mode php-mode js2-refactor js2-mode web-mode nodejs-repl emmet-mode flycheck company helm-spotify multi spotify magit-gh-pulls magit cheatsheet yasnippet helm-projectile projectile smartparens sx ranger switch-window helm-systemd discover-my-major which-key multiple-cursors auto-complete smooth-scrolling puml-mode plantuml-mode git-gutter-fringe+ auto-indent-mode undo-tree miniedit decide calfw org-tree-slide helm-flyspell ox-reveal htmlize org-ref helm-bibtex org-bullets multi-term color-theme-sanityinc-tomorrow powerline ace-jump-helm-line helm-swoop helm-descbinds helm auto-compile use-package)))
  '(python-indent-guess-indent-offset nil)
  '(python-indent-offset 4)
  '(python-shell-interpreter "ipython")
