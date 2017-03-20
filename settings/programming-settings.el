@@ -88,6 +88,9 @@
 ;;--CLOJURE
 (require 'clojure-settings)
 
+;; ELIXIR
+(require 'elixir-settings)
+
 ;; Other langs
 (require 'otherlangs-settings)
 
