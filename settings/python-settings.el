@@ -36,10 +36,10 @@
 
   (add-hook 'python-mode-hook 'python-hook))
 
-(use-package elpy
-  :ensure t
-  :config
-  (elpy-enable))
+;; (use-package elpy
+;;   :ensure t
+;;   :config
+;;   (elpy-enable))
 
 ;; -----------------------------
 ;; emacs IPython notebook config
@@ -57,21 +57,22 @@
    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
   ;; IPython notebook
-  (use-package ein
-    :ensure t
-    :init
-    ;; use autocompletion, but don't start to autocomplete after a dot
-    (setq ein:complete-on-dot -1)
-    (setq ein:use-auto-complete 1)
-    ;; set python console args
-    (setq ein:console-args "--gui=wx --matplotlib=wx --colors=Linux")
-    ;; timeout settings
-    (setq ein:query-timeout 1000)
-    :config
-    (defun load-ein ()
-      (ein:notebooklist-load)
-      (interactive)
-      (ein:notebooklist-open))))
+  ;; (use-package ein
+  ;;   :ensure t
+  ;;   :init
+  ;;   ;; use autocompletion, but don't start to autocomplete after a dot
+  ;;   (setq ein:complete-on-dot -1)
+  ;;   ;; (setq ein:use-auto-complete 1)
+  ;;   ;; set python console args
+  ;;   (setq ein:console-args "--gui=wx --matplotlib=wx --colors=Linux")
+  ;;   ;; timeout settings
+  ;;   (setq ein:query-timeout 1000)
+  ;;   :config
+  ;;   (defun load-ein ()
+  ;;     (ein:notebooklist-load)
+  ;;     (interactive)
+  ;;     (ein:notebooklist-open)))
+  )
 
 ;; ------------------
 ;; misc python config

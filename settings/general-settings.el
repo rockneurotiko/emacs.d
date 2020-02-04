@@ -161,5 +161,15 @@
 ;;     (winner-mode 1))
 ;; --Old way--
 
+;; macOS config
+(if (eq system-type "darwin")
+    (setq mac-command-key-is-meta t)
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-key-is-meta nil)
+  (setq mac-option-modifier 'none)
+  (setq x-select-enable-clipboard t)
+  (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
+  (add-to-list 'exec-path "/usr/local/bin")
+  (message "Loaded macOS config."))
 
 (provide 'general-settings)

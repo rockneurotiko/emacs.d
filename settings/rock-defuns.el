@@ -152,5 +152,20 @@ region\) apply comment-or-uncomment to the current line"
       (comment-or-uncomment-region (mark) (point)))))
 
 
+(defun w0w-calculator ()
+  "Calculate math expression on current line using calc-eval"
+  (interactive)
+  (setq cLine
+        (buffer-substring-no-properties
+         (line-beginning-position)
+         (line-end-position)))
+  (save-excursion
+    (end-of-line)
+    (open-line 1))
+  (forward-line 1)
+  (insert(calc-eval '("evalv($)" calc-internal-prec 18) 'num cLine)))
+
+(global-set-key (kbd "C-c C") 'w0w-calculator)
+
 (provide 'rock-defuns)
 ;;; rock-defuns.el ends here

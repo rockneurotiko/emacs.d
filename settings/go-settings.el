@@ -13,10 +13,10 @@
   :config
   (setq go-snippets-dir "~/.emacs.d"))
 
-(use-package go-autocomplete
-  :ensure t
-  :config
-  (require 'auto-complete-config))
+;; (use-package go-autocomplete
+;;   :ensure t
+;;   :config
+;;   (require 'auto-complete-config))
 
 ;; (require 'go-autocomplete)
 ;; (require 'auto-complete-config)
@@ -29,8 +29,9 @@
 
 ;; If with warning print?
 (when (file-exists-p (expand-file-name "$GOPATH/src/github.com/dougm/goflymake"))
-  (add-to-list 'load-path "$GOPATH/src/github.com/dougm/goflymake")
-  (require 'go-flymake))
+  (add-to-list 'load-path (expand-file-name "$GOPATH/src/github.com/dougm/goflymake"))
+  (require 'go-flymake)
+  (require 'go-flycheck))
 
 
 (defun my-go-mode-hook ()

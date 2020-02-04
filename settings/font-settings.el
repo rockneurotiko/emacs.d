@@ -2,15 +2,15 @@
   "check if font exists"
   (if (null (x-list-fonts font)) nil t))
 
-(when (and (window-system) (font-exists-p "Fira Code"))
-  (set-default-font "Fira Code")
-  (set-frame-font "Fira Code 8")
-  (set-face-attribute 'default nil :height 80 :family "Fira Code")
-  (set-face-attribute 'default nil
-                      :family "Fira Code"
-                      :height 80
-                      :weight 'normal
-                      :width 'normal))
+;;(when (and (window-system) (font-exists-p "Fira Code"))
+;;  (set-default-font "Fira Code")
+;;  (set-frame-font "Fira Code 8")
+;;  (set-face-attribute 'default nil :height 80 :family "Fira Code")
+;;  (set-face-attribute 'default nil
+;;                      :family "Fira Code"
+;;                      :height 80
+;;                      :weight 'normal
+;;                      :width 'normal))
 
 
 ;; (let ((alist '((33 . ".\\(?:\\(?:==\\)\\|[!=]\\)")
