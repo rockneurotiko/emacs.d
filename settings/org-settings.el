@@ -219,10 +219,10 @@
       bibtex-autokey-titlewords-stretch 1
       bibtex-autokey-titleword-length 5)
 
-(setq org-latex-default-packages-alist
-      (-remove-item
-       '("" "hyperref" nil)
-       org-latex-default-packages-alist))
+;; (setq org-latex-default-packages-alist
+;;       (-remove-item
+;;        '("" "hyperref" nil)
+;;        org-latex-default-packages-alist))
 
 (add-to-list 'org-latex-default-packages-alist '("" "natbib" "") t)
 

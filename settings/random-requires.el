@@ -25,7 +25,9 @@
   (auto-indent-global-mode)
   (setq tab-width 4)
   (add-to-list 'auto-indent-disabled-modes-list 'ponylang-mode)
-  (add-to-list 'auto-indent-disabled-modes-list 'python-mode))
+  (add-to-list 'auto-indent-disabled-modes-list 'python-mode)
+  ;;(add-to-list 'auto-indent-disabled-modes-list 'elixir-mode)
+)
 
 (use-package git-gutter-fringe+
   :ensure t
@@ -37,31 +39,31 @@
   (global-git-gutter+-mode 1)
   (git-gutter-fr+-minimal))
 
-(use-package plantuml-mode
-  :ensure t
-  :init
-  (setq org-plantuml-jar-path (expand-file-name "/opt/plantuml/plantuml.jar"))
-  (setq plantuml-jar-path (expand-file-name "/opt/plantuml/plantuml.jar"))
-  :config
-  (org-babel-do-load-languages
-   ;; active Org-babel languages
-   'org-babel-load-languages
-   '(;; other Babel languages
-     (plantuml . t))))
+;; (use-package plantuml-mode
+;;   :ensure t
+;;   :init
+;;   (setq org-plantuml-jar-path (expand-file-name "/opt/plantuml/plantuml.jar"))
+;;   (setq plantuml-jar-path (expand-file-name "/opt/plantuml/plantuml.jar"))
+;;   :config
+;;   (org-babel-do-load-languages
+;;    ;; active Org-babel languages
+;;    'org-babel-load-languages
+;;    '(;; other Babel languages
+;;      (plantuml . t))))
 
-(use-package plantuml-mode
-  :ensure t
-  :config
-  ;; Enable puml-mode for PlantUML files
-  (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
-  (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode)))
+;; (use-package plantuml-mode
+;;   :ensure t
+;;   :config
+;;   ;; Enable puml-mode for PlantUML files
+;;   (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
+;;   (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode)))
 
 (use-package smooth-scrolling
   :ensure t)
 
-(use-package auto-complete
-  :ensure t
-  :config (global-auto-complete-mode t))
+;; (use-package auto-complete
+;;   :ensure t
+;;   :config (global-auto-complete-mode t))
 
 (use-package indent-guide
   :disabled t
@@ -230,9 +232,9 @@
   (load "~/.emacs.d/plugins/emacs-realtime-markdown-viewer/realtime-markdown-viewer.el")
   (package-require 'realtime-markdown-viewer))
 
-(defun set-livedown ()
-  (add-to-list 'load-path (expand-file-name "~/.emacs.d/plugins/emacs-livedown"))
-  (require 'livedown))
+;; (defun set-livedown ()
+;;   (add-to-list 'load-path (expand-file-name "~/.emacs.d/plugins/emacs-livedown"))
+;;   (require 'livedown))
 
 (defun set-scroll ()
   ;; (package-require 'smooth-scroll)
@@ -303,5 +305,26 @@
   ;; (setq evil-ranger-ignored-extensions '("mkv" "iso" "mp4" "mp3"))
   ;; (setq evil-ranger-max-preview-size 10)
   )
+
+(defun set-buffer-expose ()
+  (load "~/.emacs.d/plugins/buffer-expose/buffer-expose.el")
+  (require 'buffer-expose)
+  (buffer-expose-mode 1)
+
+  (defvar buffer-expose-mode-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "<s-tab>") 'buffer-expose)
+      (define-key map (kbd "<C-tab>") 'buffer-expose-no-stars)
+      (define-key map (kbd "C-c <C-tab>") 'buffer-expose-current-mode)
+      (define-key map (kbd "C-c C-d") 'buffer-expose-dired-buffers)
+      (define-key map (kbd "C-c C-*") 'buffer-expose-stars)
+      map)
+    "Mode map for command `buffer-expose-mode'."))
+
+(defun use-terraform ()
+  (use-package terraform-mode
+    :ensure t
+    :config
+    (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode)))
 
 (provide 'random-requires)

@@ -34,3 +34,6 @@
 [submodule "plugins/helm-spotify"]
 	path = plugins/helm-spotify
 	url = https://github.com/pschorf/helm-spotify.git
+[submodule "plugins/buffer-expose"]
+	path = plugins/buffer-expose
+	url = git@github.com:clemera/buffer-expose.git

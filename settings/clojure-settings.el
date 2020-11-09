@@ -45,40 +45,40 @@
   (cider-repl-set-ns "user"))
 
 
-(use-package cider
-  :ensure t
-  :init
-  ;; go right to the REPL buffer when it's finished connecting
-  (setq cider-repl-pop-to-buffer-on-connect t)
+;; (use-package cider
+;;   :ensure t
+;;   :init
+;;   ;; go right to the REPL buffer when it's finished connecting
+;;   (setq cider-repl-pop-to-buffer-on-connect t)
 
-  ;; When there's a cider error, show its buffer and switch to it
-  (setq cider-show-error-buffer t)
-  (setq cider-auto-select-error-buffer t)
+;;   ;; When there's a cider error, show its buffer and switch to it
+;;   (setq cider-show-error-buffer t)
+;;   (setq cider-auto-select-error-buffer t)
 
-  ;; Where to store the cider history.
-  (setq cider-repl-history-file "~/.emacs.d/cider-history")
+;;   ;; Where to store the cider history.
+;;   (setq cider-repl-history-file "~/.emacs.d/cider-history")
 
-  ;; Wrap when navigating history.
-  (setq cider-repl-wrap-history t)
+;;   ;; Wrap when navigating history.
+;;   (setq cider-repl-wrap-history t)
 
-  :config
-  ;; provides minibuffer documentation for the code you're typing into the repl
-  (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+;;   :config
+;;   ;; provides minibuffer documentation for the code you're typing into the repl
+;;   (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 
-  ;; enable paredit in your REPL
-  (add-hook 'cider-repl-mode-hook 'paredit-mode)
+;;   ;; enable paredit in your REPL
+;;   (add-hook 'cider-repl-mode-hook 'paredit-mode)
 
-  ;; Use clojure mode for other extensions
-  :mode (("\\.edn$" . clojure-mode)
-         ("\\.boot$" . clojure-mode)
-         ("\\.cljs.*$" . clojure-mode)
-         ("lein-env" . enh-ruby-mode))
-  :bind (:map clojure-mode-map
-              ("C-c C-v" . cider-start-http-server)
-              ("C-M-r" . cider-refresh)
-              ("C-c u" . cider-user-ns)
-              :map cider-mode-map
-              ("C-c u" . cider-user-ns)))
+;;   ;; Use clojure mode for other extensions
+;;   :mode (("\\.edn$" . clojure-mode)
+;;          ("\\.boot$" . clojure-mode)
+;;          ("\\.cljs.*$" . clojure-mode)
+;;          ("lein-env" . enh-ruby-mode))
+;;   :bind (:map clojure-mode-map
+;;               ("C-c C-v" . cider-start-http-server)
+;;               ("C-M-r" . cider-refresh)
+;;               ("C-c u" . cider-user-ns)
+;;               :map cider-mode-map
+;;               ("C-c u" . cider-user-ns)))
 
 
 (provide 'clojure-settings)

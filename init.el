@@ -30,10 +30,13 @@
 ;;  THEME  ;
 ;;---------;
 (require 'theme-settings)
-(set-linum)
+(set-line-numbers)
 (set-full-paren)
 (set-sanityinc)
+(set-modeline)
+;; (set-powerline)
 ;; (set-moe)
+
 
 ;; (set-random-theme)
 
@@ -48,18 +51,18 @@
 (require 'org-settings)
 (set-org-reveal)
 (helm-org)
-(set-ditaa)
+;; (set-ditaa)
 (enable-beamer)
-(set-org-babel)
+;; (set-org-babel)
 (require 'ox-taskjuggler)
 
 ;; https://github.com/eschulte/epresent
 ;; (load-file (expand-file-name "~/.emacs.d/plugins/epresent/epresent.el"))
 (require 'presentation-settings)
 
-(require 'calendar-settings)
+;; (require 'calendar-settings)
 
-(require 'rol-settings)
+;; (require 'rol-settings)
 
 (require 'random-requires) ;; Functions for some modes and other things
 (set-undo) ;; Ctrl-z powered
@@ -71,6 +74,7 @@
 (set-pair)  ;; How to pair? autopair or smartparens?
 (set-multiple-cursors)  ;; The more, the better
 (set-uniquify)  ;; Buffer names uniques! (set-auto-package) ;; Auto update all
+;; (set-buffer-expose)
 
 ;; (set-outline) ;; outline mode
 ;; packages (set-zone) ;; Zone the code (set-uml-plantuml) ;; UML from text
@@ -85,16 +89,16 @@
 ;; (set-libreoffice) ;; You don't need libreoffice biatch
 ;; (set-mochi)  ;; I tried to do it.. not good XD
 
-(require 'projectile-settings)
+;; (require 'projectile-settings)
 
 
 (require 'yasnippet-settings)
 (require 'acejump-settings)
-(require 'font-settings)
+;; (require 'font-settings)
 
-(require 'tags-settings)
+;; (require 'tags-settings)
 
-(require 'cheatsheet-settings)
+;; (require 'cheatsheet-settings)
 
 ;;----------------;
 ;;      MAGIT     ;
@@ -104,12 +108,12 @@
 ;;----------------;
 ;;    SPOTIFY     ;
 ;;----------------;
-(require 'spotify-settings)
+;; (require 'spotify-settings)
 
 ;;----------------;
 ;;      MAIL      ;
 ;;----------------;
-(require 'gnus-settings)
+;; (require 'gnus-settings)
 
 ;;----------------;
 ;;    LANGUAGES   ;
@@ -131,11 +135,23 @@
 ;; MINE SHIT
 (defun tegmacs-load ()
     (add-to-list 'load-path "~/Git/tegmacs")
-    (load-file "/home/rock/Git/tegmacs/tegmacs.el")
+    (load-file "~/Git/tegmacs/tegmacs.el")
     (require 'tegmacs)
     (setq tegmacs-message-mark-as-read nil))
 
 ;; (tegmacs-load)
 
+(defun hclfmt-load ()
+  (add-to-list 'load-path "~/Git/hclfmt_emacs")
+  (load-file "~/Git/hclfmt_emacs/hclfmt.el")
+  (require 'hclfmt)
+  (add-hook 'after-save-hook #'hclfmt-after-save)
+  )
+
+(hclfmt-load)
+
+;; (global-auto-complete-mode nil)
+
 ;; (require 'exwm-settings)
 ;;; init.el ends here
+(put 'downcase-region 'disabled nil)
