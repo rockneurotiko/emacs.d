@@ -10,7 +10,8 @@
     (setenv "PATH" path-from-shell)
     (setq exec-path (split-string path-from-shell path-separator))))
 
-(set-exec-path-from-shell-PATH)
+(setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
+;; (set-exec-path-from-shell-PATH)
 
 ;; No bars pls
 (menu-bar-mode -1)
@@ -55,10 +56,6 @@
 
 (setq-default indent-tabs-mode nil)
 (setq auto-indent-on-visit-file t) ;; If you want auto-indent on for files
-;; (setq linum-format "%4d \u2502") ;; theme
-
-(setq linum-format "%4d ") ;; theme
-
 (setq org-log-done 'note)
 
 (setq browse-url-browser-function 'browse-url-generic
@@ -161,5 +158,20 @@
 ;;     (winner-mode 1))
 ;; --Old way--
 
+;; Line numbers
+
+(global-display-line-numbers-mode 1)
+(setq display-line-numbers 'absolute)
+
+;; Mute ding sound
+(setq visible-bell 1)
+
+;; dead keys
+(define-key key-translation-map [dead-grave] "`")
+(define-key key-translation-map [dead-acute] "'")
+(define-key key-translation-map [dead-circumflex] "^")
+(define-key key-translation-map [dead-diaeresis] "\"")
+(define-key key-translation-map [S-dead-diaeresis] "\"")
+(define-key key-translation-map [dead-tilde] "~")
 
 (provide 'general-settings)

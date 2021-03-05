@@ -13,7 +13,7 @@
                '("elpy" . "https://jorgenschaefer.github.io/packages/")))
 
 ;; Comment this after first run!
-(package-refresh-contents)
+;; (package-refresh-contents)
 
 ;; use-package (https://github.com/jwiegley/use-package)
 (unless (package-installed-p 'use-package)
@@ -49,8 +49,5 @@
 
 ;; (ensure-package-installed 'auto-complete 'auto-complete-config 'powerline 'bodil-flycheck 'flycheck 'faces 'go-autocomplete 'auto-complete-config 'compile 'helm 'helm-config 'helm-swoop 'ido 'flx 'flx-ido 'angular-snippets 'web-mode 'ess 'tex-site 'font-latex 'merlin 'ocp-indent 'org-agenda 'ox-reveal 'python 'ein 'pydoc-info 'jedi 'flymake 'virtualenvwrapper 'ensime 'powerline 'moe-theme 'linum 'yasnippet)
 
-
-(setq package-enable-at-startup nil)
-(package-initialize)
 
 (provide 'package-settings)

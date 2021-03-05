@@ -8,25 +8,7 @@
 (use-package powerline
   :ensure t
   :config
-  (powerline-default-theme))
-
-(use-package linum
-  :ensure t
-  :disabled t
-  :diminish linum-mode
-  :init (setq linum-disabled-modes-list '(mu4e-headers-mode))
-  :config
-  (global-linum-mode)
-  (defun linum-on ()
-    (unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
-      (linum-mode 1))))
-
-(use-package linum-relative
-  :ensure t
-  :disabled t
-  :diminish linum-relative-mode
-  :config
-  (linum-relative-global-mode))
+  (powerline-default-theme))x
 
 ;; (defun set-powerline ()
 ;;   ;; (require 'powerline) ;; Yeah! line :)
@@ -76,16 +58,6 @@
 (defun set-full-paren ()
   (show-paren-mode t)
   (setq show-paren-style 'expression))
-
-(defun set-linum ()
-  ;; Numero de lineas
-  ;; (require 'linum)
-  ;; (global-linum-mode 1)
-  ;; (setq linum-disabled-modes-list '(mu4e-headers-mode))
-  ;; (defun linum-on ()
-  ;;     (unless (or (minibufferp) (member major-mode linum-disabled-modes-list))
-  ;;         (linum-mode 1)))
-  )
 
 ;; Instantly but if start maximized, then minimize
 (toggle-frame-maximized)

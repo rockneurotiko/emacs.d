@@ -7,7 +7,8 @@
 	 ("C-c C-k" . with-editor-cancel)))
 
 (use-package magit-gh-pulls
-  :ensure t
+  :disabled t
+  ;; :ensure t
   :config
   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
 

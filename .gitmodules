@@ -34,3 +34,6 @@
 [submodule "plugins/helm-spotify"]
 	path = plugins/helm-spotify
 	url = https://github.com/pschorf/helm-spotify.git
+[submodule "plugins/comby.el"]
+	path = plugins/comby.el
+	url = git@github.com:s-kostyaev/comby.el.git

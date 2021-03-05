@@ -111,7 +111,7 @@
                         (f-files path (lambda (p) t) t))))
 
   (setq my/org-babel-evaluated-languages
-    '(emacs-lisp python haskell sh))
+    '(emacs-lisp python haskell shell))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -218,11 +218,6 @@
       bibtex-autokey-titlewords 2
       bibtex-autokey-titlewords-stretch 1
       bibtex-autokey-titleword-length 5)
-
-(setq org-latex-default-packages-alist
-      (-remove-item
-       '("" "hyperref" nil)
-       org-latex-default-packages-alist))
 
 (add-to-list 'org-latex-default-packages-alist '("" "natbib" "") t)
 

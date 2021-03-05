@@ -51,7 +51,8 @@
 (set-ditaa)
 (enable-beamer)
 (set-org-babel)
-(require 'ox-taskjuggler)
+
+;; (require 'ox-taskjuggler)
 
 ;; https://github.com/eschulte/epresent
 ;; (load-file (expand-file-name "~/.emacs.d/plugins/epresent/epresent.el"))
@@ -62,28 +63,19 @@
 (require 'rol-settings)
 
 (require 'random-requires) ;; Functions for some modes and other things
-(set-undo) ;; Ctrl-z powered
-(set-autoindent) ;; Thanks for indent!
-(set-git-gutter-fringe+) ;; Simbols in left :)
-(set-auto-complete) ;; Auto complete with local definitions
-(set-scroll) ;; Smooth scroll ^^
-(set-indent-guide)  ;; The indent vertical lines.. cute!
-(set-pair)  ;; How to pair? autopair or smartparens?
-(set-multiple-cursors)  ;; The more, the better
+;; Undo C-z
+;; Autoindent
+;; Autocomplete
+;; Smooth scroll
+;; indent-guide
+;; multi cursor
+;; plantuml
+(set-pair)  ;; Brackets pair
 (set-uniquify)  ;; Buffer names uniques! (set-auto-package) ;; Auto update all
+(load-comby-mode)
 
 ;; (set-outline) ;; outline mode
-;; packages (set-zone) ;; Zone the code (set-uml-plantuml) ;; UML from text
-;; (set-uml-plantuml)  ;; UML from text biatch!
-
-;; biatch! (set-libreoffice) ;; You don't need libreoffice biatch
 ;; (set-livedown)
-
-;; it.. not good XD
-;; (set-evil-ranger) ;; Range mode
-;; (set-auto-package)  ;; Auto update all packages
-;; (set-libreoffice) ;; You don't need libreoffice biatch
-;; (set-mochi)  ;; I tried to do it.. not good XD
 
 (require 'projectile-settings)
 
@@ -127,6 +119,8 @@
 ;; EPIC EMOJI
 (package-require 'emojify)
 (global-emojify-mode)
+
+(require 'asdf-settings)
 
 ;; MINE SHIT
 (defun tegmacs-load ()

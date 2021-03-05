@@ -15,7 +15,7 @@
   (define-key markdown-mode-map (kbd "M-S-<down>") nil)
   (define-key markdown-mode-map (kbd "M-S-<up>") nil))
 
-(load "~/.emacs.d/plugins/emacs-livedown/livedown.el")
-(require 'livedown)
+;; (load "~/.emacs.d/plugins/emacs-livedown/livedown.el")
+;; (require 'livedown)
 
 (provide 'markdown-settings)

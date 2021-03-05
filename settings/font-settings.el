@@ -3,12 +3,10 @@
   (if (null (x-list-fonts font)) nil t))
 
 (when (and (window-system) (font-exists-p "Fira Code"))
-  (set-default-font "Fira Code")
-  (set-frame-font "Fira Code 8")
-  (set-face-attribute 'default nil :height 80 :family "Fira Code")
+  (set-frame-font "Fira Code")
   (set-face-attribute 'default nil
                       :family "Fira Code"
-                      :height 80
+                      :height 180
                       :weight 'normal
                       :width 'normal))
 
