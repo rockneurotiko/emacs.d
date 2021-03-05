@@ -8,7 +8,7 @@
 (use-package powerline
   :ensure t
   :config
-  (powerline-default-theme))x
+  (powerline-default-theme))
 
 ;; (defun set-powerline ()
 ;;   ;; (require 'powerline) ;; Yeah! line :)

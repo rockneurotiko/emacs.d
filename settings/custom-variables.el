@@ -3,10 +3,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(alchemist-mix-env "test")
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
-   (vector "#eaeaea" "#d54e53" "#b9ca4a" "#e7c547" "#7aa6da" "#c397d8" "#70c0b1" "#000000"))
+   (vector "#2d2d2d" "#f2777a" "#99cc99" "#ffcc66" "#6699cc" "#cc99cc" "#66cccc" "#cccccc"))
  '(auto-indent-assign-indent-level 2)
  '(auto-indent-disabled-indent-functions '(indent-relative indent-relative-maybe))
  '(auto-indent-disabled-modes-list
@@ -59,6 +60,8 @@ vacation \"fiesta 1\" 2016-03-07
  '(python-shell-interpreter "ipython")
  '(python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: ")
  '(python-shell-prompt-regexp "In \\[[0-9]+\\]: ")
+ '(safe-local-variable-values '((erlang-indent-level . 2) (allout-layout . t)))
+ '(sh-basic-offset 2)
  '(tegmacs-server-buffer-name "<tegmacs> {host}:{port}")
  '(term-default-bg-color nil)
  '(term-default-fg-color "#00FF05")

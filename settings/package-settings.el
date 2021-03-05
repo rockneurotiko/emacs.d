@@ -2,11 +2,11 @@
 
 (unless (assoc-default "melpa" package-archives)
   (add-to-list 'package-archives
-               '("melpa"."http://melpa.org/packages/")))
+               '("melpa"."https://melpa.org/packages/")))
 
 (unless (assoc-default "marmalade" package-archives)
   (add-to-list 'package-archives
-               '("marmalade" . "http://marmalade-repo.org/packages/")))
+               '("marmalade" . "https://marmalade-repo.org/packages/")))
 
 (unless (assoc-default "elpy" package-archives)
   (add-to-list 'package-archives
