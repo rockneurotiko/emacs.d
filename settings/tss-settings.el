@@ -1,8 +1,3 @@
-;; If use bundled typescript.el,
-;; (load "~/.emacs.d/plugins/emacs-tss/typescript.el")
-;; (load "~/.emacs.d/plugins/emacs-tss/tss.el")
-
-;; (add-to-list 'load-path "~/.emacs.d/plugins/emacs-tss")
 (use-package typescript
   :ensure t
   :config

@@ -21,22 +21,7 @@
     (interactive)
     (delete-process "Tern")))
 
-(defun load-angular ()
-  (use-package angular-snippets
-    :ensure t
-    :config
-    (define-key html-mode-map (kbd "C-c C-d") 'ng-snip-show-docs-at-point)))
-
-(defun js-flycheck ()
-  (use-package flycheck
-    :ensure t
-    :diminish flycheck-mode
-    :config
-    (add-hook 'js-mode-hook 'flycheck-mode)
-    (add-hook 'web-mode-hook 'flycheck-mode)
-    (flycheck-add-mode 'javascript-jshint 'web-mode)
-    (flycheck-add-mode 'html-tidy 'web-mode)))
-
+;; Replace with tsx?
 (defun use-js2 ()
   (use-package js2-mode
     :ensure t
@@ -71,11 +56,6 @@
                            (if (string-match "/\\* *global *\\(.*?\\) *\\*/" btext) (match-string-no-properties 1 btext) "")
                            " *, *" t))
                     )))))
-
-  (use-package php-mode
-    :ensure t
-    :config
-    (add-to-list 'auto-mode-alist '("\\.php[345]?\\'\\|\\.inc\\'" . php-mode)))
 
   (use-package json-mode
     :ensure t
@@ -144,15 +124,6 @@
 
   ;; (setq web-mode-content-types-alist
   ;;       '(("jsx" . "\\.js[x]?\\'")))
-  )
-
-(defun set-emmet ()
-
-  ;; (require 'web-mode)
-  ;; (package-require 'emmet-mode)
-  ;; (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
-  ;; (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
-  ;; (define-key web-mode-map (kbd "M-TAB") 'emmet-expand-line)
   )
 
 (use-package emmet-mode

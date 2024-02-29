@@ -11,16 +11,12 @@
   :bind (("C-z" . undo)
          ("C-S-z" . redo)))
 
-(use-package auto-indent-mode
-  ;; :disabled t
+(use-package snap-indent
   :ensure t
   :config
-  (auto-indent-global-mode)
-  (setq tab-width 4)
-  (add-to-list 'auto-indent-disabled-modes-list 'ponylang-mode)
-  (add-to-list 'auto-indent-disabled-modes-list 'python-mode)
-  ;;(add-to-list 'auto-indent-disabled-modes-list 'elixir-mode)
-)
+  (add-to-list 'snap-indent-excluded-modes 'elixir-mode)
+  :custom ((snap-indent-format 'untabify)
+           (snap-indent-on-save t)))
 
 (use-package git-gutter
   :ensure t
@@ -174,26 +170,16 @@
   (load "~/.emacs.d/plugins/emacs-realtime-markdown-viewer/realtime-markdown-viewer.el")
   (package-require 'realtime-markdown-viewer))
 
-;; (defun set-livedown ()
-;;   (add-to-list 'load-path (expand-file-name "~/.emacs.d/plugins/emacs-livedown"))
-;;   (require 'livedown))
 
-(defun set-pair ()
-  ;; (package-require 'autopair)
-  ;; (autopair-global-mode)
-  (use-package smartparens
-    :ensure t
-    :config
-    (require 'smartparens-config)
-    (smartparens-global-mode)))
+(use-package smartparens
+  :ensure t
+  :config
+  (require 'smartparens-config)
+  (smartparens-global-mode))
 
 (defun set-uniquify ()
   (require 'uniquify)
   (setq uniquify-buffer-name-style 'forward))
-
-(defun load-comby-mode ()
-  (load "~/.emacs.d/plugins/comby.el/comby.el")
-  (require 'comby))
 
 (defun set-buffer-expose ()
   (load "~/.emacs.d/plugins/buffer-expose/buffer-expose.el")

@@ -47,3 +47,7 @@ savehist
 gotools
 .sx
 /cider-history
+/.cache/
+/quelpa/
+/transient/
+settings/elixir-ls/

@@ -1,6 +1,6 @@
-                                        ;--------------------------------;
+;--------------------------------;
 ;;; General or Global Settings ;;;
-                                        ;--------------------------------;
+;--------------------------------;
 
 ;; set PATH, because we don't load .bashrc
 ;; function from https://gist.github.com/jakemcc/3887459
@@ -25,7 +25,6 @@
 (setq frame-title-format
       (concat "%b - " invocation-name "@" system-name))
 
-
 ;; utf-8 powaa!!
 (set-language-environment 'utf-8)
 (prefer-coding-system 'utf-8)
@@ -47,15 +46,14 @@
 
 (setq locale-coding-system 'utf-8)
 ;; default fill column is 70, why?
-(setq default-fill-column 79)
+(setq default-fill-column 80)
 ;; my sentences end with a dot, not with two spaces
 (setq sentence-end-double-space nil);; kill the splash screen before its birth
 (setq inhibit-splash-screen t)
 ;; but give the emacs window a still good shape !
-(setq initial-frame-alist '((width . 90) (height . 45))) ; .Xdefaults
+;; (setq initial-frame-alist '((width . 90) (height . 45))) ; .Xdefaults
 
 (setq-default indent-tabs-mode nil)
-(setq auto-indent-on-visit-file t) ;; If you want auto-indent on for files
 (setq org-log-done 'note)
 
 (setq browse-url-browser-function 'browse-url-generic
@@ -83,15 +81,15 @@
 (global-set-key (kbd "M-s-<down>") 'shrink-window)
 (global-set-key (kbd "M-s-<up>") 'enlarge-window)
 
-(global-set-key [C-return] 'sublime-new-line)
 ;; (global-set-key (kbd "C-/") 'comment-or-uncomment-region-or-line)
-(global-set-key (kbd "C-x w") 'elfeed)
-;; (global-set-key (kbd "C-r") 'imenu)
 ;; (global-set-key (kbd "C-S-s") 'isearch-backward-regexp)
 (global-set-key [f4] 'goto-line)
 
+;; Functions from rock-defuns.el
 (global-set-key [(control shift up)]  'move-text-up)
 (global-set-key [(control shift down)]  'move-text-down)
+(global-set-key [C-return] 'sublime-new-line)
+(global-set-key (kbd "C-c C") 'w0w-calculator)
 
 ;;-------------;
 ;;Other things!;
@@ -126,8 +124,6 @@
 (desktop-save-mode 1)
 ;; memory
 (setq gc-cons-threshold 20000000)
-;; (global-aggressive-indent-mode 1)
-;; (nyan-mode 1)
 
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "xdg-open")
@@ -150,13 +146,6 @@
 (setq calendar-latitude 40.1)
 (setq calendar-longitude 3)
 (setq calendar-location-name "Pozuelo de Alarcon")
-
-(setq diary-file "~/Dropbox/diary")
-
-;; ++Old way++
-;; (when (fboundp 'winner-mode)
-;;     (winner-mode 1))
-;; --Old way--
 
 ;; Line numbers
 
@@ -181,6 +170,7 @@
   (setq mac-option-key-is-meta nil)
   (setq mac-option-modifier 'none)
   (setq x-select-enable-clipboard t)
+  (setq ring-bell-function 'ignore)
   (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
   (add-to-list 'exec-path "/usr/local/bin")
   (message "Loaded macOS config."))

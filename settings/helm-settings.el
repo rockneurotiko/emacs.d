@@ -1,18 +1,8 @@
-;; (require 'helm)
-;; (require 'helm-descbinds)
-
-;; (fset 'describe-bindings 'helm-descbinds)
-;; (helm-mode 1)
-
-;; (global-set-key (kbd "C-c h") 'helm-mini)
-
-
 (use-package helm
   :ensure t
   :diminish helm-mode
   :init
   (progn
-    (require 'helm-config)
     (setq helm-candidate-number-limit 100)
     ;; From https://gist.github.com/antifuchs/9238468
     (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't).
@@ -72,14 +62,5 @@
   :ensure t
   :commands helm-mode
   :init (define-key helm-map (kbd "C-'") 'ace-jump-helm-line))
-
-
-(defun set-helm-swoop ()
-  ;; Change the keybinds to whatever you like :)
-  )
-
-
-(defun set-helm-ace-jump ()
-  )
 
 (provide 'helm-settings)

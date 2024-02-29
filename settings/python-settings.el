@@ -8,8 +8,6 @@
 
 (defun python-hook ()
   (setq python-indent-offset 4)
-  (make-local-variable 'auto-indent-assign-indent-level)
-  (setq auto-indent-assign-indent-level 4)
   (setq tab-width 4))
 
 ;; from python.el

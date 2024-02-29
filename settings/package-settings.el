@@ -6,7 +6,7 @@
 
 (unless (assoc-default "marmalade" package-archives)
   (add-to-list 'package-archives
-               '("marmalade" . "https://marmalade-repo.org/packages/")))
+               '("marmalade" . "http://marmalade-repo.org/packages/")))
 
 (unless (assoc-default "elpy" package-archives)
   (add-to-list 'package-archives
@@ -24,6 +24,19 @@
   :ensure t
   :config (auto-compile-on-load-mode))
 (setq load-prefer-newer t)
+
+;; Quelpa
+(unless (package-installed-p 'quelpa)
+  (with-temp-buffer
+    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+    (eval-buffer)
+    (quelpa-self-upgrade)))
+
+(quelpa
+ '(quelpa-use-package
+   :fetcher git
+   :url "https://github.com/quelpa/quelpa-use-package.git"))
+(require 'quelpa-use-package)
 
 ;; Secrets
 (load "~/.emacs.secrets" t)
@@ -47,7 +60,7 @@
 ;; (or (file-exists-p package-user-dir)
 ;;     (package-refresh-contents))
 
-;; (ensure-package-installed 'auto-complete 'auto-complete-config 'powerline 'bodil-flycheck 'flycheck 'faces 'go-autocomplete 'auto-complete-config 'compile 'helm 'helm-config 'helm-swoop 'ido 'flx 'flx-ido 'angular-snippets 'web-mode 'ess 'tex-site 'font-latex 'merlin 'ocp-indent 'org-agenda 'ox-reveal 'python 'ein 'pydoc-info 'jedi 'flymake 'virtualenvwrapper 'ensime 'powerline 'moe-theme 'linum 'yasnippet)
+;; (ensure-package-installed 'auto-complete 'auto-complete-config 'powerline 'bodil-flycheck 'flycheck 'faces 'go-autocomplete 'auto-complete-config 'compile 'helm 'helm-swoop 'ido 'flx 'flx-ido 'angular-snippets 'web-mode 'ess 'tex-site 'font-latex 'merlin 'ocp-indent 'org-agenda 'ox-reveal 'python 'ein 'pydoc-info 'jedi 'flymake 'virtualenvwrapper 'ensime 'powerline 'moe-theme 'linum 'yasnippet)
 
 
 (provide 'package-settings)

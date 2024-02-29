@@ -15,8 +15,8 @@
 (require 'spotify)
 
 ;; Settings
-(setq spotify-oauth2-client-id "91703f58ceb94f6b9ec6ec39bc81d6ce")
-(setq spotify-oauth2-client-secret "130de46c64c44e0c99f82578a4bd9f7d")
+(setq spotify-oauth2-client-id (efs/lookup-password :host "spotify.com" :user "client-id"))
+(setq spotify-oauth2-client-secret (efs/lookup-password :host "spotify.com" :user "client-secret"))
 (setq spotify-transport 'apple)
 
 (global-set-key (kbd "C-c s n") 'spotify-next-track)

@@ -10,11 +10,6 @@
   :config
   (powerline-default-theme))
 
-;; (defun set-powerline ()
-;;   ;; (require 'powerline) ;; Yeah! line :)
-;;   ;; (powerline-default-theme)
-;;   )
-
 (defun set-random-theme ()
   ;; Select one random from:
   ;; [spolsky, granger, cyberpunk, ample, grandshell, monokai, sanityinc-tomorrow-night, sanityinc-tomorrow-eighties]
