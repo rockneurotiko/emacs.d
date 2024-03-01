@@ -91,8 +91,8 @@
            (package-recipe-mode))))
  '(js2-include-jslint-globals t)
  '(lisp-body-indent 2)
- '(multi-term-buffer-name "term")
- '(multi-term-program "/bin/zsh")
+ '(multi-term-buffer-name "term" t)
+ '(multi-term-program "/bin/zsh" t)
  '(org-emphasis-alist
    '(("*" bold) ("/" italic) ("_" underline) ("=" org-verbatim verbatim)
      ("~" org-code verbatim) ("+" (:strike-through t))))
@@ -101,20 +101,21 @@
  '(package-selected-packages
    '(ace-jump-helm-line auto-compile auto-indent-mode
                         clojure-mode-extra-font-locking
-                        color-theme-sanityinc-tomorrow company copilot
-                        discover-my-major dockerfile-mode editorconfig
-                        elixir-mode elixir-yasnippets elm-mode
-                        emmet-mode emojify flycheck-elm
-                        flycheck-haskell git-gutter go-projectile
-                        go-snippets graphql-mode helm-bibtex
-                        helm-descbinds helm-flyspell helm-lsp
-                        helm-projectile helm-swoop helm-systemd hi2
-                        hindent jasminejs-mode js2-refactor json-mode
-                        lua-mode magit miniedit multi-term nodejs-repl
-                        nushell-mode org-bullets org-ref
-                        org-tree-slide ox-reveal paredit php-mode
-                        powerline quelpa quelpa-use-package racer
-                        rainbow-delimiters ranger scala-mode shm
+                        color-theme-sanityinc-tomorrow company
+                        consult-projectile copilot discover-my-major
+                        dockerfile-mode editorconfig elixir-mode
+                        elixir-yasnippets elm-mode emmet-mode emojify
+                        flycheck-elm flycheck-haskell git-gutter
+                        go-projectile go-snippets graphql-mode
+                        helm-bibtex helm-descbinds helm-flyspell
+                        helm-lsp helm-projectile helm-rg helm-swoop
+                        helm-systemd hi2 hindent jasminejs-mode
+                        js2-refactor json-mode lua-mode magit miniedit
+                        multi-term nodejs-repl nushell-mode
+                        org-bullets org-ref org-tree-slide ox-reveal
+                        paredit php-mode powerline projectile-ripgrep
+                        quelpa quelpa-use-package racer
+                        rainbow-delimiters ranger rg scala-mode shm
                         smartparens smooth-scrolling snap-indent
                         switch-window tern undo-tree virtualenvwrapper
                         web-mode which-key))

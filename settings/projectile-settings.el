@@ -6,6 +6,11 @@
 (use-package helm-projectile
   :ensure t
   :config
-  (helm-projectile-on))
+  (helm-projectile-on)
+  :bind ("C-c r p" . helm-projectile-rg))
+
+(use-package consult-projectile
+  :ensure t
+  :bind ("C-c r c" . consult-projectile))
 
 (provide 'projectile-settings)

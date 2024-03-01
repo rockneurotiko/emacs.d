@@ -25,6 +25,15 @@
   (global-git-gutter-mode +1)
   (set-face-foreground 'git-gutter:modified "purple"))
 
+(use-package rg
+  :ensure t
+  :config
+  (rg-enable-default-bindings))
+
+(use-package helm-rg
+  :ensure t
+  :bind ("C-c r g" . helm-rg))
+
 (use-package plantuml-mode
   :disabled t
   ;; :ensure t
