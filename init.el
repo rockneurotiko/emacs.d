@@ -2,8 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(package-initialize nil)
-
 ;; MY PATH
 (add-to-list 'load-path "~/.emacs.d/settings")
 (require 'font-settings)
@@ -11,6 +9,7 @@
 (require 'package-settings)
 
 (require 'rock-defuns)
+(require 'custom-functions)
 (require 'auth-settings)
 (require 'general-settings)
 (require 'asdf-settings)
@@ -55,6 +54,8 @@
 
 (require 'yasnippet-settings)
 (require 'acejump-settings)
+
+;; (require 'lsp-bridge-settings)
 
 ;; (require 'tags-settings)
 

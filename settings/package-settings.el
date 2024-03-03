@@ -2,7 +2,7 @@
 
 (unless (assoc-default "melpa" package-archives)
   (add-to-list 'package-archives
-               '("melpa"."https://melpa.org/packages/")))
+               '("melpa"."http://melpa.org/packages/")))
 
 (unless (assoc-default "marmalade" package-archives)
   (add-to-list 'package-archives
@@ -10,7 +10,7 @@
 
 (unless (assoc-default "elpy" package-archives)
   (add-to-list 'package-archives
-               '("elpy" . "https://jorgenschaefer.github.io/packages/")))
+               '("elpy" . "http://jorgenschaefer.github.io/packages/")))
 
 ;; Comment this after first run!
 ;; (package-refresh-contents)
@@ -26,17 +26,36 @@
 (setq load-prefer-newer t)
 
 ;; Quelpa
-(unless (package-installed-p 'quelpa)
-  (with-temp-buffer
-    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
-    (eval-buffer)
-    (quelpa-self-upgrade)))
+;; (unless (package-installed-p 'quelpa)
+;;   (with-temp-buffer
+;;     (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+;;     (eval-buffer)
+;;     (quelpa-self-upgrade)))
 
-(quelpa
- '(quelpa-use-package
-   :fetcher git
-   :url "https://github.com/quelpa/quelpa-use-package.git"))
-(require 'quelpa-use-package)
+;; (quelpa
+;;  '(quelpa-use-package
+;;    :fetcher git
+;;    :url "https://github.com/quelpa/quelpa-use-package.git"))
+;; (require 'quelpa-use-package)
+
+
+;; straight
+
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
 ;; Secrets
 (load "~/.emacs.secrets" t)
