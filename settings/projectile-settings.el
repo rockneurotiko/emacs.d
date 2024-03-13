@@ -1,7 +1,17 @@
+(defun rock/projectile-relative-name-buffer ()
+  "Add to the kill ring the relative name of the current buffer."
+  (interactive)
+  (let ((path (file-relative-name buffer-file-name (projectile-project-root))))
+    (kill-new path)
+    (message path)))
+
 (use-package projectile
   :ensure t
   :config
-  (projectile-global-mode))
+  (projectile-global-mode)
+  :bind
+  ("C-c w r" . 'rock/projectile-relative-name-buffer))
+
 
 (use-package helm-projectile
   :ensure t
