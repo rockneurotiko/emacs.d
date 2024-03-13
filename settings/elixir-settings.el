@@ -1,6 +1,10 @@
 (use-package elixir-mode
   :ensure t)
 
+(use-package exunit
+  :ensure t
+  :hook (elixir-mode . exunit-mode))
+
 (setq lsp-bridge-elixir-lsp-server "lexical")
 
 (setq lsp-keymap-prefix "M-s")

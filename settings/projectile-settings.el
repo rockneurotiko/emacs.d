@@ -1,7 +1,22 @@
-(defun rock/projectile-relative-name-buffer ()
+(defun rock/projectile-relative-path-buffer ()
+  "Return the relative name of the current buffer."
+  (file-relative-name buffer-file-name (projectile-project-root)))
+
+(defun rock/projectile-relative-path-with-line-number ()
+  "Return the relative name of the current buffer with the line number."
+  (concat (rock/projectile-relative-path-buffer) ":" (number-to-string (line-number-at-pos))))
+
+(defun rock/projectile-relative-path-kill-ring ()
   "Add to the kill ring the relative name of the current buffer."
   (interactive)
-  (let ((path (file-relative-name buffer-file-name (projectile-project-root))))
+  (let ((path (rock/projectile-relative-path-buffer)))
+    (kill-new path)
+    (message path)))
+
+(defun rock/projectile-relative-path-with-line-number-kill-ring ()
+  "Add to the kill ring the relative name with the line number of the current buffer."
+  (interactive)
+  (let ((path (rock/projectile-relative-path-with-line-number)))
     (kill-new path)
     (message path)))
 
@@ -10,7 +25,8 @@
   :config
   (projectile-global-mode)
   :bind
-  ("C-c w r" . 'rock/projectile-relative-name-buffer))
+  ("C-c w r" . 'rock/projectile-relative-path-kill-ring)
+  ("C-c w l" . 'rock/projectile-relative-path-with-line-number-kill-ring))
 
 
 (use-package helm-projectile
