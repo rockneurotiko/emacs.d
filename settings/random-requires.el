@@ -69,6 +69,11 @@
          ("C-<" . mc/mark-previous-like-this)
          ("C-c C-<" . mc/mark-all-like-this)))
 
+(use-package phi-search
+  :ensure t
+  :bind (("C-S-s" . phi-search)
+         ("C-S-r" . phi-search-backward)))
+
 (use-package which-key
   :ensure t
   :init
