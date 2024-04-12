@@ -40,7 +40,7 @@
       (add-hook 'js2-mode-hook #'js2-refactor-mode)
       (js2r-add-keybindings-with-prefix "C-c C-m"))
 
-    (js2-imenu-extras-mode)
+    (add-hook 'js2-mode-hook 'js2-imenu-extras-mode)
     (apply #'derived-mode-p '(org-mode web-mode))
 
     (add-to-list 'auto-mode-alist '("\\.js[x]?\\'" . js2-jsx-mode))

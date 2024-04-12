@@ -4,14 +4,6 @@
   (add-to-list 'package-archives
                '("melpa"."http://melpa.org/packages/")))
 
-(unless (assoc-default "marmalade" package-archives)
-  (add-to-list 'package-archives
-               '("marmalade" . "http://marmalade-repo.org/packages/")))
-
-(unless (assoc-default "elpy" package-archives)
-  (add-to-list 'package-archives
-               '("elpy" . "http://jorgenschaefer.github.io/packages/")))
-
 ;; Comment this after first run!
 ;; (package-refresh-contents)
 

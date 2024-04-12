@@ -191,6 +191,17 @@
   (require 'smartparens-config)
   (smartparens-global-mode))
 
+(use-package emojify
+  :ensure t
+  :config
+  (global-emojify-mode))
+
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-copy-env "SSH_AGENT_PID")
+  (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
+
 (defun set-uniquify ()
   (require 'uniquify)
   (setq uniquify-buffer-name-style 'forward))

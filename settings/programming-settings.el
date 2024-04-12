@@ -45,6 +45,9 @@
 ;; GRAPHQL
 (require 'graphql-settings)
 
+;; LSP!!
+(require 'lsp-settings)
+
 ;; Other langs
 ;; (require 'otherlangs-settings)
 

@@ -65,7 +65,7 @@
 ;;      MAGIT     ;
 ;;----------------;
 (require 'magit-settings)
-(require 'copilot-settings)
+;; (require 'copilot-settings)
 
 ;;----------------;
 ;;    SPOTIFY     ;
@@ -78,10 +78,6 @@
 (require 'company-settings)
 (require 'flycheck-settings)
 (require 'programming-settings)
-
-;; EPIC EMOJI
-(package-require 'emojify)
-(global-emojify-mode)
 
 ;; MINE SHIT
 (defun tegmacs-load ()
