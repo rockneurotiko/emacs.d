@@ -1,9 +1,14 @@
 (use-package elixir-mode
   :ensure t)
 
+(use-package elixir-ts-mode
+  :ensure t)
+
 (use-package exunit
   :ensure t
-  :hook (elixir-mode . exunit-mode))
+  :hook
+  (elixir-mode . exunit-mode)
+  (elixir-ts-mode . exunit-mode))
 
 (use-package elixir-yasnippets
   :ensure t)
@@ -18,10 +23,12 @@
 ;;   (require 'ex-fmt)
 
 ;;   ;; Optional, if you want to use always an specific mix version
-;;   (setq ex-fmt-mix nil)
-;;   (setq ex-fmt-mix (expand-file-name "~/.asdf/shims/mix"))
+;;   ;; (setq ex-fmt-mix nil)
+;;   (setq ex-fmt-mix (expand-file-name "~/.local/share/mise/shims/mix"))
 
-;;   (add-hook 'after-save-hook #'ex-fmt-after-save))
+;;   (add-hook 'elixir-ts-mode-hook
+;;             (lambda ()
+;;               (add-hook 'after-save-hook #'ex-fmt-after-save))))
 
 ;; (ex-fmt-load)
 

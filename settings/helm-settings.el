@@ -30,17 +30,17 @@
     (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
     ;; list actions using C-z
     (define-key helm-map (kbd "C-z")  'helm-select-action))
-  :bind (("C-x C-f" . helm-find-files)
-         ("C-x C-b" . helm-buffers-list)
-         ("C-x b" . helm-mini)
-         ("M-y" . helm-show-kill-ring)
-         ("M-x" . helm-M-x)
-         ("C-h a" . helm-apropos)
+  :bind (
+         ;; ("C-x C-f" . helm-find-files)
+         ;; ("C-x C-b" . helm-buffers-list)
+         ;; ("C-x b" . helm-mini)
+         ;; ("M-y" . helm-show-kill-ring)
+         ;; ("M-x" . helm-M-x)
+         ;; ("C-h a" . helm-apropos)
          ("C-x c o" . helm-occur)
-         ("C-x c y" . helm-yas-complete)
-         ("C-x c Y" . helm-yas-create-snippet-on-region)
-         ("C-x c SPC" . helm-all-mark-rings)
-         ("C-c h g" . helm-google-suggest)))
+         ;; ("C-x c SPC" . helm-all-mark-rings)
+         ;; ("C-c h g" . helm-google-suggest)
+         ))
 
 (ido-mode -1)
 

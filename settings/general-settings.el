@@ -138,10 +138,7 @@
 (setq sentence-end-double-space nil)
 
 ;; winner-mode https://www.emacswiki.org/emacs/WinnerMode
-(use-package winner
-  :ensure t
-  :defer t)
-
+(winner-mode 1)
 
 (setq calendar-latitude 40.1)
 (setq calendar-longitude 3)

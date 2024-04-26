@@ -1,3 +1,5 @@
+(require 'org)
+
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
@@ -49,10 +51,9 @@
 (setq org-startup-with-inline-images t)
 (setq org-default-notes-file "~/docs/org/organizer.org")
 
-(use-package flyspell
-  :ensure t
-  :config
+(defun rock--org-activate-flyspell ()
   (add-hook 'org-mode-hook 'flyspell-mode))
+(rock--org-activate-flyspell)
 
 (use-package org-bullets
   :ensure t
@@ -105,7 +106,6 @@
    'org-babel-load-languages
    '((latex . t))))
 
-
 (add-to-list 'org-latex-packages-alist '("newfloat" "minted"))
 (setq org-latex-listings 'minted)
 
@@ -122,6 +122,7 @@
       bibtex-autokey-titlewords 2
       bibtex-autokey-titlewords-stretch 1
       bibtex-autokey-titleword-length 5)
+
 
 (add-to-list 'org-latex-default-packages-alist '("" "natbib" "") t)
 

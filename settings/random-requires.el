@@ -11,10 +11,19 @@
   :bind (("C-z" . undo)
          ("C-S-z" . redo)))
 
+(use-package treesit-auto
+  :ensure t
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
 (use-package snap-indent
   :ensure t
   :config
   (add-to-list 'snap-indent-excluded-modes 'elixir-mode)
+  (add-to-list 'snap-indent-excluded-modes 'elixir-ts-mode)
   :custom ((snap-indent-format 'untabify)
            (snap-indent-on-save t)))
 
@@ -201,6 +210,11 @@
   :config
   (exec-path-from-shell-copy-env "SSH_AGENT_PID")
   (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
+
+(use-package direnv
+  :ensure t
+  :config
+  (direnv-mode))
 
 (defun set-uniquify ()
   (require 'uniquify)

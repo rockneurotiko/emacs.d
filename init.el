@@ -15,7 +15,8 @@
 (require 'asdf-settings)
 
 ;; HELM <3
-(require 'helm-settings)
+;; (require 'helm-settings)
+(require 'vertico-settings)
 
 ;;---------;
 ;;  THEME  ;
@@ -51,7 +52,7 @@
 
 (require 'projectile-settings)
 
-
+(require 'auto-complete-settings)
 (require 'yasnippet-settings)
 (require 'acejump-settings)
 

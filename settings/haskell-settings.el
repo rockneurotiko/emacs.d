@@ -49,10 +49,11 @@
   (autoload 'ghc-init "ghc" nil t)
   (autoload 'ghc-debug "ghc" nil t)
   (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
-  (package-require 'company)
-  (add-hook 'after-init-hook 'global-company-mode)
-  (add-to-list 'company-backends 'company-ghc)
-  (custom-set-variables '(company-ghc-show-info t)))
+  ;; (package-require 'company)
+  ;; (add-hook 'after-init-hook 'global-company-mode)
+  ;; (add-to-list 'company-backends 'company-ghc)
+  ;; (custom-set-variables '(company-ghc-show-info t))
+  )
 
 (use-package hi2
   :ensure t

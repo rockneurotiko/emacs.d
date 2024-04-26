@@ -10,29 +10,36 @@
   (setq python-indent-offset 4)
   (setq tab-width 4))
 
-;; from python.el
-(use-package python
+(use-package python-mode
   :ensure t
-  :init
+  :hook
+  (python-mode . lsp-deferred)
+  :custom
+  (python-shell-interpreter "python3"))
 
-  :config
-  (setq auto-mode-alist
-        (append
-         (list '("\\.pyx" . python-mode)
-               '("SConstruct" . python-mode))
-         auto-mode-alist))
-  (define-key python-mode-map (kbd "C-c !") 'python-shell-switch-to-shell)
-  (define-key python-mode-map (kbd "C-c |") 'python-shell-send-region)
+;; from python.el
+;; (use-package python
+;;   :ensure t
+;;   :init
 
-  (setq interpreter-mode-alist
-        (cons '("python" . python-mode)
-              interpreter-mode-alist)
-        python-mode-hook
-        '(lambda () (progn
-                      (set-variable 'py-indent-offset 4)
-                      (set-variable 'indent-tabs-mode nil))))
+;;   :config
+;;   (setq auto-mode-alist
+;;         (append
+;;          (list '("\\.pyx" . python-mode)
+;;                '("SConstruct" . python-mode))
+;;          auto-mode-alist))
+;;   (define-key python-mode-map (kbd "C-c !") 'python-shell-switch-to-shell)
+;;   (define-key python-mode-map (kbd "C-c |") 'python-shell-send-region)
 
-  (add-hook 'python-mode-hook 'python-hook))
+;;   (setq interpreter-mode-alist
+;;         (cons '("python" . python-mode)
+;;               interpreter-mode-alist)
+;;         python-mode-hook
+;;         '(lambda () (progn
+;;                       (set-variable 'py-indent-offset 4)
+;;                       (set-variable 'indent-tabs-mode nil))))
+
+;;   (add-hook 'python-mode-hook 'python-hook))
 
 ;; (use-package elpy
 ;;   :ensure t

@@ -18,6 +18,7 @@
                  (company-dabbrev-code company-gtags company-keywords)
                  company-oddmuse company-dabbrev))
  '(company-ghc-show-info t)
+ '(corfu-auto nil)
  '(custom-enabled-themes '(sanityinc-tomorrow-eighties))
  '(custom-safe-themes
    '("04aa1c3ccaee1cc2b93b246c6fbcd597f7e6832a97aaeac7e5891e6863236f9f" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "7bde52fdac7ac54d00f3d4c559f2f7aa899311655e7eb20ec5491f3b5c533fe8" "0c29db826418061b40564e3351194a3d4a125d182c6ee5178c237a7364f0ff12" default))
@@ -58,7 +59,6 @@
    '(ace-jump-helm-line auto-compile auto-indent-mode clojure-mode-extra-font-locking color-theme-sanityinc-tomorrow company consult-projectile copilot discover-my-major dockerfile-mode editorconfig elixir-mode elixir-yasnippets elm-mode emmet-mode emojify flycheck-elm flycheck-haskell git-gutter go-projectile go-snippets graphql-mode helm-bibtex helm-descbinds helm-flyspell helm-lsp helm-projectile helm-rg helm-swoop helm-systemd hi2 hindent jasminejs-mode js2-refactor json-mode lua-mode magit miniedit multi-term nodejs-repl nushell-mode org-bullets org-ref org-tree-slide ox-reveal paredit php-mode powerline projectile-ripgrep quelpa quelpa-use-package racer rainbow-delimiters ranger rg scala-mode shm smartparens smooth-scrolling snap-indent switch-window tern undo-tree virtualenvwrapper web-mode which-key))
  '(python-indent-guess-indent-offset nil)
  '(python-indent-offset 4)
- '(python-shell-interpreter "ipython")
  '(python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: ")
  '(python-shell-prompt-regexp "In \\[[0-9]+\\]: ")
  '(safe-local-variable-values '((erlang-indent-level . 2) (allout-layout . t)))
