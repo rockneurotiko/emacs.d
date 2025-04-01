@@ -23,6 +23,9 @@
 
 ;; Replace with tsx?
 (defun use-js2 ()
+  (use-package ac-js2
+    :ensure t)
+
   (use-package js2-mode
     :ensure t
     :init

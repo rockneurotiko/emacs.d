@@ -2,10 +2,15 @@
   :ensure t)
 
 (use-package elixir-ts-mode
-  :ensure t)
+  :ensure t
+  :config
+  (set-face-attribute 'elixir-ts-atom-face nil :inherit font-lock-builtin-face)
+  )
+
 
 (use-package exunit
   :ensure t
+  :diminish exunit-mode
   :hook
   (elixir-mode . exunit-mode)
   (elixir-ts-mode . exunit-mode))

@@ -1,14 +1,81 @@
+(use-package nerd-icons
+  :ensure t
+  ;; :custom
+  ;; The Nerd Font you want to use in GUI
+  ;; "Symbols Nerd Font Mono" is the default and is recommended
+  ;; but you can use any other Nerd Font if you want
+  ;; (nerd-icons-font-family "Symbols Nerd Font Mono")
+  )
+
+(use-package nerd-icons-completion
+  :ensure t
+  :after marginalia
+  :config
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+(use-package nerd-icons-corfu
+  :ensure t
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+(use-package nerd-icons-dired
+  :ensure t
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
+
 (defun font-exists-p (font)
   "check if font exists"
   (if (null (x-list-fonts font)) nil t))
 
-(when (and (window-system) (font-exists-p "Fira Code"))
-  (set-frame-font "Fira Code")
+(defvar rock--fontname "0xProto Nerd Font Mono")
+(defvar rock--fontname-variable "0xProto Nerd Font Mono")
+(defvar rock--fontsize 105)
+
+(defun set-font-size ()
   (set-face-attribute 'default nil
-                      :family "Fira Code"
-                      :height 180
+                      :family rock--fontname
+                      :height rock--fontsize
                       :weight 'normal
-                      :width 'normal))
+                      :width 'normal)
+
+  (set-face-attribute 'fixed-pitch nil :family rock--fontname :height 1.0)
+  (set-face-attribute 'variable-pitch nil :family rock--fontname-variable :height 1.0)
+
+  (set-face-attribute 'mode-line nil :family rock--fontname :height 105)
+  )
+
+
+(defun set-interview-fontsize ()
+  (interactive)
+  (setq rock--fontsize 190)
+  (set-font-size))
+
+(defun set-default-fontsize ()
+  (interactive)
+  (setq rock--fontsize 105)
+  (set-font-size))
+
+(when (and (window-system) (font-exists-p rock--fontname))
+  (set-frame-font rock--fontname)
+  (set-default-fontsize))
+
+;; (let ((fontname 'rock--fontname))
+;;   )
+
+
+;; (let ((fontname "Fira Code"))
+;;   (when (and (window-system) (font-exists-p fontname))
+;;   (set-frame-font fontname)
+;;   (set-face-attribute 'default nil
+;;                       :family fontname
+;;                       :height 110
+;;                       :weight 'normal
+;;                       :width 'normal)))
+
+;; In scratch execute this to list the fonts
+;; (dolist (font (x-list-fonts "*"))
+;;   (insert (format "%s\n" font)))
 
 
 ;; (let ((alist '((33 . ".\\(?:\\(?:==\\)\\|[!=]\\)")

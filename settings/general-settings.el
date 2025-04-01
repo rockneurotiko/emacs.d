@@ -5,13 +5,22 @@
 ;; set PATH, because we don't load .bashrc
 ;; function from https://gist.github.com/jakemcc/3887459
 (defun set-exec-path-from-shell-PATH ()
-  (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
-  (let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo -n $PATH'")))
-    (setenv "PATH" path-from-shell)
-    (setq exec-path (split-string path-from-shell path-separator))))
+  ;; ;; (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
+  ;; (let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo -n $PATH'")))
+  ;;   (setenv "PATH" path-from-shell)
+  ;;   (setq exec-path (split-string path-from-shell path-separator)))
 
-(setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
-;; (set-exec-path-from-shell-PATH)
+  ;; FISH hack
+  (let*
+      ((fish-path (shell-command-to-string "$SHELL -c 'echo -n $PATH'"))
+       (path-parts (split-string fish-path " "))
+       (path-string (string-join path-parts ":")))
+    (setenv "PATH" path-string)
+    (setq exec-path path-parts)))
+
+
+(set-exec-path-from-shell-PATH)
+(setenv "PATH" (concat "~/.local/bin:" "/usr/local/bin:" (getenv "PATH")))
 
 ;; No bars pls
 (menu-bar-mode -1)
@@ -159,6 +168,34 @@
 (define-key key-translation-map [dead-diaeresis] "\"")
 (define-key key-translation-map [S-dead-diaeresis] "\"")
 (define-key key-translation-map [dead-tilde] "~")
+
+
+(defun prot/keyboard-quit-dwim ()
+  "Do-What-I-Mean behaviour for a general `keyboard-quit'.
+
+The generic `keyboard-quit' does not do the expected thing when
+the minibuffer is open.  Whereas we want it to close the
+minibuffer, even without explicitly focusing it.
+
+The DWIM behaviour of this command is as follows:
+
+- When the region is active, disable it.
+- When a minibuffer is open, but not focused, close the minibuffer.
+- When the Completions buffer is selected, close it.
+- In every other case use the regular `keyboard-quit'."
+  (interactive)
+  (cond
+   ((region-active-p)
+    (keyboard-quit))
+   ((derived-mode-p 'completion-list-mode)
+    (delete-completion-window))
+   ((> (minibuffer-depth) 0)
+    (abort-recursive-edit))
+   (t
+    (keyboard-quit))))
+
+(define-key global-map (kbd "C-g") #'prot/keyboard-quit-dwim)
+
 
 ;; macOS config
 (if (system-is-mac)

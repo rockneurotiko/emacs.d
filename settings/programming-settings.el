@@ -34,7 +34,7 @@
 (require 'markdown-settings)
 
 ;;--RUST
-;; (require 'rust-settings)
+(require 'rust-settings)
 
 ;;--CLOJURE
 ;; (require 'clojure-settings)
@@ -46,7 +46,10 @@
 (require 'graphql-settings)
 
 ;; LSP!!
-(require 'lsp-settings)
+;; (require 'lsp-settings)
+(require 'eglot-settings)
+
+(require 'treesitter-settings)
 
 ;; Other langs
 ;; (require 'otherlangs-settings)

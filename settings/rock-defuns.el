@@ -101,4 +101,26 @@ region\) apply comment-or-uncomment to the current line"
   (forward-line 1)
   (insert(calc-eval '("evalv($)" calc-internal-prec 18) 'num cLine)))
 
+
+
+(defun tws-region-to-process (arg beg end)
+  "Send the current region to a process buffer.
+The first time it's called, will prompt for the buffer to
+send to. Subsequent calls send to the same buffer, unless a
+prefix argument is used (C-u), or the buffer no longer has an
+active process."
+  (interactive "P\nr")
+  (if (or arg ;; user asks for selection
+          (not (boundp 'tws-process-target)) ;; target not set
+          ;; or target is not set to an active process:
+          (not (process-live-p (get-buffer-process
+                                tws-process-target))))
+      (setq tws-process-target
+            (completing-read
+             "Process: "
+             (seq-map (lambda (el) (buffer-name (process-buffer el)))
+                      (process-list)))))
+  (process-send-region tws-process-target beg end)
+  (switch-to-buffer-other-window tws-process-target))
+
 (provide 'rock-defuns)

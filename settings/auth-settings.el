@@ -3,10 +3,10 @@
 (setq auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
 ;;; use the Secrets API Login collection
 ;;; (see Secret Service API)
-(setq auth-sources '("secrets:Login"))
+;; (setq auth-sources '("secrets:Login"))
 ;;; use pass (~/.password-store)
 ;;; (see The Unix password store)
-(auth-source-pass-enable)
+;; (auth-source-pass-enable)
 ;;; JSON data in format [{ "machine": "SERVER",
 ;;; "login": "USER", "password": "PASSWORD" }...]
 ;; (setq auth-sources '("~/.authinfo.json.gpg"))

@@ -11,13 +11,48 @@
   :bind (("C-z" . undo)
          ("C-S-z" . redo)))
 
-(use-package treesit-auto
-  :ensure t
-  :custom
-  (treesit-auto-install 'prompt)
+(use-package ultra-scroll
+  :straight (ultra-scroll :host github :repo "jdtsmith/ultra-scroll")
+  :init
+  (setq scroll-conservatively 101 ; important!
+        scroll-margin 0)
   :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
+  (ultra-scroll-mode 1))
+
+(use-package helpful
+  :ensure t
+  :defer t
+  :bind
+        (("C-h f" . helpful-callable)
+         ("C-h v" . helpful-variable)
+         ("C-h k" . helpful-key)
+         ("C-h x" . helpful-command)
+         ("C-h F" . helpful-function)
+         ("C-c C-d" . helpful-at-point)))
+
+(use-package bufferfile
+  :ensure t
+  :straight (bufferfile
+             :type git
+             :host github
+             :repo "jamescherti/bufferfile.el")
+  :config
+  (setq bufferfile-use-vc t))
+
+(use-package persist-text-scale
+  :ensure t
+  :straight (persist-text-scale
+             :type git
+             :host github
+             :repo "jamescherti/persist-text-scale.el")
+  :custom
+  ;; Time interval, in seconds, between automatic saves of text scale data.
+  ;; If set to an integer value, enables periodic autosaving of persisted text
+  ;; scale information at the specified interval.
+  ;; If set to nil, disables timer-based autosaving entirely.
+  (persist-text-scale-autosave-interval (* 7 60))
+  :config
+  (persist-text-scale-mode))
 
 (use-package snap-indent
   :ensure t
@@ -39,9 +74,9 @@
   :config
   (rg-enable-default-bindings))
 
-(use-package helm-rg
-  :ensure t
-  :bind ("C-c r g" . helm-rg))
+;; (use-package helm-rg
+;;   :ensure t
+;;   :bind ("C-c r g" . helm-rg))
 
 (use-package plantuml-mode
   :disabled t
@@ -83,12 +118,38 @@
   :bind (("C-S-s" . phi-search)
          ("C-S-r" . phi-search-backward)))
 
+(use-package anzu
+  :ensure t
+  :diminish anzu-mode
+  :config
+  (global-anzu-mode +1)
+  (global-set-key [remap query-replace] 'anzu-query-replace)
+  (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
+
+  (custom-set-variables
+   '(anzu-mode-lighter "")
+   '(anzu-replace-to-string-separator " => ")
+   )
+  )
+
 (use-package which-key
   :ensure t
+  :diminish which-key-mode
   :init
   (which-key-mode)
   :config
   (which-key-setup-side-window-right))
+
+
+;; (use-package which-key-posframe
+;;   :straight (:host github :repo "yanghaoxie/which-key-posframe" :files ("*.el"))
+;;   :config
+;;   (which-key-posframe-mode)
+;;   (setq which-key-posframe-poshandler 'posframe-poshandler-frame-bottom-center))
+
+;; (use-package mini-ontop
+;;   :straight (:host github :repo "hkjels/mini-ontop.el" :files ("*.el"))
+;;   :config (mini-ontop-mode 1))
 
 (use-package discover-my-major
   :ensure t
@@ -152,6 +213,25 @@
   (setq ranger-override-dired t)
   :bind ("C-c d" . ranger))
 
+(use-package dired-subtree
+  :ensure t
+  :after dired
+  :bind
+  ( :map dired-mode-map
+    ("<tab>" . dired-subtree-toggle)
+    ("TAB" . dired-subtree-toggle)
+    ("<backtab>" . dired-subtree-remove)
+    ("S-TAB" . dired-subtree-remove))
+  :config
+  (setq dired-subtree-use-backgrounds nil))
+
+(use-package float-narrow-indirect
+  :straight (:host github :repo "yibie/float-narrow-indirect" :files ("*.el"))
+  :bind
+  (("C-c n f" . fni-narrow-to-region-floating)
+   ("C-c n t" . fni-toggle-focus)
+   ("C-c n c" . fni-clear-aggregation)))
+
 (use-package smartscan
   :defer t
   :config (global-smartscan-mode t))
@@ -196,12 +276,14 @@
 
 (use-package smartparens
   :ensure t
+  :diminish smartparens-mode
   :config
   (require 'smartparens-config)
   (smartparens-global-mode))
 
 (use-package emojify
   :ensure t
+  :diminish emojify-mode
   :config
   (global-emojify-mode))
 
@@ -215,6 +297,10 @@
   :ensure t
   :config
   (direnv-mode))
+
+(use-package delsel
+  :ensure nil ; no need to install it as it is built-in
+  :hook (after-init . delete-selection-mode))
 
 (defun set-uniquify ()
   (require 'uniquify)

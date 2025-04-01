@@ -8,7 +8,13 @@
 ;; Package
 (require 'package-settings)
 
+(require 'unicode-settings)
+
 (require 'rock-defuns)
+(keymap-global-set "C-c e" 'tws-region-to-process)
+
+(require 'dashboard-settings)
+
 (require 'custom-functions)
 (require 'auth-settings)
 (require 'general-settings)
@@ -23,7 +29,8 @@
 ;;---------;
 (require 'theme-settings)
 (set-full-paren)
-(set-sanityinc)
+;; (set-sanityinc)
+(set-catppuccin)
 ;; (set-random-theme)
 
 ;;------------;
@@ -50,6 +57,8 @@
 ;; plantuml
 (set-uniquify)  ;; Buffer names uniques! (set-auto-package) ;; Auto update all
 
+(require 'casual-settings)
+
 (require 'projectile-settings)
 
 (require 'auto-complete-settings)
@@ -66,7 +75,7 @@
 ;;      MAGIT     ;
 ;;----------------;
 (require 'magit-settings)
-;; (require 'copilot-settings)
+(require 'copilot-settings)
 
 ;;----------------;
 ;;    SPOTIFY     ;
@@ -79,6 +88,8 @@
 (require 'company-settings)
 (require 'flycheck-settings)
 (require 'programming-settings)
+
+(require 'aider-settings)
 
 ;; MINE SHIT
 (defun tegmacs-load ()

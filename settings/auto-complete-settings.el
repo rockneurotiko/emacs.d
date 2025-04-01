@@ -5,7 +5,7 @@
 (use-package orderless
     :ensure t
     :config
-    (setq completion-styles '(orderless basic)
+    (setq completion-styles '(orderless partial-completion basic)
           completion-category-defaults nil
           completion-category-overrides '((file (styles basic partial-completion)))))
 
@@ -16,7 +16,7 @@
     (corfu-quit-at-boundary nil)
     (corfu-quit-no-match t)
     (corfu-cycle t)
-    (corfu-auto nil)
+    (corfu-auto t)
     :init
     (global-corfu-mode))
 
@@ -33,8 +33,8 @@
         ;; ...
         (t :style "cod" :icon "code" :face font-lock-warning-face))))
 
-
 (use-package cape
+  :ensure t
   ;; Bind dedicated completion commands
   ;; Alternative prefix keys: C-c p, M-p, M-+, ...
   :bind (("C-c p p" . completion-at-point) ;; capf

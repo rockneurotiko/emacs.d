@@ -26,16 +26,15 @@
   (projectile-global-mode)
   :bind
   ("C-c w r" . 'rock/projectile-relative-path-kill-ring)
-  ("C-c w l" . 'rock/projectile-relative-path-with-line-number-kill-ring))
-
+  ("C-c w l" . 'rock/projectile-relative-path-with-line-number-kill-ring)
+  ("C-c r c" . projectile-find-file))
 
 (use-package helm-projectile
   :ensure t
   :config
   (helm-projectile-on)
   :bind
-  ("C-c r p" . helm-projectile-rg)
-  ("C-c r c" . helm-projectile-find-file))
+  ("C-c r p" . helm-projectile-rg))
 
 ;; (use-package consult-projectile
 ;;   :ensure t

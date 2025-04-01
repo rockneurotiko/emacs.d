@@ -1,9 +1,30 @@
+(defun zap-to-char-save (arg char)
+    "Zap to a character, but save instead of kill."
+    (interactive "p\ncZap to char: ")
+    (save-excursion
+      (zap-to-char arg char)
+      (yank)))
+
+(defun rock--remove-last-kill-ring-entry ()
+  (interactive)
+  (when kill-ring
+    (setq kill-ring (cdr kill-ring)))
+
+  (when kill-ring-yank-pointer
+    (setq kill-ring-yank-pointer kill-ring))
+
+  )
+
+
 (defun rock--up-directory (arg)
   "Move up a directory (delete backwards to /)."
-  (interactive "p")
+  (interactive "pUp directory: ")
   (if (string-match-p "/." (minibuffer-contents))
-      (zap-up-to-char (- arg) ?/)
-    (delete-minibuffer-contents)))
+      (progn
+        (zap-up-to-char (- arg) ?/)
+        (rock--remove-last-kill-ring-entry))
+    (delete-minibuffer-contents)
+    ))
 
 (use-package vertico
   :ensure t
@@ -15,31 +36,59 @@
   :config
   (setq vertico-cycle t)
   (setq vertico-resize nil)
-  :init
-  (vertico-mode 1))
+  :hook (after-init . vertico-mode))
+
+;; (use-package vertico-posframe
+;;   :straight (:host github :repo "tumashu/vertico-posframe" :files ("*.el"))
+;;   :config
+;;   (vertico-posframe-mode 1))
 
 (use-package marginalia
   :ensure t
   :bind (:map minibuffer-local-map
          ("M-A" . marginalia-cycle))
-  :init
-  (marginalia-mode))
+  :hook (after-init . marginalia-mode))
+
+(defun rock--get-region-text ()
+  (if (use-region-p)
+      (buffer-substring-no-properties (region-beginning) (region-end))))
+
+(defun consult-ripgrep-single-file ()
+    "Call `consult-ripgrep' for the current buffer (a single file)."
+    (interactive)
+    (let ((consult-project-function nil))
+      (consult-ripgrep (list (shell-quote-argument buffer-file-name)) (rock--get-region-text))))
+
+(defun consult-ripgrep-directory ()
+    "Call `consult-ripgrep' for the current buffer (a single file)."
+    (interactive)
+    (let ((consult-project-function nil))
+      (consult-ripgrep nil (rock--get-region-text))))
+
+(defun consult-ripgrep-projectile ()
+    "Call `consult-ripgrep' for projectile."
+    (interactive)
+    (let ((consult-project-function (lambda (_) (projectile-project-root))))
+      (consult-ripgrep nil (rock--get-region-text))))
 
 (use-package consult
   :ensure t
   :bind (;; A recursive grep
          ("M-s M-g" . consult-ripgrep)
+         ("C-c r g" . consult-ripgrep-directory)
+         ("C-c r f" . consult-ripgrep-single-file)
+         ("C-c r p" . consult-ripgrep-projectile)
          ;; Search for files names recursively
          ("M-s M-f" . consult-find)
-         ;; Search through the outline (headings) of the file
+         ;; search through the outline (headings) of the file
          ("M-s M-o" . consult-outline)
          ("M-s M-i" . consult-imenu)
-         ;; Search the current buffer
+         ;; search the current buffer
          ("M-s M-l" . consult-line)
          ("M-g g" . consult-goto-line)
-         ;; Switch to another buffer, or bookmarked file, or recently
+         ;; switch to another buffer, or bookmarked file, or recently
          ;; opened file.
-         ;; ("M-s M-b" . consult-buffer)
+         ;; ("m-s m-b" . consult-buffer)
          ("C-x b" . consult-buffer)
          ("M-y" . consult-yank-pop)
          :map isearch-mode-map
@@ -52,14 +101,43 @@
   (setq consult-project-function (lambda (_) (projectile-project-root)))
   (recentf-mode 1))
 
-(use-package consult-lsp
+(use-package embark
   :ensure t
-  :bind (
-         :map lsp-mode-map
-              ("M-s i" . consult-lsp-file-symbols)
-              )
+
+  :bind
+  (("C-." . embark-act)         ;; pick some comfortable binding
+   ("C-;" . embark-dwim)        ;;
+   ("C-h b" . embark-bindings)) ;; alternative for `describe-bindings'
+
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+
+  :config
+
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+;; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :ensure t ; only need to install it, embark loads it after consult if found
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
+(use-package consult-lsp
+  :after lsp-mode
+  :bind (:map lsp-mode-map ("M-s i" . consult-lsp-file-symbols))
   :init
   (define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols))
+
+(use-package consult-eglot
+  :ensure t
+  :after eglot
+  :bind ("M-s i" . consult-eglot-symbols))
+
 
 (use-package emacs
   :init
