@@ -1,3 +1,8 @@
+(use-package treesit
+  :straight (:type built-in)
+  :custom
+  (treesit-font-lock-level 4))
+
 (use-package treesit-auto
   :ensure t
   :custom

@@ -3,8 +3,8 @@
 
 (use-package elixir-ts-mode
   :ensure t
-  :config
-  (set-face-attribute 'elixir-ts-atom-face nil :inherit font-lock-builtin-face)
+  ;; :config
+  ;; (set-face-attribute 'elixir-ts-atom-face nil :inherit font-lock-builtin-face)
   )
 
 

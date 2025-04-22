@@ -13,9 +13,9 @@
 
 (use-package ultra-scroll
   :straight (ultra-scroll :host github :repo "jdtsmith/ultra-scroll")
-  :init
-  (setq scroll-conservatively 101 ; important!
-        scroll-margin 0)
+  :custom
+  (scroll-conservatively 101) ; important!
+  (scroll-margin 0)
   :config
   (ultra-scroll-mode 1))
 
@@ -36,8 +36,8 @@
              :type git
              :host github
              :repo "jamescherti/bufferfile.el")
-  :config
-  (setq bufferfile-use-vc t))
+  :custom
+  (bufferfile-use-vc t))
 
 (use-package persist-text-scale
   :ensure t
@@ -74,10 +74,6 @@
   :config
   (rg-enable-default-bindings))
 
-;; (use-package helm-rg
-;;   :ensure t
-;;   :bind ("C-c r g" . helm-rg))
-
 (use-package plantuml-mode
   :disabled t
   ;; :ensure t
@@ -94,12 +90,10 @@
   (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
   (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode)))
 
-(use-package smooth-scrolling
-  :ensure t)
-
-;; (use-package auto-complete
+;; (use-package smooth-scrolling
 ;;   :ensure t
-;;   :config (global-auto-complete-mode t))
+;;   :init
+;;   (smooth-scrolling-mode 1))
 
 (use-package indent-guide
   :disabled t
@@ -111,12 +105,22 @@
   :ensure t
   :bind (("C->" . mc/mark-next-like-this)
          ("C-<" . mc/mark-previous-like-this)
-         ("C-c C-<" . mc/mark-all-like-this)))
+         ("C-M->" . mc/unmark-next-like-this)
+         ("C-M-<" . mc/unmark-previous-like-this)
+         ("C-c m a" . mc/mark-all-like-this)
+         ("C-c m e" . mc/edit-lines)
+         ("C-c m r" . mc/mark-all-in-region)
+         ("C-c m d" . mc/mark-all-dwim)
+         ("C-c m s" . mc/sort-regions)
+         ("C-c m a" . mc/vertical-align-with-space)
+         ))
 
 (use-package phi-search
   :ensure t
-  :bind (("C-S-s" . phi-search)
-         ("C-S-r" . phi-search-backward)))
+  :bind (("C-s" . phi-search)
+         ("C-S-s" . isearch-forward)
+         ("C-r" . phi-search-backward)
+         ("C-S-r" . isearch-backward)))
 
 (use-package anzu
   :ensure t
@@ -134,10 +138,14 @@
 
 (use-package which-key
   :ensure t
+  :straight (:type built-in)
   :diminish which-key-mode
-  :init
-  (which-key-mode)
+  :custom
+  (which-key-popup-type 'side-window)
+  (which-key-side-window-max-width 120)
+  (which-key-side-window-max-height 50)
   :config
+  (which-key-mode)
   (which-key-setup-side-window-right))
 
 
@@ -151,39 +159,17 @@
 ;;   :straight (:host github :repo "hkjels/mini-ontop.el" :files ("*.el"))
 ;;   :config (mini-ontop-mode 1))
 
-(use-package discover-my-major
-  :ensure t
-  :bind (("C-h M-m" . discover-my-major)
-         ("C-h M-S-m" . discover-my-mode)))
+;; (use-package discover-my-major
+;;   :ensure t
+;;   :bind (("c-h m-m" . discover-my-major)
+;;          ("c-h m-s-m" . discover-my-mode)))
 
-(use-package helm-systemd
-  :ensure t)
+;; (use-package helm-systemd
+;;   :ensure t)
 
 (use-package odf-mode
   :disabled t
   :ensure t)
-
-(use-package edit-server
-  :disabled t
-  :ensure t
-  :init
-  (edit-server-start))
-
-(use-package zone
-  :disabled t
-  :ensure t
-  :config (zone-when-idle 120))
-
-(use-package auto-package-update
-  :disabled t
-  :ensure t
-  :config (auto-package-update-maybe))
-
-(use-package dirtree
-  :disabled t
-  :ensure t
-  :config (autoload 'dirtree "dirtree" "Add directory to tree view" t)
-  :bind ("C-o" . dirtree-show))
 
 (use-package miniedit
   :defer t
@@ -191,64 +177,120 @@
   :commands minibuffer-edit
   :init (miniedit-install))
 
-;; Enable guide-key-mode
-(use-package guide-key
-  :disabled t
-  :defer t
-  :diminish guide-key-mode
-  :config
-  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c"))
-  (guide-key-mode 1))
-
 (use-package switch-window
   :ensure t
-  :bind (("C-x o" . switch-window)))
+  :bind (("C-x o" . switch-window))
+  :custom
+  (switch-window-minibuffer-shortcut ?z))
 
-(use-package ranger
+(use-package swap-buffers
+  :ensure t
+  :bind (("C-x C-b" . swap-buffers)))
+
+;; (use-package ranger
+;;   :ensure t
+;;   :init
+;;   (setq ranger-parent-depth 2)
+;;   (setq ranger-excluded-extensions '("mkv" "iso" "mp4" "mp3"))
+;;   (setq ranger-max-preview-size 10)
+;;   (setq ranger-override-dired t)
+;;   :bind ("C-c d" . ranger))
+
+
+
+(use-package dired
+  :config
+  (setq dired-listing-switches
+        "-l --almost-all --human-readable --group-directories-first --no-group")
+  ;; this command is useful when you want to close the window of `dirvish-side'
+  ;; automatically when opening a file
+  (put 'dired-find-alternate-file 'disabled nil))
+
+(use-package dirvish
   :ensure t
   :init
-  (setq ranger-parent-depth 2)
-  (setq ranger-excluded-extensions '("mkv" "iso" "mp4" "mp3"))
-  (setq ranger-max-preview-size 10)
-  (setq ranger-override-dired t)
-  :bind ("C-c d" . ranger))
+  (dirvish-override-dired-mode)
 
-(use-package dired-subtree
-  :ensure t
-  :after dired
-  :bind
-  ( :map dired-mode-map
-    ("<tab>" . dired-subtree-toggle)
-    ("TAB" . dired-subtree-toggle)
-    ("<backtab>" . dired-subtree-remove)
-    ("S-TAB" . dired-subtree-remove))
+
+  :custom
+  (dirvish-quick-access-entries ; It's a custom option, `setq' won't work
+   '(("h" "~/"                          "Home")
+     ("d" "~/Downloads/"                "Downloads")
+     ("i" "~/Git/itinerary-core/"     "Itinerary core")
+     ("d" "~/Git/dotfiles/"     "Dotfiles")
+     ("g" "~/Git"     "Git")
+     ("o" "~/Git/orgs/roam/"     "Org files")
+     ;; ("m" "/mnt/"                       "Drives")
+     ;; ("e" "/sudo:root@localhost:/etc")  "Modify program settings"
+     ))
+
   :config
-  (setq dired-subtree-use-backgrounds nil))
+  (setq dirvish-mode-line-format
+        '(:left (sort symlink) :right (omit yank index)))
+  (setq dirvish-attributes           ; The order *MATTERS* for some attributes
+        '(vc-state subtree-state nerd-icons collapse git-msg file-time file-size)
+        dirvish-side-attributes
+        '(vc-state nerd-icons collapse file-size))
+  :bind ; Bind `dirvish-fd|dirvish-side|dirvish-dwim' as you see fit
+  (("C-c d" . dirvish)
+   :map dirvish-mode-map               ; Dirvish inherits `dired-mode-map'
+   (";"   . dired-up-directory)        ; So you can adjust `dired' bindings here
+   ("?"   . dirvish-dispatch)          ; [?] a helpful cheatsheet
+   ("a"   . dirvish-setup-menu)        ; [a]ttributes settings:`t' toggles mtime, `f' toggles fullframe, etc.
+   ("i"   . dirvish-file-info-menu)    ; file [i]nfo
+   ("f"   . dirvish-fd-switches-menu)   ; [f]d switches
+   ("j"   . dirvish-fd-jump)      ; [r]ecent visited
+   ("o"   . dirvish-quick-access)      ; [o]pen `dirvish-quick-access-entries'
+   ("s"   . dirvish-quicksort)         ; [s]ort flie list
+   ("r"   . dirvish-history-jump)      ; [r]ecent visited
+   ("l"   . dirvish-ls-switches-menu)  ; [l]s command flags
+   ("v"   . dirvish-vc-menu)           ; [v]ersion control commands
+   ("*"   . dirvish-mark-menu)
+   ("y"   . dirvish-yank-menu)
+   ("N"   . dirvish-narrow)
+   ("/"   . dirvish-fd)
+   ("^"   . dirvish-history-last)
+   ("TAB" . dirvish-subtree-toggle)
+   ("M-f" . dirvish-history-go-forward)
+   ("M-b" . dirvish-history-go-backward)
+   ("M-e" . dirvish-emerge-menu))
+  )
 
-(use-package float-narrow-indirect
-  :straight (:host github :repo "yibie/float-narrow-indirect" :files ("*.el"))
-  :bind
-  (("C-c n f" . fni-narrow-to-region-floating)
-   ("C-c n t" . fni-toggle-focus)
-   ("C-c n c" . fni-clear-aggregation)))
+(require 'dirvish)
+(dirvish-define-preview
+ eza
+ (file)
+ "Use `eza' to generate directory preview."
+ :require ("eza") ; tell Dirvish to check if we have the executable
+ (when (file-directory-p file) ; we only interest in directories here
+   `(shell . ("eza" "-al" "--color=always" "--icons=always"
+              "--group-directories-first" ,file))))
+
+(push 'eza dirvish-preview-dispatchers)
+
+
+;; (use-package dired-subtree
+;;   :ensure t
+;;   :after dired
+;;   :bind
+;;   ( :map dired-mode-map
+;;     ("<tab>" . dired-subtree-toggle)
+;;     ("TAB" . dired-subtree-toggle)
+;;     ("<backtab>" . dired-subtree-remove)
+;;     ("S-TAB" . dired-subtree-remove))
+;;   :config
+;;   (setq dired-subtree-use-backgrounds nil))
+
+;; (use-package float-narrow-indirect
+;;   :straight (:host github :repo "yibie/float-narrow-indirect" :files ("*.el"))
+;;   :bind
+;;   (("C-c n f" . fni-narrow-to-region-floating)
+;;    ("C-c n t" . fni-toggle-focus)
+;;    ("C-c n c" . fni-clear-aggregation)))
 
 (use-package smartscan
-  :defer t
+  :ensure t
   :config (global-smartscan-mode t))
-
-(use-package sx
-  :disabled t
-  ;; :ensure t
-  :config
-  (bind-keys :prefix "C-c s"
-             :prefix-map my-sx-map
-             :prefix-docstring "Global keymap for SX."
-             ("q" . sx-tab-all-questions)
-             ("i" . sx-inbox)
-             ("o" . sx-open-link)
-             ("u" . sx-tab-unanswered-my-tags)
-             ("a" . sx-ask)
-             ("s" . sx-search)))
 
 ;; (use-package outline-presentation
 ;;     ;; :disabled t
@@ -259,27 +301,28 @@
 ;;     (add-hook 'outline-presentation-mode-hook
 ;;               (lambda () (text-scale-increase 3))))
 
-
-(defun set-outline ()
-  ;; outline-mode
-  (add-to-list 'auto-mode-alist '("\\.outline\\'" . outline-mode))
-  (require 'outline-presentation)
-  (add-hook 'outline-presentation-mode-hook
-            (lambda () (text-scale-increase 3))))
-
-(defun set-realtime-markdown ()
-  (load "~/.emacs.d/plugins/websocket.el")
-  (package-require 'websocket)
-  (load "~/.emacs.d/plugins/emacs-realtime-markdown-viewer/realtime-markdown-viewer.el")
-  (package-require 'realtime-markdown-viewer))
-
-
 (use-package smartparens
   :ensure t
   :diminish smartparens-mode
   :config
   (require 'smartparens-config)
-  (smartparens-global-mode))
+  (smartparens-global-mode)
+  :hook
+  ;; (prog-mode . turn-on-smartparens-strict-mode)
+  (markdown-mode . turn-on-smartparens-strict-mode)
+  :bind
+  (("C-M-a" . sp-beginning-of-sexp)
+   ("C-M-e" . sp-end-of-sexp)
+   ("C-M-<down>" . sp-down-sexp)
+   ("C-M-<up>" . sp-up-sexp)
+   ("M-<down>" . sp-backward-down-sexp)
+   ("M-<up>" . sp-backward-up-sexp)
+   ("C-M-f" . sp-forward-sexp)
+   ("C-M-b" . sp-backward-sexp)
+   ("M-<backspace>" . backward-kill-word)
+   ("C-<backspace>" . sp-backward-kill-word)
+   ([remap sp-backward-kill-word] . backward-kill-word)
+   ))
 
 (use-package emojify
   :ensure t
@@ -299,31 +342,35 @@
   (direnv-mode))
 
 (use-package delsel
-  :ensure nil ; no need to install it as it is built-in
+  :ensure t
+  :straight (:type built-in)
   :hook (after-init . delete-selection-mode))
 
-(defun set-uniquify ()
-  (require 'uniquify)
-  (setq uniquify-buffer-name-style 'forward))
+(use-package uniquify
+  :ensure t
+  :straight (:type built-in)
+  :custom
+  (uniquify-buffer-name-style 'forward))
 
-(defun set-buffer-expose ()
-  (load "~/.emacs.d/plugins/buffer-expose/buffer-expose.el")
-  (require 'buffer-expose)
-  (buffer-expose-mode 1)
+;; (defun set-buffer-expose ()
+;;   (load "~/.emacs.d/plugins/buffer-expose/buffer-expose.el")
+;;   (require 'buffer-expose)
+;;   (buffer-expose-mode 1)
 
-  (defvar buffer-expose-mode-map
-    (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "<s-tab>") 'buffer-expose)
-      (define-key map (kbd "<C-tab>") 'buffer-expose-no-stars)
-      (define-key map (kbd "C-c <C-tab>") 'buffer-expose-current-mode)
-      (define-key map (kbd "C-c C-d") 'buffer-expose-dired-buffers)
-      (define-key map (kbd "C-c C-*") 'buffer-expose-stars)
-      map)
-    "Mode map for command `buffer-expose-mode'."))
+;;   (defvar buffer-expose-mode-map
+;;     (let ((map (make-sparse-keymap)))
+;;       (define-key map (kbd "<s-tab>") 'buffer-expose)
+;;       (define-key map (kbd "<C-tab>") 'buffer-expose-no-stars)
+;;       (define-key map (kbd "C-c <C-tab>") 'buffer-expose-current-mode)
+;;       (define-key map (kbd "C-c C-d") 'buffer-expose-dired-buffers)
+;;       (define-key map (kbd "C-c C-*") 'buffer-expose-stars)
+;;       map)
+;;     "Mode map for command `buffer-expose-mode'."))
 
 (defun use-terraform ()
   (use-package terraform-mode
     :ensure t
+    :disabled t
     :config
     (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode)))
 

@@ -1,7 +1,7 @@
 (use-package avy
   :ensure t
   :bind (("C-c SPC" . avy-goto-char-timer)
-         ("C-c C-l" . avy-goto-line)))
+         ("M-g C-g" . avy-goto-line)))
 
 (use-package ace-jump-mode
   :disabled t

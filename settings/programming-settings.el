@@ -52,7 +52,7 @@
 (require 'treesitter-settings)
 
 ;; Other langs
-;; (require 'otherlangs-settings)
+(require 'otherlangs-settings)
 
 (provide 'programming-settings)
 ;;; programming-settings.el ends here

@@ -1,28 +1,32 @@
 (use-package nerd-icons
   :ensure t
-  ;; :custom
+  :custom
   ;; The Nerd Font you want to use in GUI
   ;; "Symbols Nerd Font Mono" is the default and is recommended
   ;; but you can use any other Nerd Font if you want
-  ;; (nerd-icons-font-family "Symbols Nerd Font Mono")
+  (nerd-icons-font-family "Symbols Nerd Font Mono")
   )
 
 (use-package nerd-icons-completion
   :ensure t
-  :after marginalia
+  :after (nerd-icons marginalia vertico)
   :config
-  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+  (nerd-icons-completion-mode)
+  ;; (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup)
+  :hook
+  (marginalia-mode . nerd-icons-completion-marginalia-setup))
 
 (use-package nerd-icons-corfu
   :ensure t
-  :after corfu
+  :after (nerd-icons corfu)
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
-(use-package nerd-icons-dired
-  :ensure t
-  :hook
-  (dired-mode . nerd-icons-dired-mode))
+;; (use-package nerd-icons-dired
+;;   :ensure t
+;;   :after nerd-icons
+;;   :hook
+;;   (dired-mode . nerd-icons-dired-mode))
 
 (defun font-exists-p (font)
   "check if font exists"
@@ -30,6 +34,9 @@
 
 (defvar rock--fontname "0xProto Nerd Font Mono")
 (defvar rock--fontname-variable "0xProto Nerd Font Mono")
+
+;; (defvar rock--fontname "DejaVu Sans Mono")
+;; (defvar rock--fontname-variable "DejaVu Sans Mono")
 (defvar rock--fontsize 105)
 
 (defun set-font-size ()

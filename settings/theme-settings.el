@@ -1,9 +1,4 @@
 ;; THEMES! :-)
-;; Functions to apply themes :)
-
-(defun random-elt (choices)
-  "Choose an element from a list at random."
-  (elt choices (random (length choices))))
 
 (use-package mood-line
   :ensure t
@@ -16,57 +11,44 @@
   :custom
   (mood-line-glyph-alist mood-line-glyphs-fira-code))
 
-(defun set-random-theme ()
-  ;; Select one random from:
-  ;; [spolsky, granger, cyberpunk, ample, grandshell, monokai, sanityinc-tomorrow-night, sanityinc-tomorrow-eighties]
-  (load-theme
-   (random-elt
-    '(spolsky
-      granger
-      cyberpunk
-      ample
-      grandshell
-      monokai
-      sanityinc-tomorrow-night
-      sanityinc-tomorrow-eighties)) t))
-
-
 (defun set-darkokai ()
+  ;; Dark with red and green
   (use-package darkokai-theme
     :ensure t
     :config (load-theme 'darkokai t)))
 
-(defun set-cyberpunk ()
-  (use-package cyberpunk-theme
-    :ensure t
-    :config (load-theme 'cyberpunk t)))
-
-(defun set-sanityinc ()
-  (use-package color-theme-sanityinc-tomorrow
-    :ensure t
-    :config
-    (color-theme-sanityinc-tomorrow-eighties)))
-
 (defun set-catppuccin ()
-  (straight-use-package 'catppuccin-theme)
-  (setq catppuccin-flavor 'frappe) ;; 'latte, 'frappe, 'macchiato, or 'mocha
-  ;; (catppuccin-reload)
-  (load-theme 'catppuccin :no-confirm))
+  (use-package catppuccin-theme
+    :ensure t
+    :init
+    (setq catppuccin-flavor 'frappe) ;; 'latte, 'frappe, 'macchiato, or 'mocha
+    ;; (catppuccin-reload)
+    (load-theme 'catppuccin :no-confirm)
+    ))
 
-;; Moe Worth!
-(defun set-moe ()
-  (use-package moe-theme
-  :ensure t
-  :config
-  (powerline-moe-theme)
-  (moe-dark)
-  (moe-theme-set-color 'magenta)))
+(defun set-ef-theme ()
+  (use-package ef-themes
+    :ensure t
+    :init
+
+    (setq ef-themes-to-toggle '(ef-summer ef-dream ef-owl))
+
+    ;; They are nil by default...
+    (setq ef-themes-mixed-fonts t
+          ef-themes-variable-pitch-ui t)
+
+    ;; Disable all other themes to avoid awkward blending:
+    (mapc #'disable-theme custom-enabled-themes)
+
+    ;; Load the theme of choice:
+    (load-theme 'ef-dream :no-confirm)))
 
 (defun set-full-paren ()
   (show-paren-mode t)
   (setq show-paren-style 'expression))
 
 (use-package indent-bars
+  :ensure t
   :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
   :custom
   (indent-bars-treesit-support t)

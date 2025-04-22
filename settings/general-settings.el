@@ -161,6 +161,9 @@
 ;; Mute ding sound
 (setq visible-bell 1)
 
+;; Visit true name on symlinks
+(setq find-file-visit-truename t)
+
 ;; dead keys
 (define-key key-translation-map [dead-grave] "`")
 (define-key key-translation-map [dead-acute] "'")
@@ -169,6 +172,14 @@
 (define-key key-translation-map [S-dead-diaeresis] "\"")
 (define-key key-translation-map [dead-tilde] "~")
 
+;; Rotate window
+(use-package emacs
+  :bind
+  ("C-x C-0" . rotate-windows-back)
+  ("C-x C-1" . rotate-windows)
+  ("C-x C-2" . flip-window-layout-vertically)
+  ("C-x C-3" . flip-window-layout-horizontally)
+  ("C-x C-4" . transpose-window-layout))
 
 (defun prot/keyboard-quit-dwim ()
   "Do-What-I-Mean behaviour for a general `keyboard-quit'.
@@ -210,5 +221,33 @@ The DWIM behaviour of this command is as follows:
        (add-to-list 'exec-path "/usr/local/bin")
        (message "Loaded macOS config.")))
 
+
+;; Hack for wayland copy-paste
+(setq wl-copy-process nil)
+(setq wl-last-copied nil)
+(defun wl-copy (text)
+  (if (not (process-live-p wl-copy-process))
+      (setq wl-copy-process (make-process :name "wl-copy"
+                                      :buffer nil
+                                      :command '("wl-copy" "-o" "-f" "-n")
+                                      :connection-type 'pipe
+                                      :noquery t)))
+
+  (setq wl-last-copied text)
+  (process-send-string wl-copy-process text)
+  (process-send-eof wl-copy-process))
+
+(defun wl-delete-last ()
+  ;; (call-process-shell-command "cliphist list | head -n 1 | cliphist delete &" nil 0)
+  )
+
+(defun wl-paste ()
+  (let ((cliphist-value (shell-command-to-string "cliphist list | head -n 1 | cliphist decode")
+
+                        ))
+    (unless (string= cliphist-value wl-last-copied)
+        cliphist-value)))
+;; (setq interprogram-cut-function 'wl-copy)
+;; (setq interprogram-paste-function 'wl-paste)
 
 (provide 'general-settings)

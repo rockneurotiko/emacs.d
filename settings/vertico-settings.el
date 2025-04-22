@@ -10,10 +10,10 @@
   (when kill-ring
     (setq kill-ring (cdr kill-ring)))
 
-  (when kill-ring-yank-pointer
-    (setq kill-ring-yank-pointer kill-ring))
+  (wl-delete-last)
 
-  )
+  (when kill-ring-yank-pointer
+    (setq kill-ring-yank-pointer kill-ring)))
 
 
 (defun rock--up-directory (arg)
@@ -33,9 +33,9 @@
          ("<left>" . #'rock--up-directory)
          ("<right>" . vertico-insert)
          )
-  :config
-  (setq vertico-cycle t)
-  (setq vertico-resize nil)
+  :custom
+  (vertico-cycle t)
+  (vertico-resize nil)
   :hook (after-init . vertico-mode))
 
 ;; (use-package vertico-posframe

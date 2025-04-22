@@ -101,8 +101,6 @@ region\) apply comment-or-uncomment to the current line"
   (forward-line 1)
   (insert(calc-eval '("evalv($)" calc-internal-prec 18) 'num cLine)))
 
-
-
 (defun tws-region-to-process (arg beg end)
   "Send the current region to a process buffer.
 The first time it's called, will prompt for the buffer to

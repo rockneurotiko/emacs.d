@@ -1,5 +1,10 @@
+(use-package persistent-soft
+  :ensure t
+  :straight '(persistent-soft :host github :repo "rolandwalker/persistent-soft" :files ("*.el")))
+
 (use-package unicode-fonts
   :ensure t
+  :after persistent-soft
   :config
   (unicode-fonts-setup))
 

@@ -30,7 +30,8 @@
 (require 'theme-settings)
 (set-full-paren)
 ;; (set-sanityinc)
-(set-catppuccin)
+;; (set-catppuccin)
+(set-ef-theme)
 ;; (set-random-theme)
 
 ;;------------;
@@ -41,21 +42,15 @@
 ;; (emux-default-sessions)
 
 (require 'org-settings)
-(enable-beamer)
+;; (enable-beamer)
 
 ;; https://github.com/eschulte/epresent
 ;; (load-file (expand-file-name "~/.emacs.d/plugins/epresent/epresent.el"))
-(require 'presentation-settings)
+;; (require 'presentation-settings)
+
+(require 'calendar-settings)
 
 (require 'random-requires) ;; Functions for some modes and other things
-;; Undo C-z
-;; Autoindent
-;; Autocomplete
-;; Smooth scroll
-;; indent-guide
-;; multi cursor
-;; plantuml
-(set-uniquify)  ;; Buffer names uniques! (set-auto-package) ;; Auto update all
 
 (require 'casual-settings)
 
@@ -89,7 +84,7 @@
 (require 'flycheck-settings)
 (require 'programming-settings)
 
-(require 'aider-settings)
+;; (require 'aider-settings)
 
 ;; MINE SHIT
 (defun tegmacs-load ()

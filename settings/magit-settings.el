@@ -26,6 +26,6 @@
 
 (use-package git-link
   :straight (:host github :repo "sshaw/git-link")
-  :bind (("C-c l" . git-link)))
+  :bind (("C-c C-l" . git-link)))
 
 (provide 'magit-settings)
