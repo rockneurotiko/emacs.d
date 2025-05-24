@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; THEMES! :-)
 
 (use-package mood-line
@@ -31,7 +33,7 @@
     :ensure t
     :init
 
-    (setq ef-themes-to-toggle '(ef-summer ef-dream ef-owl))
+    (setq ef-themes-to-toggle '(ef-summer ef-dream))
 
     ;; They are nil by default...
     (setq ef-themes-mixed-fonts t

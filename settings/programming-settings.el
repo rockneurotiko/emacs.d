@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;;; package -- summary
 
 ;;; Commentary:
@@ -48,6 +50,8 @@
 ;; LSP!!
 ;; (require 'lsp-settings)
 (require 'eglot-settings)
+;; (require 'mcp-settings)
+(require 'llm-settings)
 
 (require 'treesitter-settings)
 

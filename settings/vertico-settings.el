@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (defun zap-to-char-save (arg char)
     "Zap to a character, but save instead of kill."
     (interactive "p\ncZap to char: ")
@@ -10,7 +12,7 @@
   (when kill-ring
     (setq kill-ring (cdr kill-ring)))
 
-  (wl-delete-last)
+  ;; (wl-delete-last)
 
   (when kill-ring-yank-pointer
     (setq kill-ring-yank-pointer kill-ring)))

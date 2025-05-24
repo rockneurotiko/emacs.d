@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; (setq lsp-bridge-elixir-lsp-server "lexical")
 
 (setq lsp-keymap-prefix "M-s")

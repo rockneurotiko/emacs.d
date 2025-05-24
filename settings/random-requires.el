@@ -1,9 +1,12 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package undo-tree
   ;; :disabled t
-  :defer t
   :ensure t
   :diminish undo-tree-mode
-  :init (defalias 'redo 'undo-tree-redo)
+  :init
+  (defalias 'undo 'undo-tree-undo)
+  (defalias 'redo 'undo-tree-redo)
   :config
   (global-undo-tree-mode)
   (setq undo-tree-visualizer-timestamps t)
@@ -51,8 +54,9 @@
   ;; scale information at the specified interval.
   ;; If set to nil, disables timer-based autosaving entirely.
   (persist-text-scale-autosave-interval (* 7 60))
-  :config
-  (persist-text-scale-mode))
+  ;; :config
+  ;; persist-text-scale-mode)
+   )
 
 (use-package snap-indent
   :ensure t
@@ -269,6 +273,14 @@
 (push 'eza dirvish-preview-dispatchers)
 
 
+(use-package deadgrep
+  :ensure t
+  :bind (("C-c r C-g" . deadgrep)))
+
+(use-package wgrep-deadgrep
+  :ensure t)
+
+
 ;; (use-package dired-subtree
 ;;   :ensure t
 ;;   :after dired
@@ -307,8 +319,22 @@
   :config
   (require 'smartparens-config)
   (smartparens-global-mode)
+  (sp-with-modes 'elixir-ts-mode
+    (sp-local-pair "do" "end" :actions '(wrap autoskip navigate))
+    (sp-local-pair "def" "end" :actions '(wrap autoskip navigate))
+    (sp-local-pair "defp" "end" :actions '(wrap autoskip navigate))
+    (sp-local-pair "defmodule" "end" :actions '(wrap autoskip navigate))
+    (sp-local-pair "fn" "end" :actions '(wrap autoskip navigate))
+    (sp-local-pair "if" "end" :actions '(wrap autoskip navigate))
+    (sp-local-pair "case" "end" :actions '(wrap autoskip navigate))
+    (sp-local-pair "for" "end" :actions '(wrap autoskip navigate))
+    (sp-local-pair "cond" "end" :actions '(wrap autoskip navigate))
+    (sp-local-pair "try" "end" :actions '(wrap autoskip navigate))
+    (sp-local-pair "receive" "end" :actions '(wrap autoskip navigate))
+    (sp-local-pair "quote" "end" :actions '(wrap autoskip navigate))
+    (sp-local-pair "defmacro" "end" :actions '(wrap autoskip navigate)))
   :hook
-  ;; (prog-mode . turn-on-smartparens-strict-mode)
+  (prog-mode . turn-on-smartparens-mode)
   (markdown-mode . turn-on-smartparens-strict-mode)
   :bind
   (("C-M-a" . sp-beginning-of-sexp)
@@ -321,8 +347,7 @@
    ("C-M-b" . sp-backward-sexp)
    ("M-<backspace>" . backward-kill-word)
    ("C-<backspace>" . sp-backward-kill-word)
-   ([remap sp-backward-kill-word] . backward-kill-word)
-   ))
+   ([remap sp-backward-kill-word] . backward-kill-word)))
 
 (use-package emojify
   :ensure t

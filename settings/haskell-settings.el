@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;;; bodil-haskell.el --- FIRE ALL MONAD TRANSFORMERS
 
 ;; Use Unicode arrows in place of ugly ASCII arrows

@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (defun eval-scala (start end)
   (interactive (list (point) (mark)))
   ;; start scala if it hasn't started yet

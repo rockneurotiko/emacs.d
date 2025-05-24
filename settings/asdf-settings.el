@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; RTX
 (if (file-exists-p "~/.local/share/rtx/shims")
     (progn

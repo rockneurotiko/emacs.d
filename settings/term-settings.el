@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (straight-use-package
  '(eat :type git
        :host codeberg

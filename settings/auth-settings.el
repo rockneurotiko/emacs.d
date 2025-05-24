@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (require 'auth-source)
 
 (setq auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))

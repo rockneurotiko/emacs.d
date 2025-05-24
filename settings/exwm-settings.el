@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package exwm
   :disabled t
   :ensure t

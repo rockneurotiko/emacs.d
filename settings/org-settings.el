@@ -1,11 +1,31 @@
 ;; -*- lexical-binding: t; -*-
 
+(defun org-cmp-closed (a b)
+  (let* ((a-marker (get-text-property 0 'org-marker a))
+         (b-marker (get-text-property 0 'org-marker b))
+         (now (current-time))
+         (a-closed-ts (org-timestamp-from-string
+                       (org-entry-get a-marker "CLOSED")))
+         (b-closed-ts (org-timestamp-from-string
+                       (org-entry-get b-marker "CLOSED")))
+         (a-closed-time (or (and a-closed-ts
+                                 (org-timestamp-to-time a-closed-ts))
+                            now))
+         (b-closed-time (or (and b-closed-ts
+                                 (org-timestamp-to-time b-closed-ts))
+                            now)))
+    (cond ((time-less-p b-closed-time a-closed-time) +1)
+          ((time-less-p a-closed-time b-closed-time) -1)
+          (t nil))))
+
 (use-package org
   :ensure t
   :straight (:type built-in)
   :config
 
+  (require 'org-tempo)
   (setq-default org-src-fontify-natively t)
+  (setq org-log-done 'time)
 
   (defun rock--org-autodone (n-done n-not-done)
     "Switch entry to DONE when all subentries are done, to TODO otherwise."
@@ -19,9 +39,25 @@
   ;; Stop org-mode from highjacking shift-cursor keys
   (org-replace-disputed-keys t)
   (org-hide-emphasis-markers t)
+  (org-attach-use-inherinance t)
+  (org-attach-store-link-p 'attached)
 
   (org-todo-keywords
-   '((sequence "TODO(t)" "IN PROGRESS(p)" "BLOCKED(b)" "CODE REVIEW(r)" "QA(q)" "|" "DONE(d)" "CANCELED(c)")))
+   '((sequence "TODO(t)" "IN PROGRESS(p)" "BLOCKED(b)" "CODE REVIEW(r)" "QA(q)" "UPLOAD(u)" "|" "DONE(d)" "CANCELED(c)")))
+
+  (org-todo-keyword-faces
+   '(("TODO" . (:foreground "red" :weight bold))
+     ("IN PROGRESS" . (:foreground "cyan" :weight bold))
+     ("BLOCKED" . (:foreground "orange" :weight bold))
+     ("CODE REVIEW" . (:foreground "purple" :weight bold))
+     ("QA" . (:foreground "green" :weight bold))
+     ("UPLOAD" . (:foreground "magenta" :weight bold))
+     ("DONE" . (:foreground "forest green" :weight bold))
+     ("CANCELED" . (:foreground "gray" :weight bold))))
+
+  (org-priority-highest 1)
+  (org-priority-lowest  5)
+  (org-priority-default 4)
 
   (org-capture-templates
       '(("t" "Todo" entry (file+headline "~/Git/orgs/roam/capture/todos.org" "Tasks")
@@ -46,6 +82,11 @@
   (org-startup-with-latex-preview t)
   (org-startup-with-inline-images t)
 
+  (org-agenda-custom-commands '(("n" "Agenda and all TODOs" ((agenda "") (alltodo "")))
+                                     ("d" "TODOs closed" ((tags "TODO=\"DONE\"&CLOSED>=\"<-1w>\""))
+                                      ((org-agenda-cmp-user-defined 'org-cmp-closed)
+                                       (org-agenda-sorting-strategy '(user-defined-down))))))
+
 
   :init
   ;; https://orgmode.org/worg/org-contrib/babel/languages/
@@ -61,6 +102,11 @@
    ("C-c c" . org-capture)
    ("C-c a" . org-agenda)
    ("C-c b" . org-switchb)))
+
+(use-package org-download
+  :ensure t
+  :custom
+  (org-download-method 'attach))
 
 (use-package flyspell-correct
   :ensure t

@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;;; rock-defuns.el -- Miscellaneous functions
 
 ;; (defmacro ->> (&rest body)

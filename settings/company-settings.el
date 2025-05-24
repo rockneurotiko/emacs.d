@@ -1,3 +1,6 @@
+;; -*- lexical-binding: t; -*-
+
+
 ;;; Code:
 
 ;; (use-package company

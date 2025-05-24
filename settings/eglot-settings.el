@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (use-package eglot
   :ensure t
   :straight (:type built-in)
@@ -17,7 +18,6 @@
 
   (add-to-list 'eglot-server-programs '(elixir-ts-mode "/home/rock/.emacs.d/.cache/elixir-ls/language_server.sh"))
   (add-to-list 'eglot-server-programs '(heex-ts-mode "/home/rock/.emacse.d/.cache/elixir-ls/language_server.sh"))
-
 
   ;; Or in .dir-locals.el like ((nil (eglot-workspace-configuration . ((elixirLS . ((configurationSources . ["flake8"])))))))
   (setq-default eglot-workspace-configuration

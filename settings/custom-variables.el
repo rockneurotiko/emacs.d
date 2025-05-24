@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -90,7 +91,17 @@
  '(haskell-process-suggest-remove-import-lines t)
  '(haskell-process-type 'stack-ghci)
  '(ignored-local-variable-values
-   '((eval and buffer-file-name
+   '((eval font-lock-add-keywords nil
+           `
+           ((,(concat "("
+                      (regexp-opt
+                       '("sp-do-move-op" "sp-do-move-cl"
+                         "sp-do-put-op" "sp-do-put-cl" "sp-do-del-op"
+                         "sp-do-del-cl")
+                       t)
+                      "\\_>")
+             1 'font-lock-variable-name-face)))
+     (eval and buffer-file-name
            (not (eq major-mode 'package-recipe-mode))
            (or (require 'package-recipe-mode nil t)
                (let ((load-path (cons "../package-build" load-path)))
@@ -102,7 +113,6 @@
  '(lsp-log-io nil)
  '(multi-term-buffer-name "term" t)
  '(multi-term-program "/bin/zsh" t)
- '(org-agenda-files nil)
  '(org-emphasis-alist
    '(("*" bold) ("/" italic) ("_" underline) ("=" org-verbatim verbatim)
      ("~" org-code verbatim) ("+" (:strike-through t))))

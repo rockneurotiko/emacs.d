@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package helm
   :ensure t
   :diminish helm-mode

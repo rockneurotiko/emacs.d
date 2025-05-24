@@ -1,3 +1,6 @@
+;; -*- lexical-binding: t; -*-
+
+
 ;; The following functions were written by dbrady, see
 ;; https://gist.github.com/846766
 

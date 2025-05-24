@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (setq lisp-body-indent 2)
 ;; (setq elisp-mode-indent-level 2)
 

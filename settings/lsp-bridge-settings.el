@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; lsp-bridge
 
 (use-package lsp-bridge

@@ -1,3 +1,6 @@
+;; -*- lexical-binding: t; -*-
+
+
 ;;; bodil-powerline-el -- Modeline fashion
 
 (use-package powerline

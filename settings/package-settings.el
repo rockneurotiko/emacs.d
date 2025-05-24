@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (require 'package)
 
 (unless (assoc-default "melpa" package-archives)
@@ -11,6 +13,7 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 (setq use-package-verbose t)
+(setq package-install-upgrade-built-in t)
 (require 'use-package)
 
 ;; (use-package auto-compile

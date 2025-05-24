@@ -1,3 +1,6 @@
+;; -*- lexical-binding: t; -*-
+
+
 ;; After new installation, execute `M-x copilot-install-server` and restart
 
 (use-package copilot

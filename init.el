@@ -1,4 +1,4 @@
-;;; package: --- Summary
+;;; package: --- Summary  -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 
@@ -14,6 +14,7 @@
 (keymap-global-set "C-c e" 'tws-region-to-process)
 
 (require 'dashboard-settings)
+(require 'meow-settings)
 
 (require 'custom-functions)
 (require 'auth-settings)

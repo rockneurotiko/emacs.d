@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (use-package plstore
   :ensure t
   :straight (:type built-in)
@@ -16,7 +17,8 @@
   :custom
   (org-gcal-client-id  (efs/lookup-password :host "calendar.google.com" :user "client-id"))
   (org-gcal-client-secret  (efs/lookup-password :host "calendar.google.com" :user "client-secret"))
-  (org-gcal-fetch-file-alist '(("miguelglafuente@gmail.com" . "~/Git/orgs/calendars/personal.org") ("9afjkjrns5t3orjlidadp53tl6a4j912@import.calendar.google.com" . "~/Git/orgs/calendars/work.org")))
+  (org-gcal-fetch-file-alist '(("miguelglafuente@gmail.com" . "~/Git/orgs/roam/calendars/personal.org") ("9afjkjrns5t3orjlidadp53tl6a4j912@import.calendar.google.com" . "~/Git/orgs/roam/calendars/work.org")))
+  (org-gcal-local-timezone "Europe/Madrid")
   (request-log-level 'debug))
 
 

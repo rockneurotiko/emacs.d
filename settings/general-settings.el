@@ -1,4 +1,6 @@
-;--------------------------------;
+;; -*- lexical-binding: t; -*-
+
+                                        ;--------------------------------;
 ;;; General or Global Settings ;;;
 ;--------------------------------;
 
@@ -21,6 +23,9 @@
 
 (set-exec-path-from-shell-PATH)
 (setenv "PATH" (concat "~/.local/bin:" "/usr/local/bin:" (getenv "PATH")))
+
+;; Node 20 for copilot
+(setenv "PATH" (concat "~/.local/share/mise/installs/node/23.11.0/bin" (getenv "PATH")))
 
 ;; No bars pls
 (menu-bar-mode -1)
@@ -173,7 +178,7 @@
 (define-key key-translation-map [dead-tilde] "~")
 
 ;; Rotate window
-(use-package emacs
+(use-package window
   :bind
   ("C-x C-0" . rotate-windows-back)
   ("C-x C-1" . rotate-windows)
@@ -230,6 +235,7 @@ The DWIM behaviour of this command is as follows:
       (setq wl-copy-process (make-process :name "wl-copy"
                                       :buffer nil
                                       :command '("wl-copy" "-o" "-f" "-n")
+                                      ;; :command '("wl-copy" "-f" "-n")
                                       :connection-type 'pipe
                                       :noquery t)))
 
@@ -237,17 +243,71 @@ The DWIM behaviour of this command is as follows:
   (process-send-string wl-copy-process text)
   (process-send-eof wl-copy-process))
 
-(defun wl-delete-last ()
-  ;; (call-process-shell-command "cliphist list | head -n 1 | cliphist delete &" nil 0)
-  )
+
+
+
+;; (defun wl-delete-last ()
+;;   ;; (call-process-shell-command "cliphist list | head -n 1 | cliphist delete &" nil 0)
+;;   )
+
+;; (defun wl-paste ()
+;;   (let ((cliphist-value (shell-command-to-string "cliphist list | head -n 1 | cliphist decode")))
+;;     (unless (string= cliphist-value wl-last-copied)
+;;         cliphist-value)))
 
 (defun wl-paste ()
-  (let ((cliphist-value (shell-command-to-string "cliphist list | head -n 1 | cliphist decode")
-
-                        ))
+  (let ((cliphist-value (shell-command-to-string "wl-paste -n")))
     (unless (string= cliphist-value wl-last-copied)
-        cliphist-value)))
+        cliphist-value)
+    ))
+
+(defun clipse-copy (text)
+  (if (not (process-live-p wl-copy-process))
+      (setq wl-copy-process (make-process :name "clipse"
+                                      :buffer nil
+                                      :command '("clipse" "-c")
+                                      ;; :command '("wl-copy" "-f" "-n")
+                                      :connection-type 'pipe
+                                      :noquery t)))
+
+  (setq wl-last-copied text)
+  (process-send-string wl-copy-process text)
+  (process-send-eof wl-copy-process)
+  )
+
+;; (defun clipse ()
+;;   (let ((paste-value (shell-command-to-string "clipse -p")))
+;;     (unless (string= paste-value wl-last-copied)
+;;         paste-value)))
+
 ;; (setq interprogram-cut-function 'wl-copy)
-;; (setq interprogram-paste-function 'wl-paste)
+(setq interprogram-paste-function 'wl-paste)
+(setq interprogram-cut-function 'clipse-copy)
+;; (setq interprogram-paste-function 'clipse)
+
+(use-package xclip
+  :ensure t
+  :custom
+  (xclip-program "wl-copy")
+  (xclip-select-enable-clipboard t)
+  (xclip-mode t)
+  (xclip-method 'wl-copy))
+
+;; GC
+
+(defun my-minibuffer-setup-hook ()
+  (setq gc-cons-threshold most-positive-fixnum))
+
+(defun my-minibuffer-exit-hook ()
+  (setq gc-cons-threshold 800000000))
+
+(add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
+(add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
+
+(setq gc-cons-threshold most-positive-fixnum)
+
+(run-with-idle-timer 1.2 t 'garbage-collect)
+
+
 
 (provide 'general-settings)

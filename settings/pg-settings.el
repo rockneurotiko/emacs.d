@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (use-package pg
   :straight '(pg :type git :host github :repo "emarsden/pg-el" :branch "main" :files ("*.el")))
 

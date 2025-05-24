@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 (setq tags-table-list '("~/.emacs.d/tags/TAGS"))
 
 

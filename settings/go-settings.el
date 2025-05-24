@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; GO
 (setenv "GOPATH" (expand-file-name "~/go"))
 
