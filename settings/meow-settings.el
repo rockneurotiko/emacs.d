@@ -50,8 +50,8 @@
    '("?" . meow-cheatsheet))
   (meow-motion-overwrite-define-key
    ;; custom keybinding for motion state
-   '("n" . meow-next)
-   '("p" . meow-prev)
+   ;; '("n" . meow-next)
+   ;; '("p" . meow-prev)
    '("<escape>" . ignore))
 
 

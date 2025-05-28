@@ -4,7 +4,7 @@
 
 (setq lsp-keymap-prefix "M-s")
 ;; (setq lsp-elixir-ls-version "v0.23.0")
-(setq lsp-elixir-ls-version "v0.27.0")
+(setq lsp-elixir-ls-version "v0.28.0")
 
 (use-package lsp-mode
   :ensure t

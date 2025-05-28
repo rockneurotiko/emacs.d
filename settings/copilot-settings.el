@@ -7,7 +7,7 @@
   :straight '(copilot
               :type git
               :host github
-              :repo "zerolfx/copilot.el"
+              :repo "copilot-emacs/copilot.el"
               :branch "main"
               :files ("dist" "*.el"))
 
@@ -22,7 +22,13 @@
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word))
   :config
-  (setq copilot-indent-offset-warning-disable t))
+  (setq copilot-indent-offset-warning-disable t)
+
+  ;; :custom
+  ;; (copilot-lsp-settings '(:github (:copilot (:selectedCompletionModel "claude-3.7-sonnet"))))
+  ;; (copilot-log-max nil)
+  ;; (copilot-server-log-level 4)
+  )
 
 (use-package shell-maker
   :ensure t)

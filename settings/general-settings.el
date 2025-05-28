@@ -283,6 +283,16 @@ The DWIM behaviour of this command is as follows:
 ;; (setq interprogram-cut-function 'wl-copy)
 (setq interprogram-paste-function 'wl-paste)
 (setq interprogram-cut-function 'clipse-copy)
+
+
+(defun set-interprogram-cut-clipse ()
+  (interactive)
+  (setq interprogram-cut-function 'clipse-copy))
+
+(defun set-interprogram-cut-wl-copy ()
+  (interactive)
+  (setq interprogram-cut-function 'wl-copy))
+
 ;; (setq interprogram-paste-function 'clipse)
 
 (use-package xclip

@@ -4,15 +4,12 @@
   ;; :disabled t
   :ensure t
   :diminish undo-tree-mode
-  :init
-  (defalias 'undo 'undo-tree-undo)
-  (defalias 'redo 'undo-tree-redo)
   :config
   (global-undo-tree-mode)
   (setq undo-tree-visualizer-timestamps t)
   (setq undo-tree-visualizer-diff t)
-  :bind (("C-z" . undo)
-         ("C-S-z" . redo)))
+  :bind (("C-z" . undo-tree-undo)
+         ("C-S-z" . undo-tree-redo)))
 
 (use-package ultra-scroll
   :straight (ultra-scroll :host github :repo "jdtsmith/ultra-scroll")
