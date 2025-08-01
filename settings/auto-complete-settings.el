@@ -1,4 +1,3 @@
-;;  -*- lexical-binding: t; -*-
 
 ;;-------------------;
 ;;; Auto-Complete ;;;
@@ -14,7 +13,7 @@
 (use-package corfu
    :ensure t
     :after orderless
-    :custom
+    :setopt
     (corfu-quit-at-boundary nil)
     (corfu-quit-no-match t)
     (corfu-cycle t)

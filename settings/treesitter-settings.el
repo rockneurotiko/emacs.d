@@ -2,12 +2,12 @@
 
 (use-package treesit
   :straight (:type built-in)
-  :custom
+  :setopt
   (treesit-font-lock-level 4))
 
 (use-package treesit-auto
   :ensure t
-  :custom
+  :setopt
   (treesit-auto-install 'prompt)
   :config
   (treesit-auto-add-to-auto-mode-alist 'all)

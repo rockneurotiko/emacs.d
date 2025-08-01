@@ -74,7 +74,7 @@
       browse-url-generic-program "google-chrome-stable")
 
 (setq custom-file "~/.emacs.d/settings/custom-variables.el")
-(load custom-file)
+;; (load custom-file)
 
 ;;--------;
 ;;  hooks ;
@@ -281,9 +281,18 @@ The DWIM behaviour of this command is as follows:
 ;;         paste-value)))
 
 ;; (setq interprogram-cut-function 'wl-copy)
-(setq interprogram-paste-function 'wl-paste)
-(setq interprogram-cut-function 'clipse-copy)
+;; (setq interprogram-paste-function 'wl-paste)
+;; (setq interprogram-cut-function 'clipse-copy)
 
+;; (setq interprogram-paste-function nil)
+
+(defun set-interprogram-paste-wl-paste ()
+  (interactive)
+  (setq interprogram-paste-function 'wl-paste))
+
+(defun set-interprogram-paste-nil ()
+  (interactive)
+  (setq interprogram-paste-function nil))
 
 (defun set-interprogram-cut-clipse ()
   (interactive)
@@ -293,15 +302,19 @@ The DWIM behaviour of this command is as follows:
   (interactive)
   (setq interprogram-cut-function 'wl-copy))
 
+(defun set-interprogram-cut-nil ()
+  (interactive)
+  (setq interprogram-cut-function nil))
+
 ;; (setq interprogram-paste-function 'clipse)
 
-(use-package xclip
-  :ensure t
-  :custom
-  (xclip-program "wl-copy")
-  (xclip-select-enable-clipboard t)
-  (xclip-mode t)
-  (xclip-method 'wl-copy))
+;; (use-package xclip
+;;   :ensure t
+;;   :setopt
+;;   (xclip-program "wl-copy")
+;;   (xclip-select-enable-clipboard t)
+;;   (xclip-mode t)
+;;   (xclip-method 'wl-copy))
 
 ;; GC
 

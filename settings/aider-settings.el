@@ -1,4 +1,3 @@
-;; -*- lexical-binding: t; -*-
 (use-package aidermacs
   :straight (:host github :repo "MatthewZMD/aidermacs" :files ("*.el"))
   :config

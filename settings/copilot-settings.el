@@ -1,4 +1,4 @@
-;; -*- lexical-binding: t; -*-
+;; -*- lexical-binding: nil; -*-
 
 
 ;; After new installation, execute `M-x copilot-install-server` and restart
@@ -24,7 +24,7 @@
   :config
   (setq copilot-indent-offset-warning-disable t)
 
-  ;; :custom
+  ;; :setopt
   ;; (copilot-lsp-settings '(:github (:copilot (:selectedCompletionModel "claude-3.7-sonnet"))))
   ;; (copilot-log-max nil)
   ;; (copilot-server-log-level 4)

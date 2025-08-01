@@ -1,4 +1,3 @@
-;; -*- lexical-binding: t; -*-
 
 (defun rock/projectile-relative-path-buffer ()
   "Return the relative name of the current buffer."

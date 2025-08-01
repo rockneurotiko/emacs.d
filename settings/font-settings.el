@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 (use-package nerd-icons
   :ensure t
-  :custom
+  :setopt
   ;; The Nerd Font you want to use in GUI
   ;; "Symbols Nerd Font Mono" is the default and is recommended
   ;; but you can use any other Nerd Font if you want
@@ -33,12 +33,15 @@
   "check if font exists"
   (if (null (x-list-fonts font)) nil t))
 
-(defvar rock--fontname "0xProto Nerd Font Mono")
-(defvar rock--fontname-variable "0xProto Nerd Font Mono")
+;; (defvar rock--fontname "0xProto Nerd Font Mono")
+;; (defvar rock--fontname-variable "0xProto Nerd Font Mono")
+
+(defvar rock--fontname "Sarasa Mono J Nerd Font")
+(defvar rock--fontname-variable "Sarasa UI J Nerd Font")
 
 ;; (defvar rock--fontname "DejaVu Sans Mono")
 ;; (defvar rock--fontname-variable "DejaVu Sans Mono")
-(defvar rock--fontsize 105)
+(defvar rock--fontsize 140)
 
 (defun set-font-size ()
   (set-face-attribute 'default nil
@@ -50,7 +53,7 @@
   (set-face-attribute 'fixed-pitch nil :family rock--fontname :height 1.0)
   (set-face-attribute 'variable-pitch nil :family rock--fontname-variable :height 1.0)
 
-  (set-face-attribute 'mode-line nil :family rock--fontname :height 105)
+  (set-face-attribute 'mode-line nil :family rock--fontname :height 130)
   )
 
 
@@ -61,7 +64,7 @@
 
 (defun set-default-fontsize ()
   (interactive)
-  (setq rock--fontsize 105)
+  (setq rock--fontsize 140)
   (set-font-size))
 
 (when (and (window-system) (font-exists-p rock--fontname))

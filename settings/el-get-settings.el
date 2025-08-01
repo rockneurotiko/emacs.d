@@ -1,4 +1,3 @@
-;; -*- lexical-binding: t; -*-
 
 ;; set the el-get path, and create it if it doesn't exist
 (setq elget-path plugin-path)

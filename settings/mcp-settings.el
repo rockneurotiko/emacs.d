@@ -1,7 +1,7 @@
 (use-package mcp-hub
   :ensure t
   :straight (mcp-hub :host github :repo "lizqwerscott/mcp.el" :files ("*.el"))
-  :custom
+  :setopt
 n  (mcp-hub-servers '(("tidewave" . (:url "http://localhost:4000/tidewave/mcp?include_fs_tools=true")))))
 
 (defun gptel-mcp-register-tool ()

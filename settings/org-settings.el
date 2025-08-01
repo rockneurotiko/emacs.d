@@ -35,7 +35,7 @@
   (unless (file-exists-p org-directory)
     (make-directory org-directory t))
 
-  :custom
+  :setopt
   ;; Stop org-mode from highjacking shift-cursor keys
   (org-replace-disputed-keys t)
   (org-hide-emphasis-markers t)
@@ -58,6 +58,22 @@
   (org-priority-highest 1)
   (org-priority-lowest  5)
   (org-priority-default 4)
+
+  (org-tag-alist '((:startgroup . nil)
+                   ;; Projects
+                   ("auth" . ?a)
+                   ("custom_fields" . ?c)
+                   ("improvements" . ?i)
+                   ("bugfix" . ?f)
+                   ("bff" . ?b)
+                   (:endgroup . nil)
+                   ;; Type
+                   (:startgroup . nil)
+                   ("@tripservice" . ?t)
+                   ("@ex_gram" . ?e)
+                   ("@personal" . ?p)
+                   (:endgroup . nil)))
+
 
   (org-capture-templates
       '(("t" "Todo" entry (file+headline "~/Git/orgs/roam/capture/todos.org" "Tasks")
@@ -83,9 +99,21 @@
   (org-startup-with-inline-images t)
 
   (org-agenda-custom-commands '(("n" "Agenda and all TODOs" ((agenda "") (alltodo "")))
-                                     ("d" "TODOs closed" ((tags "TODO=\"DONE\"&CLOSED>=\"<-1w>\""))
-                                      ((org-agenda-cmp-user-defined 'org-cmp-closed)
-                                       (org-agenda-sorting-strategy '(user-defined-down))))))
+                                ("d" "TODOs closed" ((tags "TODO=\"DONE\"&CLOSED>=\"<-1w>\""))
+                                 ((org-agenda-cmp-user-defined 'org-cmp-closed)
+                                  (org-agenda-sorting-strategy '(user-defined-down))))
+                                ("p" "Projects"
+                                 ((todo "" ((org-agenda-overriding-header "TripService Projects")
+                                            (org-super-agenda-groups
+                                             ;; '((:auto-tags t))
+                                             '((:name "Auth" :and (:tag "@tripservice" :tag "auth") :order 1)
+                                               (:name "Custom Fields" :and (:tag "@tripservice" :tag "custom_fields") :order 5)
+                                               (:name "Improvements" :and (:tag "@tripservice" :tag "improvements") :order 10)
+                                               (:name "Bug Fixes" :and (:tag "@tripservice" :tag "bugfix") :order 15)
+                                               (:name "BFF favors" :and (:tag "@tripservice" :tag "bff") :order 20)
+                                               (:name "Other TripService projects" :tag "@tripservice" :order 25)
+                                               (:discard (:anything t))
+                                               ))))))))
 
 
   :init
@@ -103,10 +131,75 @@
    ("C-c a" . org-agenda)
    ("C-c b" . org-switchb)))
 
+(use-package org-super-agenda
+  :ensure t
+  :after org
+  :custom
+  (org-super-agenda-groups
+   '(;; Each group has an implicit boolean OR operator between its selectors.
+     (:name "Today"  ; Optionally specify section name
+            :time-grid t  ; Items that appear on the time grid
+            :todo ("TODAY" "IN PROGRESS")
+            :order 1)  ; Items that have this TODO keyword
+     (:name "To Deploy"  ; Optionally specify section name
+            :time-grid t  ; Items that appear on the time grid
+            :todo ("UPLOAD")
+            :order 2)  ; Items that have this TODO keyword
+     (:name "Important"
+            ;; Single arguments given alone
+            :tag "important"
+            :priority "1"
+            :order 3)
+
+     (:name "To deploy" :todo "UPLOAD" :order 4)
+     (:name "In QA" :todo "QA" :order 5)
+     (:name "In code review" :todo "CODE REVIEW" :order 6)
+     (:todo ("BLOCKED" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
+            ;; Show this group at the end of the agenda (since it has the
+            ;; highest number). If you specified this group last, items
+            ;; with these todo keywords that e.g. have priority A would be
+            ;; displayed in that group instead, because items are grouped
+            ;; out in the order the groups are listed.
+            :order 10)
+     (:priority<= "2"
+                  ;; Show this section after "Today" and "Important", because
+                  ;; their order is unspecified, defaulting to 0. Sections
+                  ;; are displayed lowest-number-first.
+                  :order 20)
+     ;; After the last group, the agenda will display items that didn't
+     ;; match any of these groups, with the default order position of 99
+     ))
+  :config
+  (org-super-agenda-mode))
+
+;; (use-package org-table-highlight
+;;   :ensure t
+;;   :straight '(org-table-highlight :type git :host github :repo "llcc/org-table-highlight" :files ("*.el"))
+;;   :after org
+;;    :config
+;;   (add-hook 'after-init-hook #'org-table-highlight-load-metadata)
+;;   (add-hook 'org-mode-hook #'org-table-highlight-apply-buffer-metadata)
+;;   ;; :hook
+;;   ;; (after-init . #'org-table-highlight-load-metadata)
+;;   ;; (org-mode . #'org-table-highlight-apply-buffer-metadata)
+;;   )
+
+
+
 (use-package org-download
   :ensure t
-  :custom
-  (org-download-method 'attach))
+  :config
+  (defun rock--org-roam-download-directory ()
+    "Set `org-download-image-dir` to the directory of the currentbuffer's file."
+    (if (not (buffer-file-name))
+        (setq-local org-download-image-dir (concat org-directory "images/"))
+
+      (setq-local org-download-image-dir (concat (file-name-directory  (buffer-file-name)) (file-name-base buffer-file-name) "/images/") )))
+  :hook
+  ((org-mode . rock--org-roam-download-directory))
+  :setopt
+  ;; (org-download-method 'attach)
+  (org-download-method 'directory))
 
 (use-package flyspell-correct
   :ensure t
@@ -123,7 +216,7 @@
 (use-package org-roam
   :ensure t
   :after org
-  :custom
+  :setopt
   (org-roam-directory (file-truename "~/Git/orgs/roam"))
   (org-roam-completion-everywhere t)
   (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:30}" 'face 'org-tag)))
@@ -177,8 +270,7 @@
   (define-prefix-command 'org-roam-refs-map)
   :config
   (require 'org-roam-dailies) ;; Ensure the keymap is available
-  (org-roam-db-autosync-mode)
-  )
+  (org-roam-db-autosync-mode))
 
 
 (use-package org-roam-ui

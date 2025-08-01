@@ -1,4 +1,4 @@
-;; -*- lexical-binding: t; -*-
+;; -*- lexical-binding: nil; -*-
 
 (require 'package)
 
@@ -7,7 +7,7 @@
                '("melpa"."http://melpa.org/packages/")))
 
 ;; Comment this after first run!
-;; (package-refresh-contents)
+(package-refresh-contents)
 
 ;; use-package (https://github.com/jwiegley/use-package)
 (unless (package-installed-p 'use-package)
@@ -23,13 +23,16 @@
 ;; (use-package compile-angel
 ;;   :ensure t
 ;;   :demand t
+
+;;   :hook
+;;   ;; Uncomment the line below to compile automatically when an Elisp file is saved
+;;   (emacs-lisp-mode . compile-angel-on-save-local-mode)
+
 ;;   :config
 ;;   ;; Set `compile-angel-verbose' to nil to disable compile-angel messages.
 ;;   ;; (When set to nil, compile-angel won't show which file is being compiled.)
 ;;   (setq compile-angel-verbose t)
-
-;;   ;; Uncomment the line below to compile automatically when an Elisp file is saved
-;;   ;; (add-hook 'emacs-lisp-mode-hook #'compile-angel-on-save-local-mode)
+;;   (setq compile-angel-debug t)
 
 ;;   ;; A global mode that compiles .el files before they are loaded
 ;;   ;; using `load' or `require'.
@@ -48,6 +51,46 @@
 ;;    :url "https://github.com/quelpa/quelpa-use-package.git"))
 ;; (require 'quelpa-use-package)
 
+;;; SETOPT command
+;; Usage:
+;; (use-package name
+;; :setopt
+;; (variable_name value)
+;; (custom_name value))
+
+(defun use-package-normalize/:setopt (_name keyword args)
+  (mapcar
+   (lambda (elt)
+     (use-package-as-one (symbol-name keyword) (list elt)
+       (lambda (label arg)
+         (unless (and (consp arg) (use-package-non-nil-symbolp (car arg)))
+           (use-package-error
+            (format "%s must be a (<symbol> . <value>) or list of these"
+                    label)))
+         arg)))
+   args))
+
+(defun use-package-handler/:setopt (name _keyword args rest state)
+  (use-package-concat
+   `((,'setopt
+      ,@(cl-loop for (variable value) in args
+                 append `(,variable ,value))))
+   (use-package-process-keywords name rest state)))
+
+
+(setopt use-package-keywords
+        (mapcan
+         (lambda (kw)
+           (cond
+            ;; ((and (eq kw :if)
+            ;;       (not (memq kw use-package-extras-conditional-keywords)))
+            ;;  `(:if ,@use-package-extras-conditional-keywords))
+
+            ((eq kw :after)
+             `(:after :setopt))
+
+            (t (list kw))))
+         use-package-keywords))
 
 ;; straight
 
@@ -71,7 +114,8 @@
 (load "~/.emacs.secrets" t)
 
 (use-package project
-  :ensure t)
+  :ensure t
+  :straight (:type built-in))
 
 (use-package diminish
   :ensure t

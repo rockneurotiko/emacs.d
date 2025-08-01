@@ -4,8 +4,8 @@
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
   (filename . "~/Git/orgs/roam/capture/todos.org")
-  (front-context-string . "** TODO Hotel su")
-  (rear-context-string . "746697963154689\n")
-  (position . 2728)
-  (last-modified 26657 52912 96704 499000))
+  (front-context-string . "** TODO Talk wit")
+  (rear-context-string . "ecurity it have\n")
+  (position . 8920)
+  (last-modified 26763 15962 966667 982000))
 )

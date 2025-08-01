@@ -13,7 +13,7 @@
 
 (use-package ultra-scroll
   :straight (ultra-scroll :host github :repo "jdtsmith/ultra-scroll")
-  :custom
+  :setopt
   (scroll-conservatively 101) ; important!
   (scroll-margin 0)
   :config
@@ -36,7 +36,7 @@
              :type git
              :host github
              :repo "jamescherti/bufferfile.el")
-  :custom
+  :setopt
   (bufferfile-use-vc t))
 
 (use-package persist-text-scale
@@ -45,7 +45,7 @@
              :type git
              :host github
              :repo "jamescherti/persist-text-scale.el")
-  :custom
+  :setopt
   ;; Time interval, in seconds, between automatic saves of text scale data.
   ;; If set to an integer value, enables periodic autosaving of persisted text
   ;; scale information at the specified interval.
@@ -60,8 +60,9 @@
   :config
   (add-to-list 'snap-indent-excluded-modes 'elixir-mode)
   (add-to-list 'snap-indent-excluded-modes 'elixir-ts-mode)
-  :custom ((snap-indent-format 'untabify)
-           (snap-indent-on-save t)))
+  :setopt
+  (snap-indent-format 'untabify)
+  (snap-indent-on-save t))
 
 (use-package git-gutter
   :ensure t
@@ -137,17 +138,17 @@
    )
   )
 
-(use-package which-key
-  :ensure t
-  :straight (:type built-in)
-  :diminish which-key-mode
-  :custom
-  (which-key-popup-type 'side-window)
-  (which-key-side-window-max-width 120)
-  (which-key-side-window-max-height 50)
-  :config
-  (which-key-mode)
-  (which-key-setup-side-window-right))
+;; (use-package which-key
+;;   :ensure t
+;;   :straight (:type built-in)
+;;   :diminish which-key-mode
+;;   :setopt
+;;   (which-key-popup-type 'side-window)
+;;   (which-key-side-window-max-width 120)
+;;   (which-key-side-window-max-height 50)
+;;   :config
+;;   (which-key-mode)
+;;   (which-key-setup-side-window-right))
 
 
 ;; (use-package which-key-posframe
@@ -181,7 +182,7 @@
 (use-package switch-window
   :ensure t
   :bind (("C-x o" . switch-window))
-  :custom
+  :setopt
   (switch-window-minibuffer-shortcut ?z))
 
 (use-package swap-buffers
@@ -213,7 +214,7 @@
   (dirvish-override-dired-mode)
 
 
-  :custom
+  :setopt
   (dirvish-quick-access-entries ; It's a custom option, `setq' won't work
    '(("h" "~/"                          "Home")
      ("d" "~/Downloads/"                "Downloads")
@@ -371,7 +372,7 @@
 (use-package uniquify
   :ensure t
   :straight (:type built-in)
-  :custom
+  :setopt
   (uniquify-buffer-name-style 'forward))
 
 ;; (defun set-buffer-expose ()

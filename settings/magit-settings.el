@@ -1,4 +1,4 @@
-;; -*- lexical-binding: t; -*-
+;; -*- lexical-binding: nil; -*-
 
 (use-package magit
   :ensure t
@@ -27,7 +27,13 @@
   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
 
 (use-package git-link
+  :ensure t
   :straight (:host github :repo "sshaw/git-link")
   :bind (("C-c C-l" . git-link)))
+
+(use-package git-auto-commit-mode
+  :ensure t
+  :setopt
+  (gac-automatically-push-p t))
 
 (provide 'magit-settings)

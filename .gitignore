@@ -52,3 +52,6 @@ gotools
 /transient/
 settings/elixir-ls/
 /straight/
+*~undo-tree~
+dirvish
+eln-cache

@@ -1,4 +1,3 @@
-;; -*- lexical-binding: t; -*-
 
 (package-require 'workgroups2)
 ;; Your settings here

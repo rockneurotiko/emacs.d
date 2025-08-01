@@ -12,7 +12,6 @@
 ;;--GO
 (require 'go-settings)
 
-
 ;;--SCALA
 ;; (require 'scala-settings)
 
@@ -49,10 +48,13 @@
 
 ;; LSP!!
 ;; (require 'lsp-settings)
+(message "load eglot")
 (require 'eglot-settings)
+(message "load llm")
 ;; (require 'mcp-settings)
 (require 'llm-settings)
 
+(message "load ts")
 (require 'treesitter-settings)
 
 ;; Other langs

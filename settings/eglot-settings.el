@@ -1,4 +1,5 @@
-;; -*- lexical-binding: t; -*-
+;; -*- lexical-binding: nil; -*-
+
 (use-package eglot
   :ensure t
   :straight (:type built-in)
@@ -15,42 +16,71 @@
   :config
 
 
-
   (add-to-list 'eglot-server-programs '(elixir-ts-mode "/home/rock/.emacs.d/.cache/elixir-ls/language_server.sh"))
   (add-to-list 'eglot-server-programs '(heex-ts-mode "/home/rock/.emacse.d/.cache/elixir-ls/language_server.sh"))
+  (add-to-list 'eglot-server-programs '(markdown-mode . ("harper-ls" "--stdio")))
+  (add-to-list 'eglot-server-programs '((markdown-ts-mode :language-id "markdown") . ("harper-ls" "--stdio")))
+  (add-to-list 'eglot-server-programs '((org-mode :language-id "org") . ("harper-ls" "--stdio")))
 
-  ;; Or in .dir-locals.el like ((nil (eglot-workspace-configuration . ((elixirLS . ((configurationSources . ["flake8"])))))))
+
+
+  ;; or in .dir-locals.el like ((nil (eglot-workspace-configuration . ((elixirls . ((configurationsources . ["flake8"])))))))
   (setq-default eglot-workspace-configuration
-                '((:elixirLS . (:autoBuild t
-                                :dialyzerEnabled t
-                                :incrementalDialyzer t
-                                :dialyzerWarnOpts []
-                                :dialyzerFormat "dialyxir_long"
-                                :mixEnv "dev"
-                                :projectDir nil
-                                :fetchDeps t
-                                :suggestSpecs nil
-                                :autoInsertRequiredAlias t
-                                :signatureAfterComplete t
-                                :enableTestLenses t
-                                ))))
+                '((:elixirls . (:autobuild t
+                                           :dialyzerenabled t
+                                           :incrementaldialyzer t
+                                           :dialyzerwarnopts []
+                                           :dialyzerformat "dialyxir_long"
+                                           :mixenv "dev"
+                                           :projectdir nil
+                                           :fetchdeps t
+                                           :suggestspecs nil
+                                           :autoinsertrequiredalias t
+                                           :signatureaftercomplete t
+                                           :enabletestlenses t
+                                           ))
+                  (:harper-ls . (:userDictPath ""
+                                               :fileDictPath ""
+                                               :linters (:SpellCheck t
+                                                     :SpelledNumbers :json-false
+                                                     :AnA t
+                                                     :SentenceCapitalization t
+                                                     :UnclosedQuotes t
+                                                     :WrongQuotes :json-false
+                                                     :LongSentences :json-false
+                                                     :RepeatedWords t
+                                                     :Spaces t
+                                                     :Matcher t
+                                                     :CorrectNumberSuffix t)
+                               :codeActions (:ForceStable :json-false)
+                               :markdown (:IgnoreLinkTitle :json-false)
+                               :diagnosticSeverity "hint"
+                               :isolateEnglish :json-false
+                               :dialect "American"
+                               :maxFileLength 120000))
+                  ))
 
   :hook
   (elixir-mode . eglot-ensure)
   (elixir-ts-mode . eglot-ensure)
   (heex-ts-mode . eglot-ensure)
+  (markdown-mode . eglot-ensure)
+  (markdown-ts-mode . eglot-ensure)
+  (org-mode . eglot-ensure)
 
-  :custom
+  :setopt
   (eglot-events-buffer-config '(:size 1000 :format full))
 
-  ;; TODO bind eglot-mode-map
+  ;; todo bind eglot-mode-map
   )
 
 (use-package eglot-booster
+  :ensure t
   :straight (eglot-booster :type git :host github :repo "jdtsmith/eglot-booster")
-  :after eglot
-  :config (eglot-booster-mode)
-  :custom
+  :config
+  (message "cfg booster")
+  (eglot-booster-mode)
+  :setopt
   (eglot-booster-io-only t))
 
 (provide 'eglot-settings)

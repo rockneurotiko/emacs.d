@@ -4,9 +4,10 @@
 
 ;; MY PATH
 (add-to-list 'load-path "~/.emacs.d/settings")
-(require 'font-settings)
 ;; Package
 (require 'package-settings)
+
+(require 'font-settings)
 
 (require 'unicode-settings)
 
@@ -32,7 +33,9 @@
 (set-full-paren)
 ;; (set-sanityinc)
 ;; (set-catppuccin)
-(set-ef-theme)
+;; (set-ef-theme) ;; EF themes, cute
+;; (set-nord-theme) ;; Nord theme, low contrast
+;; (set-yin-theme) ;; Black & white theme
 ;; (set-random-theme)
 
 ;;------------;
@@ -97,5 +100,8 @@
 ;; (tegmacs-load)
 
 (put 'downcase-region 'disabled nil)
+
+(set-ef-theme) ;; EF themes, cute
+(set-nord-theme) ;; Nord theme, low contrast
 
 ;;; init.el ends here

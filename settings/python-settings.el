@@ -1,4 +1,3 @@
-;; -*- lexical-binding: t; -*-
 
 ;;------------------------;
 ;;; Python Programming ;;;
@@ -16,7 +15,7 @@
   :ensure t
   :hook
   (python-mode . lsp-deferred)
-  :custom
+  :setopt
   (python-shell-interpreter "python3"))
 
 ;; from python.el

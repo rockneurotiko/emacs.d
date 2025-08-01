@@ -1,4 +1,3 @@
-;; -*- lexical-binding: t; -*-
 (use-package cheatsheet
   :ensure t
   :config

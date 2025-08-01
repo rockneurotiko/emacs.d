@@ -1,4 +1,3 @@
-;; -*- lexical-binding: t; -*-
 (use-package dashboard
   :ensure t
   :after (nerd-icons)
@@ -25,10 +24,13 @@
                           (agenda    . 5)
                           (registers . 5)))
 
+  (setq dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
+
   (setq dashboard-navigation-cycle t)
 
   (setq dashboard-display-icons-p t)     ; display icons on both GUI and terminal
   (setq dashboard-icon-type 'nerd-icons) ; use `nerd-icons' package
+  (setq dashboard-set-file-icons t)
   :bind
     ("C-x C-t" . dashboard-open)
   )

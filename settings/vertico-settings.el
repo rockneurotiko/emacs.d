@@ -1,5 +1,3 @@
-;; -*- lexical-binding: t; -*-
-
 (defun zap-to-char-save (arg char)
     "Zap to a character, but save instead of kill."
     (interactive "p\ncZap to char: ")
@@ -35,7 +33,7 @@
          ("<left>" . #'rock--up-directory)
          ("<right>" . vertico-insert)
          )
-  :custom
+  :setopt
   (vertico-cycle t)
   (vertico-resize nil)
   :hook (after-init . vertico-mode))
@@ -105,14 +103,13 @@
 
 (use-package embark
   :ensure t
-
   :bind
   (("C-." . embark-act)         ;; pick some comfortable binding
    ("C-;" . embark-dwim)        ;;
    ("C-h b" . embark-bindings)) ;; alternative for `describe-bindings'
 
   :init
-  ;; Optionally replace the key help with a completing-read interface
+  ; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
 
   :config
@@ -139,6 +136,51 @@
   :ensure t
   :after eglot
   :bind ("M-s i" . consult-eglot-symbols))
+
+(use-package consult-gh
+  :ensure t
+  :after consult)
+
+;; (use-package consult-omni
+;;   :straight (consult-omni :type git :host github :repo "armindarvish/consult-omni" :branch "main" :files (:defaults "sources/*.el"))
+;;   :after (consult embark)
+;;   :setopt
+;;    ;; General settings that apply to all sources
+;;   (consult-omni-show-preview t) ;;; show previews
+;;   (consult-omni-preview-key "C-o") ;;; set the preview key to C-o
+;;   :config
+;;   ;; Load Sources Core code
+;;   (require 'consult-omni-sources)
+;;   ;; Load Embark Actions
+;;   (require 'consult-omni-embark)
+
+;;   (setq consult-omni-sources-modules-to-load
+;;         '(consult-omni-apps consult-omni-calc consult-omni-buffer consult-omni-fd consult-omni-org-agenda consult-omni-youtube consult-omni-ripgrep consult-omni-gh consult-omni-projects))
+;;   (consult-omni-sources-load-modules)
+
+;;   (setq consult-omni-multi-sources '("calc"
+;;                                      "File"
+;;                                      "Buffer"
+;;                                      ;; "Bookmark"
+;;                                      "Apps"
+;;                                      ;; "gptel"
+;;                                      ;; "Brave"
+;;                                      ;; "Dictionary"
+;;                                      ;; "Google"
+;;                                      ;; "Wikipedia"
+;;                                      ;; "elfeed"
+;;                                      ;; "mu4e"
+;;                                      ;; "buffers text search"
+;;                                      ;; "Notes Search"
+;;                                      "Org Agenda"
+;;                                      ;; "GitHub"
+;;                                      "Projects"
+;;                                      "YouTube"
+;;                                      ;; "Invidious"
+;;                                      ))
+
+;;     (setq consult-omni-default-interactive-command #'consult-omni-multi)
+;;   )
 
 
 (use-package emacs

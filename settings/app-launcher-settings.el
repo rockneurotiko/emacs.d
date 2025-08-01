@@ -1,4 +1,3 @@
-;; -*- lexical-binding: t; -*-
 
 (use-package app-launcher
   :straight '(app-launcher :host github :repo "SebastienWae/app-launcher"))

@@ -10,6 +10,22 @@
                ("integration" "integration/*")
                (:exclude ".dir-locals.el" "*-tests.el"))))
 
+(use-package vterm
+  :ensure t
+  :defer t
+  :setopt
+  (vterm-shell "/usr/bin/fish")
+  (vterm-max-scrollback 10000)
+  :config
+  (add-hook 'vterm-mode-hook
+            (lambda ()
+              (setq show-trailing-whitespace nil)
+              (when (featurep 'autopair-mode)
+                (autopair-mode -1))))
+  (add-hook 'vterm-mode-hook
+            (lambda ()
+              (define-key vterm-mode-map (kbd "C-y") 'vterm-yank))))
+
 (use-package multi-term
   :ensure t
   :init

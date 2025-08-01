@@ -143,5 +143,4 @@
      :config
      (meow-tree-sitter-register-defaults))
 
-
 (provide 'meow-settings)

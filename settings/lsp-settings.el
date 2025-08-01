@@ -1,4 +1,3 @@
-;; -*- lexical-binding: t; -*-
 
 ;; (setq lsp-bridge-elixir-lsp-server "lexical")
 
@@ -10,7 +9,7 @@
   :ensure t
 
   :commands lsp
-  :custom
+  :setopt
   (lsp-completion-provider :none) ;; we use Corfu!
 
   :init
@@ -71,7 +70,7 @@
   ;;                   :server-id 'next-ls))
 
   ;; lexical
-  ;; :custom
+  ;; :setopt
   ;; (lsp-elixir-server-command '("/home/rock/Git/lexical/_build/dev/package/lexical/bin/start_lexical.sh"))
   )
 
