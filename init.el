@@ -755,10 +755,10 @@ The DWIM behaviour of this command is as follows:
   :setopt
   (claude-code-ide-terminal-backend 'vterm)
   (claude-code-ide-enable-mcp-server t)
-  :init
+  :config
   (setenv "ANTHROPIC_AUTH_TOKEN" (efs/lookup-password :host "aider.chat" :user "anthropic"))
   (setenv "ANTHROPIC_BASE_URL" (efs/lookup-password :host "aider.chat" :user "anthropic-url"))
-  :config
+
   ;; Optionally enable Emacs MCP tools
   (claude-code-ide-emacs-tools-setup))
 
