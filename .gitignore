@@ -55,3 +55,8 @@ settings/elixir-ls/
 *~undo-tree~
 dirvish
 eln-cache
+/elpaca/
+/oauth2-auto.plist
+/persist/
+/projects.eld
+/tree-sitter/

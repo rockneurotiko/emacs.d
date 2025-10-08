@@ -1,41 +1,33 @@
-;; -*- lexical-binding: t; -*-
+;; -*- lexical-binding: nil; -*-
 
-(defun org-cmp-closed (a b)
-  (let* ((a-marker (get-text-property 0 'org-marker a))
-         (b-marker (get-text-property 0 'org-marker b))
-         (now (current-time))
-         (a-closed-ts (org-timestamp-from-string
-                       (org-entry-get a-marker "CLOSED")))
-         (b-closed-ts (org-timestamp-from-string
-                       (org-entry-get b-marker "CLOSED")))
-         (a-closed-time (or (and a-closed-ts
-                                 (org-timestamp-to-time a-closed-ts))
-                            now))
-         (b-closed-time (or (and b-closed-ts
-                                 (org-timestamp-to-time b-closed-ts))
-                            now)))
-    (cond ((time-less-p b-closed-time a-closed-time) +1)
-          ((time-less-p a-closed-time b-closed-time) -1)
-          (t nil))))
-
-(use-package org
-  :ensure t
-  :straight (:type built-in)
+(use-package org :ensure nil
   :config
 
   (require 'org-tempo)
   (setq-default org-src-fontify-natively t)
-  (setq org-log-done 'time)
+
+  (unless (file-exists-p org-directory)
+    (make-directory org-directory t))
 
   (defun rock--org-autodone (n-done n-not-done)
     "Switch entry to DONE when all subentries are done, to TODO otherwise."
     (let (org-log-done org-log-states)   ; turn off logging
       (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
-  (unless (file-exists-p org-directory)
-    (make-directory org-directory t))
+  :custom
+
+  ;; org-capture-template has examples as types, so the setopt
+  ;; gives a warning
+  (org-capture-templates
+      '(("t" "Todo" entry (file+headline (file-name-concat org-directory "roam/capture/todos.org") "Tasks")
+         "* TODO %?\n  %i\n  %a")
+        ("j" "Journal" entry (file+olp+datetree (file-name-concat org-directory "roam/capture/journal.org"))
+         "* %?\nEntered on %U\n  %i\n  %a")))
 
   :setopt
+
+  (org-directory (expand-file-name "~/Git/orgs"))
+
   ;; Stop org-mode from highjacking shift-cursor keys
   (org-replace-disputed-keys t)
   (org-hide-emphasis-markers t)
@@ -72,25 +64,25 @@
                    ("@tripservice" . ?t)
                    ("@ex_gram" . ?e)
                    ("@personal" . ?p)
+                   ("@graphql_query" . ?g)
                    (:endgroup . nil)))
 
 
-  (org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/Git/orgs/roam/capture/todos.org" "Tasks")
-         "* TODO %?\n  %i\n  %a")
-        ("j" "Journal" entry (file+datetree "~/Git/orgs/roam/capture/journal.org")
-         "* %?\nEntered on %U\n  %i\n  %a")))
+
 
   (org-refile-targets '((nil :level . 1)
                       (org-agenda-files :level . 1)))
 
 
   ;; http://www.farseer.cn/tweak/2014/11/10/org-your-notes/
-  (org-directory "~/Git/orgs")
-  (org-default-notes-file "~/Git/orgs/roam/capture/notes.org")
-  (org-agenda-files '("~/Git/orgs/roam/calendars/personal.org" "~/Git/orgs/roam/calendars/work.org" "~/Git/orgs/roam/capture/todos.org"))
+  (org-calendar-file-personal (file-name-concat org-directory "roam/calendars/personal.org"))
+  (org-calendar-file-work (file-name-concat org-directory "roam/calendars/work.org"))
+  (org-default-notes-file (file-name-concat org-directory "roam/capture/notes.org"))
+  (org-agenda-files `(,org-calendar-file-personal
+                      ,org-calendar-file-work
+                      ,(file-name-concat org-directory "roam/capture/todos.org")))
 
-  (org-log-done nil)
+  (org-log-done 'time)
   (org-file-apps '((auto-mode . emacs)
                    (directory . emacs)
                    ("\\.mp4\\'" . "xdg-open %s")
@@ -115,21 +107,15 @@
                                                (:discard (:anything t))
                                                ))))))))
 
-
-  :init
-  ;; https://orgmode.org/worg/org-contrib/babel/languages/
-  (org-babel-do-load-languages 'org-babel-load-languages '((dot . t)))
-
   :hook
-  ((org-after-todo-statistics . rock--org-autodone)
-   (org-mode . flyspell-mode)
-   (org-mode . visual-line-mode))
+  (org-after-todo-statistics . rock--org-autodone)
 
   :bind
   (("C-c l" . org-store-link)
    ("C-c c" . org-capture)
    ("C-c a" . org-agenda)
-   ("C-c b" . org-switchb)))
+   ("C-c b" . org-switchb))
+  )
 
 (use-package org-super-agenda
   :ensure t
@@ -172,20 +158,6 @@
   :config
   (org-super-agenda-mode))
 
-;; (use-package org-table-highlight
-;;   :ensure t
-;;   :straight '(org-table-highlight :type git :host github :repo "llcc/org-table-highlight" :files ("*.el"))
-;;   :after org
-;;    :config
-;;   (add-hook 'after-init-hook #'org-table-highlight-load-metadata)
-;;   (add-hook 'org-mode-hook #'org-table-highlight-apply-buffer-metadata)
-;;   ;; :hook
-;;   ;; (after-init . #'org-table-highlight-load-metadata)
-;;   ;; (org-mode . #'org-table-highlight-apply-buffer-metadata)
-;;   )
-
-
-
 (use-package org-download
   :ensure t
   :config
@@ -196,16 +168,10 @@
 
       (setq-local org-download-image-dir (concat (file-name-directory  (buffer-file-name)) (file-name-base buffer-file-name) "/images/") )))
   :hook
-  ((org-mode . rock--org-roam-download-directory))
+  (org-mode . rock--org-roam-download-directory)
   :setopt
   ;; (org-download-method 'attach)
   (org-download-method 'directory))
-
-(use-package flyspell-correct
-  :ensure t
-  :after flyspell
-  :bind (:map flyspell-mode-map (("C-c p p" . flyspell-correct-at-point)
-                                 ("C-;" . flyspell-correct-wrapper) )))
 
 (defun org-roam-node-insert-immediate (arg &rest args)
   (interactive "P")
@@ -217,7 +183,7 @@
   :ensure t
   :after org
   :setopt
-  (org-roam-directory (file-truename "~/Git/orgs/roam"))
+  (org-roam-directory (file-truename (file-name-concat org-directory "roam")))
   (org-roam-completion-everywhere t)
   (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:30}" 'face 'org-tag)))
 
@@ -272,123 +238,42 @@
   (require 'org-roam-dailies) ;; Ensure the keymap is available
   (org-roam-db-autosync-mode))
 
+;; CALENDAR settings
 
-(use-package org-roam-ui
+(use-package org-gcal
   :ensure t
-  :after org-roam
-  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-  ;;         a hookable mode anymore, you're advised to pick something yourself
-  ;;         if you don't care about startup time, use
-  ;;  :hook (after-init . org-roam-ui-mode)
+
+  :init
+  (setq plstore-cache-passphrase-for-symmetric-encryption t)
+  ;; (add-to-list org-agenda-files "~/Git/orgs/calendars/personal.org")
+
+  :setopt
+  (org-gcal-client-id  (efs/lookup-password :host "calendar.google.com" :user "client-id"))
+  (org-gcal-client-secret  (efs/lookup-password :host "calendar.google.com" :user "client-secret"))
+  (org-gcal-fetch-file-alist `(("miguelglafuente@gmail.com" . ,org-calendar-file-personal)
+                               ("9afjkjrns5t3orjlidadp53tl6a4j912@import.calendar.google.com" . ,org-calendar-file-work)))
+
+  (org-gcal-local-timezone "Europe/Madrid")
+  (request-log-level 'warn))
+
+(use-package calfw
+  :ensure t
+  :setopt
+  (calendar-week-start-day 1) ; 0:Sunday, 1:Monday
+  )
+
+(use-package calfw-org
+  :ensure t
+  :after (calfw org-gcal)
   :config
-  (setq org-roam-ui-sync-theme t
-        org-roam-ui-follow t
-        org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t))
+  (setq cfw:org-overwrite-default-keybinding t)
+  (define-key cfw:org-custom-map (kbd "R") 'org-gcal-fetch)
+  :bind (("C-c C" . cfw:open-org-calendar))
+  )
 
-
-;; If any TODO is marked as DONE, copy it to today's file
-;; (defun my/org-roam-copy-todo-to-today ()
-;;   (interactive)
-;;   (let ((org-refile-keep t) ;; Set this to nil to delete the original!
-;;         (org-roam-dailies-capture-templates
-;;           '(("t" "tasks" entry "%?"
-;;              :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
-;;         (org-after-refile-insert-hook #'save-buffer)
-;;         today-file
-;;         pos)
-;;     (save-window-excursion
-;;       (org-roam-dailies--capture (current-time) t)
-;;       (setq today-file (buffer-file-name))
-;;       (setq pos (point)))
-
-;;     ;; Only refile if the target file is different than the current file
-;;     (unless (equal (file-truename today-file)
-;;                    (file-truename (buffer-file-name)))
-;;       (org-refile nil nil (list "Tasks" today-file nil pos)))))
-
-;; (add-to-list 'org-after-todo-state-change-hook
-;;              (lambda ()
-;;                (when (equal org-state "DONE")
-;;                  (my/org-roam-copy-todo-to-today))))
-
-
-
-;; (use-package helm-flyspell
-;;   :ensure t
-;;   :config (define-key flyspell-mode-map (kbd "C-;") 'helm-flyspell-correct))
-
-(use-package org-bullets
+(use-package verb
   :ensure t
-  :after (org)
-  :hook
-  (org-mode . org-bullets-mode))
-
-;; (add-hook 'org-mode-hook
-;;           (lambda ()
-;;             ;; Register " as verbatim
-;;             ;; http://permalink.gmane.org/gmane.emacs.orgmode/82669
-;;             (setcar (nthcdr 2 org-emphasis-regexp-components) " \t\n,'")
-;;             (custom-set-variables `(org-emphasis-alist ', org-emphasis-alist))))
-
-;; This will let us use syntax colors in code blocks
-(use-package htmlize
-  :ensure t)
-
-
-
-;; (defun set-ditaa ()
-;;   (setq org-ditaa-jar-path "/usr/share/java/ditaa/ditaa-0_9.jar")
-;;   ;; this line activates ditaa
-;;   (org-babel-do-load-languages
-;;    'org-babel-load-languages
-;;    '((ditaa . t))))
-
-
-;; LaTeX configs
-
-;; (defun enable-beamer ()
-;;   ;; allow for export=>beamer by placing
-
-;;   ;; #+LaTeX_CLASS: beamer in org files
-
-;;   (require 'ox-latex)
-;;   (add-to-list 'org-latex-classes
-;;                '("beamer"
-;;                  "\\documentclass\[presentation\]\{beamer\}"
-;;                  ("\\section\{%s\}" . "\\section*\{%s\}")
-;;                  ("\\subsection\{%s\}" . "\\subsection*\{%s\}")
-;;                  ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
-
-;;   (org-babel-do-load-languages
-;;    'org-babel-load-languages
-;;    '((latex . t))))
-
-;; (add-to-list 'org-latex-packages-alist '("newfloat" "minted"))
-;; (setq org-latex-listings 'minted)
-
-;; (setq org-latex-pdf-process
-;;       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-;;         "bibtex %b"
-;;         ;; "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-;;         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-
-;; (setq bibtex-autokey-year-length 4
-;;       bibtex-autokey-name-year-separator "-"
-;;       bibtex-autokey-year-title-separator "-"
-;;       bibtex-autokey-titleword-separator "-"
-;;       bibtex-autokey-titlewords 2
-;;       bibtex-autokey-titlewords-stretch 1
-;;       bibtex-autokey-titleword-length 5)
-
-
-;; (add-to-list 'org-latex-default-packages-alist '("" "natbib" "") t)
-
-;; (add-to-list 'org-latex-default-packages-alist
-;;              '("linktocpage,pdfstartview=FitH,colorlinks,
-;; linkcolor=blue,anchorcolor=blue,
-;; citecolor=blue,filecolor=blue,menucolor=blue,urlcolor=blue"
-;;                "hyperref" nil)
-;;              t)
+  :after org
+  :config (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
 
 (provide 'org-settings)

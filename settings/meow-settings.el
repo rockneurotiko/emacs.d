@@ -1,4 +1,4 @@
-
+;; -*- lexical-binding: t;-*-
 
 (use-package meow
   :ensure t
@@ -109,15 +109,16 @@
    '("s" . meow-search)
    '("t" . meow-right)
    '("T" . meow-right-expand)
-   '("u" . meow-undo)
-   '("U" . meow-undo-in-selection)
+   '("u" . meow-pop-selection)
+   ;; '("U" . meow-undo-in-selection)
    '("v" . meow-visit)
    '("w" . meow-next-word)
    '("W" . meow-next-symbol)
    '("x" . meow-save)
    '("X" . meow-sync-grab)
    '("y" . meow-yank)
-   '("z" . meow-pop-selection)
+   '("z" . meow-undo)
+   '("Z" . meow-undo-in-selection)
    '("'" . repeat)
    '("/" . rock--meow-duplicate)
    '("?" . rock--meow-duplicate-and-comment)
