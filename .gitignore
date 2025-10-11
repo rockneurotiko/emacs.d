@@ -60,3 +60,5 @@ eln-cache
 /persist/
 /projects.eld
 /tree-sitter/
+/projects
+/custom.el

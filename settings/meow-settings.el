@@ -30,6 +30,7 @@
   (meow-leader-define-key
    '("b" . "C-x b")
    '("f" . "C-x C-f")
+   '("s" . "C-x C-s")
    '("o" . "C-x o")
    '("0" . "C-x 0")
    '("1" . "C-x 1")
@@ -120,6 +121,7 @@
    '("z" . meow-undo)
    '("Z" . meow-undo-in-selection)
    '("'" . repeat)
+   '(";" . meow-comment)
    '("/" . rock--meow-duplicate)
    '("?" . rock--meow-duplicate-and-comment)
    '("<escape>" . ignore))

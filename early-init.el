@@ -6,11 +6,13 @@
 
 ;; Garbage Collections
 (setq gc-cons-percentage 0.6)
+(setq gc-cons-threshold 10000000)
 
 ;; Compile warnings
 ;;  (setq warning-minimum-level :emergency)
 (setq native-comp-async-report-warnings-errors 'silent) ;; native-comp warning
 (setq byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local))
+(setq warning-suppress-log-types '((comp) (bytecomp)))
 ;; Ensure Emacs loads the most recent byte-compiled files.
 (setq load-prefer-newer t)
 
@@ -26,12 +28,29 @@
               bidi-paragraph-direction 'left-to-right)
 (setq bidi-inhibit-bpa t)  ; emacs 27 only - disables bidirectional parenthesis
 
+(setq inhibit-startup-echo-area-message (user-login-name))
+
 (setq-default cursor-in-non-selected-windows nil)
 (setq highlight-nonselected-windows nil)
 (setq fast-but-imprecise-scrolling t)
 (setq inhibit-compacting-font-caches t)
 
-(menu-bar-mode 0)
+;; Default frame configuration: full screen, good-looking title bar on macOS
+(setq frame-resize-pixelwise t)
+(menu-bar-mode -1)
+(tool-bar-mode -1)                      ; All these tools are in the menu-bar anyway
+(setq default-frame-alist '((fullscreen . maximized)
+
+                            ;; You can turn off scroll bars by uncommenting these lines:
+                            ;; (vertical-scroll-bars . nil)
+                            ;; (horizontal-scroll-bars . nil)
+
+                            ;; Setting the face in here prevents flashes of
+                            ;; color as the theme gets activated
+                            (background-color . "#000000")
+                            (ns-appearance . dark)
+                            (ns-transparent-titlebar . t)))
+
 
 (setenv "LSP_USE_PLISTS" "true")
 

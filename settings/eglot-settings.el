@@ -3,7 +3,6 @@
 (use-package eglot
   :ensure nil
   :init
-
   (advice-add 'eglot-find-implementation :before 'add-point-to-find-tag-marker-ring)
   (advice-add 'eglot-find-typeDefinition :before 'add-point-to-find-tag-marker-ring)
 
@@ -20,6 +19,14 @@
    )
 
   :hook
+  (eglot-managed-mode . (lambda ()
+                          (rock/completions-reset-set
+                           #'eglot-completion-at-point
+                           #'cape-dabbrev
+                           #'cape-keyword
+                           #'cape-file
+                           t)))
+
   (elixir-mode . eglot-ensure)
   (elixir-ts-mode . eglot-ensure)
   (heex-mode . eglot-ensure)
@@ -40,5 +47,10 @@
   (eglot-booster-mode)
   :setopt
   (eglot-booster-io-only t))
+
+(use-package consult-eglot
+  :ensure t
+  :after eglot
+  :bind ("M-s i" . consult-eglot-symbols))
 
 (provide 'eglot-settings)

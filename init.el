@@ -124,74 +124,106 @@
   '(makefile-mode markdown-mode org-mode)
   "Major modes in which `delete-trailing-whitespace-mode' should not be enabled.")
 
+;; Define our own local minor mode for compatibility with Emacs <31
+(define-minor-mode rock-delete-trailing-whitespace-mode
+  "Minor mode to delete trailing whitespace on save."
+  :lighter ""
+  (if rock-delete-trailing-whitespace-mode
+      (add-hook 'before-save-hook #'delete-trailing-whitespace nil t)
+    (remove-hook 'before-save-hook #'delete-trailing-whitespace t)))
+
 (defun rock/enable-delete-trailing-whitespace ()
   "Enable `delete-trailing-whitespace-mode' unless excluded."
   (unless (apply #'derived-mode-p rock/delete-trailing-whitespace-excluded-modes)
-    (delete-trailing-whitespace-mode 1)))
+    (rock-delete-trailing-whitespace-mode 1)))
 
 (defun add-point-to-find-tag-marker-ring (&rest r)
   "Advising function to use `find-tag-marker-ring' (R ignored)."
   (xref-push-marker-stack))
 
-(define-globalized-minor-mode
-  global-delete-trailing-whitespace-mode
-  delete-trailing-whitespace-mode
-  rock/enable-delete-trailing-whitespace)
+;;(define-globalized-minor-mode
+;;      global-rock-delete-trailing-whitespace-mode
+;;      delete-trailing-whitespace-mode
+;;      rock/enable-delete-trailing-whitespace)
+
+ (define-globalized-minor-mode
+     global-rock-delete-trailing-whitespace-mode
+     rock-delete-trailing-whitespace-mode
+     rock/enable-delete-trailing-whitespace)
 
 (use-package emacs :ensure nil
   :init
-  (setq use-short-answers t
-         scroll-conservatively 101
-         confirm-kill-emacs 'yes-or-no-p
-         help-window-select t
-         backup-by-copying t
-         backup-directory-alist `(("." . ,(expand-file-name "backups/" user-emacs-directory)))
-         custom-file (expand-file-name "custom.el" user-emacs-directory)
-         delete-old-versions t
-         kept-new-versions 6
-         kept-old-versions 2
-         version-control t
-         create-lockfiles nil
-         enable-recursive-minibuffers t
-         desktop-save-mode nil
-         initial-scratch-message nil
-         initial-major-mode 'text-mode
-         custom-safe-themes t
-         initial-buffer-choice t
-         ring-bell-function #'ignore
-         find-file-visit-truename t
-         inhibit-splash-screen t
-         user-full-name "Rock Neurotiko"
-         user-mail-address (concat "miguelglafuente" "@" "gmail" ".com")
-         frame-title-format (concat "%b - " invocation-name "@" (system-name))
-         tab-always-indent 'complete
-         text-mode-ispell-word-completion nil
-         read-extended-command-predicate #'command-completion-default-include-p
-         show-paren-style 'mixed
-      )
+  (setopt use-short-answers t
+        scroll-conservatively 101
+        confirm-kill-emacs 'yes-or-no-p
+        help-window-select t
+        backup-by-copying t
+        backup-directory-alist `(("." . ,(expand-file-name "backups/" user-emacs-directory)))
+        custom-file (expand-file-name "custom.el" user-emacs-directory)
+        delete-old-versions t
+        kept-new-versions 6
+        kept-old-versions 2
+        version-control t
+        create-lockfiles nil
+        enable-recursive-minibuffers t
+        desktop-save-mode nil
+        initial-scratch-message nil
+        initial-major-mode 'text-mode
+        initial-buffer-choice t
+        inhibit-splash-screen t
+        inhibit-startup-screen t
+        inhibit-startup-message t
+        custom-safe-themes t
+        ring-bell-function #'ignore
+        find-file-visit-truename t
+        user-full-name "Rock Neurotiko"
+        user-mail-address (concat "miguelglafuente" "@" "gmail" ".com")
+        frame-title-format (concat "%b - " invocation-name "@" (system-name))
+        text-mode-ispell-word-completion nil
+        read-extended-command-predicate #'command-completion-default-include-p
+        show-paren-style 'mixed
+
+        completions-detailed t
+        tab-always-indent 'complete
+        completion-auto-help 'always
+        completions-group t
+        completion-auto-select 'second-tab
+
+        mouse-wheel-tilt-scroll t
+        mouse-wheel-flip-direction t
+
+
+        )
   :config
   (setq-default truncate-lines t
                 display-line-numbers-width 3
                 indent-tabs-mode nil
                 fill-column 80
                 tab-width 4)
+
   (auto-save-visited-mode 1)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (show-paren-mode 1)
   (blink-cursor-mode -1)
+  (global-visual-line-mode 1)
   (global-display-line-numbers-mode 1)
+  (pixel-scroll-precision-mode)
+  (save-place-mode 1) ;; remember cursor position in files
   (prefer-coding-system 'utf-8)
   (fringe-mode '(8 . 8))
   (when (and (window-system) (font-exists-p rock/fontname))
     (set-frame-font rock/fontname)
     (set-default-fontsize))
-  (global-delete-trailing-whitespace-mode 1)
+  (global-rock-delete-trailing-whitespace-mode 1)
   (global-unset-key (kbd "C-h"))
   (global-unset-key (kbd "C-t"))
   (global-set-key (kbd "C-h") 'left-char)
   (global-set-key (kbd "C-t") 'right-char)
-  )
+
+  :bind
+  (("C-S-h m" . describe-mode)))
+
 (use-package auth-source :ensure nil
   :setopt
   (auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
@@ -215,9 +247,7 @@
    history-delete-duplicates t
    savehist-save-minibuffer-history t
    savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
-  :config
-  (savehist-mode 1)
-  )
+  :hook (elpaca-after-init . savehist-mode))
 
 (use-package recentf
   :ensure nil
@@ -227,8 +257,7 @@
   (recentf-max-saved-items 400)
   (recentf-max-menu-items 400)
   (recentf-save-file (expand-file-name "recentf" user-emacs-directory))
-  :config
-  (recentf-cleanup))
+  :hook (elpaca-after-init . #'recentf-cleanup))
 
 (use-package autorevert
   :ensure nil
@@ -238,10 +267,12 @@
   :config
   (winner-mode t))
 
-(use-package window :ensure nil
-  :bind
-  ("C-x C-0" . rotate-windows-back)
-  ("C-x C-1" . rotate-windows))
+(when (>= emacs-major-version 31)
+  (use-package window :ensure nil
+    :bind
+    ("C-x C-0" . rotate-windows-back)
+    ("C-x C-1" . rotate-windows))
+  )
 
 (use-package recentf :ensure nil
   :init
@@ -284,26 +315,38 @@ If there’s no project or file, return nil."
         (message "Copied: %s" path))
     (user-error "No project file path available")))
 
+(defun rock/completions-reset-set (&rest completion-functions)
+  "Reset completion-at-point-functions locally and add each function from COMPLETION-FUNCTIONS.
+This function sets completion-at-point-functions to an empty list locally,
+then adds each function from the arguments one by one using add-hook."
+  (setq-local completion-at-point-functions nil)
+  (cl-dolist (func completion-functions)
+    (when (eq t (cond
+                 ((fboundp func) t)
+                 ((eq t func) t)
+                 ((functionp func) t)
+                 (t nil)))
+      (add-hook 'completion-at-point-functions func 100 t)))
+  )
+
 (use-package project :ensure nil
   :bind (("C-c r P" . project-switch-project)
          ("C-c r k" . project-kill-buffers)
          ("C-c w r" . 'rock/project-relative-path-copy)
          ("C-c w l" . 'rock/project-relative-path-with-line-number-copy))
+
   :config
   (add-to-list 'vc-directory-exclusion-list "data/db")
+  (add-to-list 'project-vc-extra-root-markers "mix.exs")
 
-  ;; Extend project.el to recognize `mix.exs` as a project root marker
-  (cl-defmethod project-root ((project (head elixir)))
-    "Return the root directory of an Elixir project."
-    (cdr project))
+  (defun rock/project-auto-register ()
+    "Ensure the current buffer's directory is registered as a project."
+    (when (buffer-file-name)
+      (when-let ((project (project-current nil)))
+        (project-remember-project project))))
 
-  (cl-defmethod project-try-elixir (dir)
-    "Detect Elixir project by looking for mix.exs."
-    (let ((root (locate-dominating-file dir "mix.exs")))
-      (when root
-        `(elixir . ,root))))
-  ;; Register Elixir project finder
-  (add-hook 'project-find-functions #'project-try-elixir))
+  (add-hook 'find-file-hook #'rock/project-auto-register)
+  )
 
 (defun rock/keyboard-quit-dwim ()
   "Do-What-I-Mean behaviour for a general `keyboard-quit'.
@@ -378,20 +421,20 @@ The DWIM behaviour of this command is as follows:
   (global-set-key (kbd "C-z")   'undo-fu-only-undo)
   (global-set-key (kbd "C-S-z") 'undo-fu-only-redo))
 
+;; Ensure Elpaca updates transient to a compatible version for magit and claude-code-ide
+(use-package transient
+  :ensure t
+  :demand t)
+
 (use-package magit
   :ensure t
   :bind (("C-c g" . magit-status)
-	 ("C-c C-c" . with-editor-finish)
-	 ("C-c C-k" . with-editor-cancel)))
+	     ("C-c C-c" . with-editor-finish)
+	     ("C-c C-k" . with-editor-cancel)))
 
 (use-package git-link
   :ensure (git-link :host github :repo "sshaw/git-link")
   :bind (("C-c C-l" . git-link)))
-
-(use-package git-auto-commit-mode
-  :ensure t
-  :setopt
-  (gac-automatically-push-p t))
 
 ;;-------------------;
 ;;; Auto-Complete ;;;
@@ -400,9 +443,10 @@ The DWIM behaviour of this command is as follows:
 (use-package orderless
     :ensure t
     :config
-    (setq completion-styles '(orderless partial-completion basic)
+    (setopt completion-styles '(orderless partial-completion basic initials substring)
           completion-category-defaults nil
-          completion-category-overrides '((file (styles basic partial-completion)))))
+          completion-category-overrides '((file (styles basic partial-completion))))
+    )
 
 (use-package corfu
    :ensure t
@@ -414,6 +458,21 @@ The DWIM behaviour of this command is as follows:
     (corfu-auto t)
     :init
     (global-corfu-mode))
+
+;; Make corfu popup come up in terminal overlay
+(when (< emacs-major-version 31)
+  (use-package corfu-terminal
+    :if (not (display-graphic-p))
+    :ensure t
+    :config
+    (corfu-terminal-mode)))
+
+(use-package kind-icon
+  :if (display-graphic-p)
+  :ensure t
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (use-package cape
   :ensure t
@@ -436,24 +495,34 @@ The DWIM behaviour of this command is as follows:
          ("C-c p ^" . cape-tex)
          ("C-c p &" . cape-sgml)
          ("C-c p r" . cape-rfc1345))
+  ;; :hook (elpaca-after-init . (lambda () (progn
   :init
+
   ;; Add to the global default value of `completion-at-point-functions' which is
   ;; used by `completion-at-point'.  The order of the functions matters, the
   ;; first function returning a result wins.  Note that the list of buffer-local
   ;; completion functions takes precedence over the global list.
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-  ;;(add-to-list 'completion-at-point-functions #'cape-history)
-  ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
-  ;;(add-to-list 'completion-at-point-functions #'cape-tex)
-  ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
-  ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-  ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-  ;;(add-to-list 'completion-at-point-functions #'cape-dict)
-  ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
-  ;;(add-to-list 'completion-at-point-functions #'cape-line)
-)
+
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-keyword)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-emoji)
+
+  :hook
+  (prog-mode . (lambda ()
+                 (rock/completions-reset-set
+                  #'cape-dabbrev
+                  #'cape-keyword
+                  #'cape-file
+                  t)))
+  (emacs-lisp-mode . (lambda ()
+                       (rock/completions-reset-set
+                        #'cape-elisp-symbol
+                        #'cape-elisp-block
+                        #'cape-dabbrev
+                        #'cape-keyword
+                        #'cape-file
+                        t))))
 
 (use-package vertico
   :ensure t
@@ -461,6 +530,7 @@ The DWIM behaviour of this command is as follows:
          :map minibuffer-mode-map
               ("DEL" . vertico-directory-delete-char)
               ("<left>" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word)
               ("<right>" . vertico-insert)
          )
   :setopt
@@ -499,6 +569,7 @@ The DWIM behaviour of this command is as follows:
          ("C-c r p" . consult-ripgrep)
          ("C-c r g" . consult-ripgrep-directory)
          ("C-c r f" . consult-ripgrep-single-file)
+         ("C-c r c" . consult-fd)
          ;; Search for files names recursively
          ("M-s M-f" . consult-find)
          ;; search through the outline (headings) of the file
@@ -516,6 +587,8 @@ The DWIM behaviour of this command is as follows:
          ("M-l" . consult-line)                  ;; needed by consult-line to detect isearch
          )
     :hook (completion-list-mode . consult-preview-at-point-mode)
+    :setopt
+    (consult-narrow-key "<")
     :init
       (advice-add 'consult-line :before 'add-point-to-find-tag-marker-ring)
       (advice-add 'consult-goto-line :before 'add-point-to-find-tag-marker-ring)
@@ -526,14 +599,19 @@ The DWIM behaviour of this command is as follows:
       (advice-add 'consult-imenu :before 'add-point-to-find-tag-marker-ring)
 )
 
-(use-package consult-project-extra
+(use-package move-text
   :ensure t
-  :after (consult)
-  :custom (consult-project-function #'consult-project-extra-project-fn) ;; Optional but recommended for a more consistent UI
-   :bind
-  (("C-c r c" . consult-project-extra-find)
-   ("C-c r o" . consult-project-extra-find-other-window)))
+  :init
+  (move-text-default-bindings)
+  (defun rock/indent-region-advice (&rest ignored)
+    (let ((deactivate deactivate-mark))
+      (if (region-active-p)
+          (indent-region (region-beginning) (region-end))
+        (indent-region (line-beginning-position) (line-end-position)))
+      (setq deactivate-mark deactivate)))
 
+  (advice-add 'move-text-up :after 'rock/indent-region-advice)
+  (advice-add 'move-text-down :after 'rock/indent-region-advice))
 
 ;; we start with meow even if it's external because it change how we use emacs
 (require 'meow-settings)
@@ -542,6 +620,27 @@ The DWIM behaviour of this command is as follows:
   :ensure t
   :bind (("C-c SPC" . avy-goto-char-timer)
          ("M-g C-g" . avy-goto-line)))
+
+
+(use-package ace-window
+  :ensure t
+  :bind (("C-x o" . ace-window))
+  :setopt
+  (aw-keys '(?a ?o ?e ?u ?i ?d ?h ?t ?n ?s))
+  (aw-dispatch-alist
+  '((?q aw-delete-window "Delete Window")
+	(?m aw-swap-window "Swap Windows")
+	(?M aw-move-window "Move Window")
+	(?c aw-copy-window "Copy Window")
+	(?r aw-switch-buffer-in-window "Select Buffer")
+	(?w aw-flip-window)
+	(?g aw-switch-buffer-other-window "Switch Buffer Other Window")
+	(?4 aw-split-window-fair "Split Fair Window")
+	(?3 aw-split-window-vert "Split Vert Window")
+	(?2 aw-split-window-horz "Split Horz Window")
+	(?l delete-other-windows "Delete Other Windows")
+	(?? aw-show-dispatch-help))))
+
 
 (use-package nerd-icons
   :ensure t
@@ -566,6 +665,7 @@ The DWIM behaviour of this command is as follows:
   :after (nerd-icons corfu)
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
 
 (use-package dashboard
   :ensure t
@@ -599,8 +699,9 @@ The DWIM behaviour of this command is as follows:
   (dashboard-set-file-icons t)
 
   :hook
-  (elpaca-after-init . #'dashboard-insert-startupify-lists)
-  (elpaca-after-init . #'dashboard-initialize)
+  (elpaca-after-init . dashboard-initialize)
+  (elpaca-after-init . dashboard-insert-startupify-lists)
+
   :config
   (dashboard-setup-startup-hook)
 
@@ -619,6 +720,7 @@ The DWIM behaviour of this command is as follows:
 
 (use-package embark
   :ensure t
+  :after (avy)
   :bind
   (("C-." . embark-act)         ;; pick some comfortable binding
    ("C-;" . embark-dwim)        ;;
@@ -627,6 +729,20 @@ The DWIM behaviour of this command is as follows:
   :init
   ; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
+
+  ;; Add the option to run embark when using avy
+  (defun rock/avy-action-embark (pt)
+    (unwind-protect
+        (save-excursion
+          (goto-char pt)
+          (embark-act))
+      (select-window
+       (cdr (ring-ref avy-ring 0))))
+    t)
+
+  ;; After invoking avy-goto-char-timer, hit "." to run embark at the next
+  ;; candidate you select
+  (setf (alist-get ?. avy-dispatch-alist) 'rock/avy-action-embark)
 
   :config
   ;; Hide the mode line of the Embark live/completions buffers
@@ -638,13 +754,9 @@ The DWIM behaviour of this command is as follows:
 (use-package embark-consult
   :ensure t ; only need to install it, embark loads it after consult if found
   :after (embark consult)
+  :init
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
-
-(use-package consult-eglot
-  :ensure t
-  :after eglot
-  :bind ("M-s i" . consult-eglot-symbols))
 
 (use-package multiple-cursors
   :ensure t
@@ -685,8 +797,22 @@ The DWIM behaviour of this command is as follows:
   :ensure t
   :bind (("C-c r C-g" . deadgrep)))
 
+(use-package wgrep
+  :ensure t
+  :setopt
+  (wgrep-auto-save-buffer t))
+
 (use-package wgrep-deadgrep
   :ensure t)
+
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode 1))
+
+(use-package yasnippet-snippets
+  :ensure t
+  :after yasnippet)
 
 (use-package exec-path-from-shell
   :ensure t
@@ -710,8 +836,13 @@ The DWIM behaviour of this command is as follows:
   (elixir-mode . exunit-mode)
   (elixir-ts-mode . exunit-mode))
 
-(use-package graphql-mode
-  :ensure t)
+(use-package markdown-mode :ensure t)
+
+(use-package graphql-mode :ensure t)
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
 
 (use-package vterm
   :ensure t
@@ -736,10 +867,11 @@ The DWIM behaviour of this command is as follows:
 
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-completion-map
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word))
+              ("C-<tab>" . 'copilot-accept-completion)
+              ;; ("TAB" . 'copilot-accept-completion)
+              ;; ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("M-<tab>" . 'copilot-accept-completion-by-word)
+              )
   :config
   (setq copilot-indent-offset-warning-disable t)
 
