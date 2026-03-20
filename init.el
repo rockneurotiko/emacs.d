@@ -2,19 +2,22 @@
 
 (add-to-list 'load-path (expand-file-name "settings" user-emacs-directory))
 
+;; Load a default theme, to avoid non themed emacs when errors or first setup
+(load-theme 'tango-dark t)
+
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3") ;; w/o this Emacs freezes when refreshing ELPA
 
 ;; Setup elpaca
 
-(defvar elpaca-installer-version 0.11)
+(defvar elpaca-installer-version 0.12)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
-(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+(defvar elpaca-sources-directory (expand-file-name "sources/" elpaca-directory))
 (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
                               :ref nil :depth 1 :inherit ignore
                               :files (:defaults "elpaca-test.el" (:exclude "extensions"))
-                              :build (:not elpaca--activate-package)))
-(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+                              :build (:not elpaca-activate)))
+(let* ((repo  (expand-file-name "elpaca/" elpaca-sources-directory))
        (build (expand-file-name "elpaca/" elpaca-builds-directory))
        (order (cdr elpaca-order))
        (default-directory repo))
@@ -88,6 +91,10 @@
 ;; install use-package support to elpaca
 (elpaca elpaca-use-package
   (elpaca-use-package-mode))
+
+(use-package package
+  :ensure nil
+  :config (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 
 (use-package xref :ensure nil)
 
@@ -201,7 +208,7 @@
                 fill-column 80
                 tab-width 4)
 
-  (auto-save-visited-mode 1)
+  ;; (auto-save-visited-mode 1)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (show-paren-mode 1)
@@ -262,6 +269,10 @@
 (use-package autorevert
   :ensure nil
   :hook (elpaca-after-init . global-auto-revert-mode))
+
+(use-package dired :ensure nil
+  :setopt
+  (dired-kill-when-opening-new-dired-buffer t))
 
 (use-package winner :ensure nil
   :config
@@ -398,6 +409,7 @@ The DWIM behaviour of this command is as follows:
 
 (use-package solaire-mode
   :ensure t
+  :disabled t
   :config
   (solaire-global-mode +1))
 
@@ -414,6 +426,21 @@ The DWIM behaviour of this command is as follows:
   (mood-line-format mood-line-format-default)
   (mood-line-glyph-alist mood-line-glyphs-fira-code))
 
+
+(defun rock/treesit-parser-for-lang-mode (lang-mode-symbol)
+    (when (and (treesit-available-p)
+               (treesit-language-available-p lang-mode-symbol))
+      (treesit-parser-create lang-mode-symbol)))
+
+(use-package indent-bars
+  :ensure t
+  :custom
+  (indent-bars-no-descend-lists 'skip) ; prevent extra bars in nested lists
+  (indent-bars-treesit-support t)
+  (indent-bars-treesit-ignore-blank-lines-types '("module"))
+  (indent-bars-treesit-wrap '((yaml block_mapping_pair comment)))
+  :hook
+  ((yaml-ts-mode emacs-lisp-mode) . indent-bars-mode))
 
 (use-package undo-fu
   :config
@@ -698,12 +725,12 @@ The DWIM behaviour of this command is as follows:
   (dashboard-icon-type 'nerd-icons) ; use `nerd-icons' package
   (dashboard-set-file-icons t)
 
-  :hook
-  (elpaca-after-init . dashboard-initialize)
-  (elpaca-after-init . dashboard-insert-startupify-lists)
+  ;; :hook
+  ;; (elpaca-after-init . dashboard-initialize)
+  ;; (elpaca-after-init . dashboard-insert-startupify-lists)
 
-  :config
-  (dashboard-setup-startup-hook)
+  ;; :config
+  ;; (dashboard-setup-startup-hook)
 
   :bind
     ("C-x C-t" . dashboard-open))
@@ -826,6 +853,11 @@ The DWIM behaviour of this command is as follows:
   (direnv-mode))
 
 
+;; language modes
+;;(use-package erlang
+;;  :ensure (erlang :host github :repo "erlang/otp" :branch "master" :files ("lib/tools/emacs/*.el"))
+;;  )
+
 (use-package elixir-mode
   :ensure t)
 
@@ -836,13 +868,34 @@ The DWIM behaviour of this command is as follows:
   (elixir-mode . exunit-mode)
   (elixir-ts-mode . exunit-mode))
 
+(use-package json-mode :ensure t)
+
 (use-package markdown-mode :ensure t)
 
 (use-package graphql-mode :ensure t)
 
+(use-package fish-mode :ensure t)
+
+(use-package just-mode :ensure t)
+
+(use-package graphviz-dot-mode :ensure t)
+
+(use-package hyprlang-ts-mode
+  :ensure t
+  :config
+  (add-to-list 'treesit-language-source-alist
+               '(hyprlang "https://github.com/tree-sitter-grammars/tree-sitter-hyprlang"))
+  :setopt
+  (hyprlang-ts-mode-indent-offset 2))
+
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
+
+(use-package mise
+  :ensure t
+  :hook
+  (after-init . global-mise-mode))
 
 (use-package vterm
   :ensure t
@@ -858,44 +911,11 @@ The DWIM behaviour of this command is as follows:
   (:map vterm-mode-map
         ("C-y" . vterm-yank)))
 
-(use-package copilot
-  :ensure (copilot
-              :host github
-              :repo "copilot-emacs/copilot.el"
-              :branch "main"
-              :files ("dist" "*.el"))
-
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("C-<tab>" . 'copilot-accept-completion)
-              ;; ("TAB" . 'copilot-accept-completion)
-              ;; ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("M-<tab>" . 'copilot-accept-completion-by-word)
-              )
-  :config
-  (setq copilot-indent-offset-warning-disable t)
-
-  ;; :setopt
-  ;; (copilot-lsp-settings '(:github (:copilot (:selectedCompletionModel "claude-3.7-sonnet"))))
-  ;; (copilot-log-max nil)
-  ;; (copilot-server-log-level 4)
-  )
-
-(use-package claude-code-ide
-  :ensure (claude-code-ide :host github :repo "manzaltu/claude-code-ide.el" :files ("*.el"))
-  :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
-  :setopt
-  (claude-code-ide-terminal-backend 'vterm)
-  (claude-code-ide-enable-mcp-server t)
-  :config
-  (setenv "ANTHROPIC_AUTH_TOKEN" (efs/lookup-password :host "aider.chat" :user "anthropic"))
-  (setenv "ANTHROPIC_BASE_URL" (efs/lookup-password :host "aider.chat" :user "anthropic-url"))
-
-  ;; Optionally enable Emacs MCP tools
-  (claude-code-ide-emacs-tools-setup))
-
 ;; external settings except meow
 
 (require 'org-settings)
 (require 'treesit-settings)
 (require 'eglot-settings)
+(require 'agent-settings)
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)

@@ -1,5 +1,22 @@
 ;; -*- lexical-binding: nil; -*-
 
+(defconst rock--todo-colors
+  '(("TODO"        . "red")
+    ("IN PROGRESS" . "cyan")
+    ("BLOCKED"     . "orange")
+    ("CODE REVIEW" . "purple")
+    ("QA"          . "green")
+    ("UPLOAD"      . "magenta")
+    ("DONE"        . "forest green")
+    ("CANCELED"    . "gray")))
+
+(defun rock/todo-fg-face (color)
+  `(:foreground ,color :weight bold))
+
+(defun rock/todo-bg-face (color)
+  (let ((dark-p (member color '("purple" "magenta" "forest green"))))
+    `(:background ,color :foreground ,(if dark-p "white" "black") :weight semibold)))
+
 (use-package org :ensure nil
   :config
 
@@ -19,10 +36,10 @@
   ;; org-capture-template has examples as types, so the setopt
   ;; gives a warning
   (org-capture-templates
-      '(("t" "Todo" entry (file+headline (file-name-concat org-directory "roam/capture/todos.org") "Tasks")
-         "* TODO %?\n  %i\n  %a")
-        ("j" "Journal" entry (file+olp+datetree (file-name-concat org-directory "roam/capture/journal.org"))
-         "* %?\nEntered on %U\n  %i\n  %a")))
+   `(("t" "Todo" entry (file+headline ,(file-name-concat org-directory "roam/capture/todos.org") "Tasks")
+      "* TODO %?\n  %i\n  %a")
+     ("j" "Journal" entry (file+olp+datetree ,(file-name-concat org-directory "roam/capture/journal.org"))
+      "* %?\nEntered on %U\n  %i\n  %a")))
 
   :setopt
 
@@ -38,14 +55,7 @@
    '((sequence "TODO(t)" "IN PROGRESS(p)" "BLOCKED(b)" "CODE REVIEW(r)" "QA(q)" "UPLOAD(u)" "|" "DONE(d)" "CANCELED(c)")))
 
   (org-todo-keyword-faces
-   '(("TODO" . (:foreground "red" :weight bold))
-     ("IN PROGRESS" . (:foreground "cyan" :weight bold))
-     ("BLOCKED" . (:foreground "orange" :weight bold))
-     ("CODE REVIEW" . (:foreground "purple" :weight bold))
-     ("QA" . (:foreground "green" :weight bold))
-     ("UPLOAD" . (:foreground "magenta" :weight bold))
-     ("DONE" . (:foreground "forest green" :weight bold))
-     ("CANCELED" . (:foreground "gray" :weight bold))))
+          (mapcar (lambda (kv) (cons (car kv) (rock/todo-fg-face (cdr kv)))) rock--todo-colors))
 
   (org-priority-highest 1)
   (org-priority-lowest  5)
@@ -180,8 +190,9 @@
     (apply #'org-roam-node-insert args)))
 
 (use-package org-roam
-  :ensure t
+  :ensure (:host github :repo "org-roam/org-roam" :depth 1 :files (:defaults "extensions/*"))
   :after org
+
   :setopt
   (org-roam-directory (file-truename (file-name-concat org-directory "roam")))
   (org-roam-completion-everywhere t)
@@ -266,14 +277,82 @@
   :ensure t
   :after (calfw org-gcal)
   :config
-  (setq cfw:org-overwrite-default-keybinding t)
-  (define-key cfw:org-custom-map (kbd "R") 'org-gcal-fetch)
-  :bind (("C-c C" . cfw:open-org-calendar))
+  (setq calfw-org-overwrite-default-keybinding t)
+  (define-key calfw-org-custom-map (kbd "R") 'org-gcal-fetch)
+  :bind (("C-c C" . calfw-org-open-calendar))
   )
 
 (use-package verb
   :ensure t
   :after org
   :config (define-key org-mode-map (kbd "C-c C-r") verb-command-map))
+
+(defun rock/set-org-variables ()
+  (setq-local line-spacing 0.4))
+
+(use-package org-modern
+  :ensure t
+  :after org
+  :hook
+  (org-mode . org-modern-mode)
+  (org-mode . rock/set-org-variables)
+  (org-agenda . rock/set-org-variables)
+  (org-agenda-finalize . org-modern-agenda)
+  :setopt
+  (org-auto-align-tags nil)
+  (org-tags-column 0)
+  (org-catch-invisible-edits 'show-and-error)
+  (org-special-ctrl-a/e t)
+  (org-insert-heading-respect-content t)
+  ;; Org styling, hide markup etc.)
+  (org-hide-emphasis-markers t)
+  (org-pretty-entities t)
+  (org-agenda-tags-column 0)
+  (org-ellipsis "…")
+
+  ;; Inverse TODO faces
+  (org-modern-todo-faces (mapcar (lambda (kv) (cons (car kv) (rock/todo-bg-face (cdr kv)))) rock--todo-colors))
+
+  (org-modern-hide-stars nil)		; adds extra indentation
+  (org-modern-table nil)
+  (org-modern-list
+   '(;; (?- . "-")
+     (?* . "•")
+     (?+ . "‣")))
+  )
+
+(use-package org-modern-indent
+  :ensure (org-modern-indent :type git :host github :repo "jdtsmith/org-modern-indent")
+  :after org-modern
+  :config ; add late to hook
+  (add-hook 'org-mode-hook #'org-modern-indent-mode 90)
+  :setopt
+  (org-startup-indented t))
+
+(use-package org-superstar
+  :ensure t
+  :after org
+  :hook (org-mode . org-superstar-mode)
+  :setopt
+  (org-superstar-cycle-headline-bullets t)
+  (org-hide-leading-stars t)
+  (org-superstar-special-todo-items nil))
+
+(use-package org-autolist
+  :ensure t
+  :after org
+  :hook (org-mode . org-autolist-mode))
+
+;; https://github.com/awth13/org-appear
+(use-package org-appear
+  :ensure t
+  :after org
+  :hook (org-mode . org-appear-mode)
+  :setopt
+  (org-appear-autolinks t)
+  (org-appear-autosubmarkers t)
+  (org-appear-autoentities t)
+  (org-appear-autokeywords t)
+  (org-appear-delay 1))
 
 (provide 'org-settings)

@@ -1,7 +1,8 @@
 ;; -*- lexical-binding: t;-*-
 
 (use-package meow
-  :ensure t
+  :ensure (:wait t)
+  :demand t
   :init
   (defun rock--meow-duplicate ()
     "Duplicate region if active. Otherwise duplicate char at point"
@@ -69,7 +70,7 @@
    '("2" . meow-expand-2)
    '("1" . meow-expand-1)
    ;; '("-" . negative-argument)
-   '(";" . meow-reverse))
+   '(":" . meow-reverse))
 
   (meow-normal-define-key
    '("," . meow-inner-of-thing)

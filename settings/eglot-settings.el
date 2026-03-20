@@ -9,14 +9,18 @@
   :config
 
   (setf
-   (alist-get '(elixir-mode heex-mode elixir-ts-mode heex-ts-mode)
+   (alist-get '(elixir-mode elixir-ts-mode heex-ts-mode)
                    eglot-server-programs
                    nil nil #'equal)
    (eglot-alternatives
-    ;; '("/home/rock/.local/bin/expert")
-    '("/home/rock/.emacs.d/.cache/elixir-ls/language_server.sh")
+    '(("/home/rock/.local/bin/expert" "--stdio"))
+    ;; '("/home/rock/.emacs.d/.cache/elixir-ls/language_server.sh")
     )
    )
+
+  (setq-default eglot-workspace-configuration
+  '(:expert (:workspaceSymbols (:minQueryLength 0))))
+
 
   :hook
   (eglot-managed-mode . (lambda ()

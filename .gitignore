@@ -62,3 +62,7 @@ eln-cache
 /tree-sitter/
 /projects
 /custom.el
+flycheck_*
+/request/
+.org-*
+.org-generic-id-locations
