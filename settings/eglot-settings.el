@@ -36,6 +36,7 @@
   (heex-mode . eglot-ensure)
   (heex-ts-mode . eglot-ensure)
 
+  (elixir-mode . (lambda () (add-hook 'before-save-hook #'eglot-format t t)))
   (elixir-ts-mode . (lambda () (add-hook 'before-save-hook #'eglot-format t t)))
   (heex-ts-mode . (lambda () (add-hook 'before-save-hook #'eglot-format t t)))
 

@@ -1,9 +1,11 @@
 ;; -*- lexical-binding: t; -*-
 
 (add-to-list 'load-path (expand-file-name "settings" user-emacs-directory))
+(add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
 
 ;; Load a default theme, to avoid non themed emacs when errors or first setup
-(load-theme 'tango-dark t)
+(load-theme 'dank-emacs t)
+;; (load-theme 'tango-dark t)
 
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3") ;; w/o this Emacs freezes when refreshing ELPA
 
@@ -888,6 +890,9 @@ The DWIM behaviour of this command is as follows:
   :setopt
   (hyprlang-ts-mode-indent-offset 2))
 
+(use-package kdl-mode
+  :ensure t)
+
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
@@ -911,7 +916,28 @@ The DWIM behaviour of this command is as follows:
   (:map vterm-mode-map
         ("C-y" . vterm-yank)))
 
-;; external settings except meow
+;; (use-package shipit
+;;   :ensure (:host github :repo "Daskeladden/shipit" :files ("lisp/*.el"))
+;;   :after (magit marginalia)
+;;   :config
+;;   (shipit-init)
+;;   :setopt
+;;   (shipit-github-token (efs/lookup-password :host "api.github.com" :user "rockneurotiko"))
+;;   ;; (shipit-use-svglib-icons t)              ; SVG icons (needs svg-lib)
+;;   ;; (shipit-show-avatars t)                   ; show user avatars
+;;   ;; (shipit-round-avatars t)                  ; round avatar images
+;;   (shipit-notifications-enabled t)          ; poll for notifications
+;;   (shipit-notifications-poll-frequency 300) ; poll interval (seconds)
+;;   (shipit-render-markdown t)                ; render markdown in descriptions
+;;   )
+
+;; (use-package ewm
+;;   :custom
+;;   (ewm-output-config '(("eDP-1" :width 2560 :height 1600)))
+;;   :bind (:map ewm-mode-map
+;;          ("s-d" . consult-buffer)))
+
+;; EXTERNAL settings except meow
 
 (require 'org-settings)
 (require 'treesit-settings)
