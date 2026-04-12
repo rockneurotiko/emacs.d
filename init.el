@@ -893,6 +893,10 @@ The DWIM behaviour of this command is as follows:
 (use-package kdl-mode
   :ensure t)
 
+(use-package kanata-kbd-mode
+    :ensure (kanata-kbd-mode :host github :repo "chmouel/kanata-kbd-mode" :files ("*.el"))
+    :mode ("\\.kbd\\'" . kanata-kbd-mode))
+
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
