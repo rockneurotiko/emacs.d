@@ -13,7 +13,8 @@
                    eglot-server-programs
                    nil nil #'equal)
    (eglot-alternatives
-    '(("/home/rock/.local/bin/expert" "--stdio"))
+    '(("/home/rock/.local/share/mise/shims/dexter" "lsp"))
+    ;; '(("/home/rock/.local/bin/expert" "--stdio"))
     ;; '("/home/rock/.emacs.d/.cache/elixir-ls/language_server.sh")
     )
    )
