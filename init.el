@@ -9,6 +9,37 @@
 
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3") ;; w/o this Emacs freezes when refreshing ELPA
 
+;; Profile system: EMACS_PROFILE env var sets a named profile.
+;; Individual EMACS_NO_* flags override per-feature.
+;; Default profile is "full" (everything enabled).
+;;
+;; Usage:
+;;   EMACS_PROFILE=tui emacs -nw           # TUI mode: no org, no AI, no GUI extras
+;;   EMACS_NO_LSP=1 emacs -nw              # Disable LSP in any mode
+;;   EMACS_PROFILE=tui EMACS_NO_GIT=1 ...  # TUI + no git
+
+(defvar rock/profile (or (getenv "EMACS_PROFILE") "full"))
+
+(defvar rock/features
+  (let ((flags (make-hash-table :test 'equal)))
+    ;; Start with everything enabled
+    (dolist (f '("org" "ai" "lsp" "gui" "git"))
+      (puthash f t flags))
+    ;; Apply profile presets
+    (when (string= rock/profile "tui")
+      (puthash "org" nil flags)
+      (puthash "ai" nil flags)
+      (puthash "gui" nil flags))
+    ;; Apply individual EMACS_NO_* overrides (always win)
+    (dolist (f '("org" "ai" "lsp" "gui" "git"))
+      (when (getenv (format "EMACS_NO_%s" (upcase f)))
+        (puthash f nil flags)))
+    flags))
+
+(defun rock/feature-p (feature)
+  "Return non-nil if FEATURE is enabled."
+  (gethash feature rock/features))
+
 ;; Setup elpaca
 
 (defvar elpaca-installer-version 0.12)
@@ -178,10 +209,14 @@
         desktop-save-mode nil
         initial-scratch-message nil
         initial-major-mode 'text-mode
-        initial-buffer-choice t
+        ;; nil: let Emacs show *scratch* naturally (splash suppressed by inhibit-startup-screen).
+        ;; Setting this to t caused a two-panel split when opening `emacs -nw file`
+        ;; because Emacs would display both *scratch* and the file.
+        initial-buffer-choice nil
         inhibit-splash-screen t
         inhibit-startup-screen t
         inhibit-startup-message t
+        isearch-lazy-count t
         custom-safe-themes t
         ring-bell-function #'ignore
         find-file-visit-truename t
@@ -191,6 +226,7 @@
         text-mode-ispell-word-completion nil
         read-extended-command-predicate #'command-completion-default-include-p
         show-paren-style 'mixed
+        window-combination-resize t
 
         completions-detailed t
         tab-always-indent 'complete
@@ -201,14 +237,28 @@
         mouse-wheel-tilt-scroll t
         mouse-wheel-flip-direction t
 
+        ;; Disable cursor in non-selected windows and highlighting of non-selected windows. This is a personal preference that can be changed later if desired.
+        highlight-nonselected-windows nil
 
+        ;; killring settings https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/
+        save-interprogram-paste-before-kill t
+        kill-do-not-save-duplicates t
+
+        ffap-machine-p-known 'reject
+        set-mark-command-repeat-pop t
         )
+
   :config
   (setq-default truncate-lines t
                 display-line-numbers-width 3
                 indent-tabs-mode nil
                 fill-column 80
-                tab-width 4)
+                tab-width 4
+                cursor-in-non-selected-windows nil
+                )
+
+  (add-hook 'after-save-hook
+          #'executable-make-buffer-file-executable-if-script-p)
 
   ;; (auto-save-visited-mode 1)
   (tool-bar-mode -1)
@@ -217,8 +267,18 @@
   (blink-cursor-mode -1)
   (global-visual-line-mode 1)
   (global-display-line-numbers-mode 1)
-  (pixel-scroll-precision-mode)
+  (when (rock/feature-p "gui")
+    (pixel-scroll-precision-mode))
+
   (save-place-mode 1) ;; remember cursor position in files
+  ;; Recenter the screen after opening a file to ensure the saved cursor position is visible.
+  (advice-add 'save-place-find-file-hook :after
+            (lambda (&rest _)
+              (when buffer-file-name (ignore-errors (recenter)))))
+
+  ;; https://emacsredux.com/blog/2026/04/04/repeat-mode/
+  ;; `repeat-mode' allows you to repeat certain commands by pressing the last key again.  For example, if you press `C-u C-SPC' to pop the mark, you can then press `C-SPC' repeatedly to keep popping the mark.
+  (repeat-mode 1)
   (prefer-coding-system 'utf-8)
   (fringe-mode '(8 . 8))
   (when (and (window-system) (font-exists-p rock/fontname))
@@ -229,6 +289,19 @@
   (global-unset-key (kbd "C-t"))
   (global-set-key (kbd "C-h") 'left-char)
   (global-set-key (kbd "C-t") 'right-char)
+
+  ;; When Emacs opens a file at startup, close any extra split windows
+  ;; (e.g., *scratch* or *elpaca-log*) so the file gets the whole frame.
+  ;; (add-hook 'window-setup-hook
+  ;;           (lambda ()
+  ;;             (when (> (length (window-list)) 1)
+  ;;               (let ((file-win (cl-find-if
+  ;;                                (lambda (w) (buffer-file-name (window-buffer w)))
+  ;;                                (window-list))))
+  ;;                 (when file-win
+  ;;                   (select-window file-win)
+  ;;                   (delete-other-windows)))))
+  ;;           t)
 
   :bind
   (("C-S-h m" . describe-mode)))
@@ -278,7 +351,17 @@
 
 (use-package winner :ensure nil
   :config
-  (winner-mode t))
+  (winner-mode t)
+  ;; https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/
+  (defun toggle-delete-other-windows ()
+    "Delete other windows in frame if any, or restore previous window config."
+    (interactive)
+    (if (and winner-mode
+             (equal (selected-window) (next-window)))
+        (winner-undo)
+      (delete-other-windows)))
+
+  (global-set-key (kbd "C-x 1") #'toggle-delete-other-windows))
 
 (when (>= emacs-major-version 31)
   (use-package window :ensure nil
@@ -392,12 +475,15 @@ The DWIM behaviour of this command is as follows:
 ;; theme
 
 (use-package doom-themes
+  :if (rock/feature-p "gui")
   :ensure t
   :custom
   ;; Global settings (defaults)
   (doom-themes-enable-bold t)   ; if nil, bold is universally disabled
   (doom-themes-enable-italic t) ; if nil, italics is universally disabled
   :config
+  ;; disable all existing themes
+  (mapc #'disable-theme custom-enabled-themes)
   (load-theme 'doom-laserwave t)
   ;; (load-theme 'doom-nord t)
   ;; (load-theme 'doom-one t)
@@ -428,6 +514,20 @@ The DWIM behaviour of this command is as follows:
   (mood-line-format mood-line-format-default)
   (mood-line-glyph-alist mood-line-glyphs-fira-code))
 
+(use-package spacious-padding
+  :if (rock/feature-p "gui")
+  :ensure t
+  :setopt
+  (spacious-padding-widths
+      '( :internal-border-width 10
+         :header-line-width 4
+         :mode-line-width 6
+         :tab-width 4
+         :right-divider-width 15
+         :scroll-bar-width 8
+         :fringe-width 8))
+  :config
+  (spacious-padding-mode +1))
 
 (defun rock/treesit-parser-for-lang-mode (lang-mode-symbol)
     (when (and (treesit-available-p)
@@ -456,12 +556,14 @@ The DWIM behaviour of this command is as follows:
   :demand t)
 
 (use-package magit
+  :if (rock/feature-p "git")
   :ensure t
   :bind (("C-c g" . magit-status)
 	     ("C-c C-c" . with-editor-finish)
 	     ("C-c C-k" . with-editor-cancel)))
 
 (use-package git-link
+  :if (rock/feature-p "git")
   :ensure (git-link :host github :repo "sshaw/git-link")
   :bind (("C-c C-l" . git-link)))
 
@@ -697,6 +799,7 @@ The DWIM behaviour of this command is as follows:
 
 
 (use-package dashboard
+  :if (rock/feature-p "gui")
   :ensure t
   :after (nerd-icons)
   :custom
@@ -820,6 +923,7 @@ The DWIM behaviour of this command is as follows:
    '(anzu-mode-lighter "")
    '(anzu-replace-to-string-separator " => ")
    )
+  (require 'anzu-fixes)
   )
 
 (use-package deadgrep
@@ -898,6 +1002,7 @@ The DWIM behaviour of this command is as follows:
     :mode ("\\.kbd\\'" . kanata-kbd-mode))
 
 (use-package flycheck
+  :if (rock/feature-p "lsp")
   :ensure t
   :init (global-flycheck-mode))
 
@@ -919,6 +1024,19 @@ The DWIM behaviour of this command is as follows:
   :bind
   (:map vterm-mode-map
         ("C-y" . vterm-yank)))
+
+;; Terminal configs
+
+(use-package kitty-graphics
+  :ensure (kitty-graphics :host github :repo "cashmeredev/kitty-graphics.el" :files ("*.el"))
+  :hook (tty-setup . kitty-graphics-mode))
+
+(use-package kkp
+  :ensure t
+  :hook (tty-setup . global-kkp-mode)
+  ;; :config
+  ;; (setq kkp-alt-modifier 'alt) ;; use this if you want to map the Alt keyboard modifier to Alt in Emacs (and not to Meta)
+  )
 
 ;; (use-package shipit
 ;;   :ensure (:host github :repo "Daskeladden/shipit" :files ("lisp/*.el"))
@@ -943,9 +1061,12 @@ The DWIM behaviour of this command is as follows:
 
 ;; EXTERNAL settings except meow
 
-(require 'org-settings)
+(when (rock/feature-p "org")
+  (require 'org-settings))
 (require 'treesit-settings)
-(require 'eglot-settings)
-(require 'agent-settings)
+(when (rock/feature-p "lsp")
+  (require 'eglot-settings))
+(when (rock/feature-p "ai")
+  (require 'agent-settings))
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)

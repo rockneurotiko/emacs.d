@@ -28,6 +28,10 @@
               bidi-paragraph-direction 'left-to-right)
 (setq bidi-inhibit-bpa t)  ; emacs 27 only - disables bidirectional parenthesis
 
+;; https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/
+;; Emacs will defer fontification until you stop typing. In practice you never notice the delay – the highlighting catches up instantly – but scrolling and typing may feel smoother.
+(setq redisplay-skip-fontification-on-input t)
+
 (setq inhibit-startup-echo-area-message (user-login-name))
 
 (setq-default cursor-in-non-selected-windows nil)
@@ -51,6 +55,8 @@
                             (ns-appearance . dark)
                             (ns-transparent-titlebar . t)))
 
+;; https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/
+(setq read-process-output-max (* 4 1024 1024)) ; 4MB
 
 (setenv "LSP_USE_PLISTS" "true")
 
