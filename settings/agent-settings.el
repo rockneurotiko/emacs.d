@@ -23,11 +23,14 @@
   ;; (copilot-server-log-level 4)
   )
 
-(use-package claude-code :ensure (claude-code :host github :repo "stevemolitor/claude-code.el"))
+(use-package claude-code
+  :ensure (claude-code :host github :repo "stevemolitor/claude-code.el")
+  :after transient)
 
 
 (use-package claude-code-ide
   :ensure (claude-code-ide :host github :repo "manzaltu/claude-code-ide.el" :files ("*.el"))
+  :after transient
   ;; :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
   :setopt
   (claude-code-ide-terminal-backend 'vterm)

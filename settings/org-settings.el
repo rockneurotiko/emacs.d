@@ -355,4 +355,46 @@
   (org-appear-autokeywords t)
   (org-appear-delay 1))
 
+;; Work around upstream flycheck bug: the org-lint checker passes the
+;; line number from `org-lint' (a propertized string) directly to
+;; `flycheck-error-new-at', which expects an integer.
+;; TODO: Remove once flycheck PR #2165 is merged
+;; https://github.com/flycheck/flycheck/pull/2165
+(with-eval-after-load 'flycheck
+  (flycheck-define-generic-checker 'org-lint
+    "An Org mode syntax checker using `org-lint'."
+    :start (lambda (checker callback)
+             (condition-case err
+                 (let ((errors
+                        (delq nil
+                              (mapcar
+                               (lambda (e)
+                                 (pcase e
+                                   (`(,_n [,line ,_trust ,desc ,_checker])
+                                    (flycheck-error-new-at
+                                     (if (stringp line)
+                                         (string-to-number line)
+                                       line)
+                                     nil 'info desc :checker checker))
+                                   (_
+                                    (flycheck-error-new-at
+                                     1 nil 'warning
+                                     (format "Unexpected org-lint format: %S" e)
+                                     :checker checker))))
+                               (org-lint)))))
+                   (funcall callback 'finished errors))
+               (error (funcall callback 'errored
+                               (error-message-string err)))))
+    :modes '(org-mode)
+    :enabled #'flycheck-org-lint-available-p
+    :verify (lambda (_)
+              (let ((org-version (when (require 'org nil 'no-error)
+                                   (org-version))))
+                (list (flycheck-verification-result-new
+                       :label "Org-lint available"
+                       :message (if (fboundp 'org-lint)
+                                    (format "yes (Org %s)" org-version)
+                                  "no")
+                       :face (if (fboundp 'org-lint) 'success 'warning)))))))
+
 (provide 'org-settings)

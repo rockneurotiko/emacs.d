@@ -550,17 +550,30 @@ The DWIM behaviour of this command is as follows:
   (global-set-key (kbd "C-z")   'undo-fu-only-undo)
   (global-set-key (kbd "C-S-z") 'undo-fu-only-redo))
 
+;; Compat must load before transient (transient 0.13+ uses static-when/static-if from compat)
+(use-package compat :ensure t :demand t)
+
 ;; Ensure Elpaca updates transient to a compatible version for magit and claude-code-ide
+;; Unload built-in transient first to avoid "already defined as something else" errors on Emacs 30+
 (use-package transient
   :ensure t
-  :demand t)
+  :demand t
+  :after compat
+  :init
+  (when (and (featurep 'transient)
+             (not (package-installed-p 'transient)))
+    (unload-feature 'transient t)))
 
 (use-package magit
   :if (rock/feature-p "git")
   :ensure t
+  :after transient
   :bind (("C-c g" . magit-status)
 	     ("C-c C-c" . with-editor-finish)
-	     ("C-c C-k" . with-editor-cancel)))
+	     ("C-c C-k" . with-editor-cancel))
+  :config
+  (setcdr magit-status-sections-hook
+    (push 'magit-insert-worktrees (cdr magit-status-sections-hook))))
 
 (use-package git-link
   :if (rock/feature-p "git")
@@ -1025,6 +1038,10 @@ The DWIM behaviour of this command is as follows:
   (:map vterm-mode-map
         ("C-y" . vterm-yank)))
 
+(use-package comment-dwim-2
+  :bind
+  ("M-;" . comment-dwim-2))
+
 ;; Terminal configs
 
 (use-package kitty-graphics
@@ -1037,6 +1054,15 @@ The DWIM behaviour of this command is as follows:
   ;; :config
   ;; (setq kkp-alt-modifier 'alt) ;; use this if you want to map the Alt keyboard modifier to Alt in Emacs (and not to Meta)
   )
+
+(use-package xclip
+  :if (not (display-graphic-p))
+  :ensure t
+  :setopt
+  (xclip-method 'wl-copy)
+  (xclip-program "wl-copy")
+  :config
+  (xclip-mode 1))
 
 ;; (use-package shipit
 ;;   :ensure (:host github :repo "Daskeladden/shipit" :files ("lisp/*.el"))
