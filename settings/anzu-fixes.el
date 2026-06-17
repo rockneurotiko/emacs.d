@@ -50,8 +50,16 @@
     (setq anzu--total-matched anzu--cached-count)
     (force-mode-line-update)))
 
+(defun anzu--clear-overlays-fixed (orig-fn buf &optional beg end)
+  "Guard `anzu--clear-overlays' against killed buffers.
+The idle timer that calls this doesn't check `buffer-live-p',
+causing \"Selecting deleted buffer\" errors."
+  (when (buffer-live-p buf)
+    (funcall orig-fn buf beg end)))
+
 (advice-add 'anzu--search-outside-visible :override #'anzu--search-outside-visible-fixed)
 (advice-add 'anzu--check-minibuffer-input :override #'anzu--check-minibuffer-input-fixed)
+(advice-add 'anzu--clear-overlays :around #'anzu--clear-overlays-fixed)
 
 (provide 'anzu-fixes)
 ;;; anzu-fixes.el ends here

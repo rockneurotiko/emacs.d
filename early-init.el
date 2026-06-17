@@ -50,8 +50,12 @@
                             ;; (horizontal-scroll-bars . nil)
 
                             ;; Setting the face in here prevents flashes of
-                            ;; color as the theme gets activated
-                            (background-color . "#000000")
+                            ;; color as the theme gets activated.
+                            ;; NOTE: do NOT hardcode background-color here — the
+                            ;; frame parameter overrides the theme's `default'
+                            ;; face background, so noctalia (#151217) never
+                            ;; reaches the frame and TTY terminals fall back to
+                            ;; their default/transparent bg. Let the theme set it.
                             (ns-appearance . dark)
                             (ns-transparent-titlebar . t)))
 

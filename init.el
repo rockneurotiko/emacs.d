@@ -4,7 +4,8 @@
 (add-to-list 'custom-theme-load-path (expand-file-name "themes" user-emacs-directory))
 
 ;; Load a default theme, to avoid non themed emacs when errors or first setup
-(load-theme 'dank-emacs t)
+(load-theme 'noctalia t)
+
 ;; (load-theme 'tango-dark t)
 
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3") ;; w/o this Emacs freezes when refreshing ELPA
@@ -1050,10 +1051,32 @@ The DWIM behaviour of this command is as follows:
 
 (use-package kkp
   :ensure t
-  :hook (tty-setup . global-kkp-mode)
-  ;; :config
+  :demand t
+  :config
   ;; (setq kkp-alt-modifier 'alt) ;; use this if you want to map the Alt keyboard modifier to Alt in Emacs (and not to Meta)
-  )
+
+  ;; meow-esc-mode wraps input-decode-map's ESC entry with a menu-item
+  ;; :filter, making ESC no longer a simple prefix key. When kkp's async
+  ;; terminal-setup callback tries to define CSI sequences under ESC, it
+  ;; fails with "starts with non-prefix key ESC". Fix: temporarily unwrap
+  ;; meow-esc around kkp's keymap setup, then re-wrap so meow-esc sees
+  ;; the full kkp keymaps.
+  (defun rock/kkp--unwrap-meow-esc (orig-fn &rest args)
+    "Temporarily disable meow-esc-mode around kkp terminal setup."
+    (let ((meow-esc-was-active (bound-and-true-p meow-esc-mode)))
+      (when meow-esc-was-active
+        (meow-esc-mode -1))
+      (apply orig-fn args)
+      (when meow-esc-was-active
+        (meow-esc-mode 1))))
+  (advice-add 'kkp--terminal-setup :around #'rock/kkp--unwrap-meow-esc)
+
+  (add-hook 'tty-setup-hook #'global-kkp-mode)
+  ;; Enable immediately for the current terminal — tty-setup-hook already
+  ;; fired before Elpaca loaded this package.
+  (when (and (not (display-graphic-p))
+             (terminal-parameter nil 'terminal-initted))
+    (global-kkp-mode 1)))
 
 (use-package xclip
   :if (not (display-graphic-p))
