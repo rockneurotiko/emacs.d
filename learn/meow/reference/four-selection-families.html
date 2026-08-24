@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reference — Meow's Four Selection Families</title>
+<style>
+  :root {
+    --ink: #1d1d1f;
+    --paper: #faf8f3;
+    --rule: #d8d2c2;
+    --accent: #8a3324;
+    --good: #2f5d3a;
+    --muted: #6e6a5e;
+    --kbd-bg: #efeadb;
+    --kbd-border: #c3bda9;
+    --code-bg: #f1ecdc;
+    --f1: #eaf2e5;
+    --f2: #eaf0f7;
+    --f3: #f7ecea;
+    --f4: #f5efe1;
+  }
+  html { background: var(--paper); }
+  body {
+    color: var(--ink);
+    font: 15px/1.5 "Iowan Old Style", "Charter", "Source Serif Pro", Georgia, serif;
+    max-width: 48rem;
+    margin: 2rem auto;
+    padding: 0 1.5rem 3rem;
+  }
+  header { border-bottom: 1px solid var(--rule); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+  .eyebrow {
+    font: 600 11px/1 "Inter", system-ui, sans-serif;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.5rem;
+  }
+  h1 { font-size: 1.6rem; margin: 0; letter-spacing: -0.01em; }
+  h2 { margin-top: 1.8rem; font-size: 1.05rem; border-bottom: 1px solid var(--rule); padding-bottom: 0.25rem; }
+  h3 { margin-top: 1.2rem; font-size: 0.95rem; color: var(--accent); }
+  kbd {
+    display: inline-block;
+    background: var(--kbd-bg);
+    border: 1px solid var(--kbd-border);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 0.05rem 0.45rem;
+    font: 600 0.9em ui-monospace, "JetBrains Mono", "Sarasa Mono J", Menlo, monospace;
+    margin: 0 1px;
+  }
+  code { font-family: ui-monospace, Menlo, monospace; background: var(--code-bg); padding: 0.05rem 0.35rem; border-radius: 3px; font-size: 0.88em; }
+  .family {
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1rem 1.3rem;
+    margin: 1.2rem 0;
+  }
+  .family.f1 { background: var(--f1); }
+  .family.f2 { background: var(--f2); }
+  .family.f3 { background: var(--f3); }
+  .family.f4 { background: var(--f4); }
+  .family h3 { margin-top: 0; }
+  .props {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.3rem 1rem;
+    font-size: 0.9rem;
+    margin: 0.6rem 0;
+  }
+  .props dt { font-weight: 600; color: var(--muted); }
+  .props dd { margin: 0; }
+  .yes { color: var(--good); font-weight: 600; }
+  .no { color: var(--accent); font-weight: 600; }
+  .maybe { color: var(--muted); font-style: italic; }
+  table { border-collapse: collapse; width: 100%; margin: 0.8rem 0; font-size: 0.9rem; }
+  th, td { border: 1px solid var(--rule); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+  th { background: var(--kbd-bg); font-weight: 600; }
+  .rule {
+    background: #fffdf7;
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--accent);
+    padding: 0.7rem 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+    font-size: 1rem;
+  }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(138,51,36,0.35); }
+  footer { margin-top: 2rem; padding-top: 0.8rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: 0.85rem; }
+  @media print { body { margin: 0; padding: 1rem; max-width: 100%; font-size: 12px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Reference · Taxonomy</p>
+  <h1>Meow's four selection families</h1>
+  <p style="color: var(--muted); font-size: 0.92rem; margin: 0.3rem 0 0;">
+    They look similar, they behave differently. This is the map.
+  </p>
+</header>
+
+<div class="rule">
+  Meow has four orthogonal ways to build "a selection". They each have their own rules
+  about (a) whether digits after them expand cleanly, (b) whether they leave a real
+  Emacs active region, (c) which verbs act on them. Reading this once removes half of
+  meow's foot-guns.
+</div>
+
+<div class="family f1">
+  <h3>1. Char / word cursor motions</h3>
+  <p><kbd>h</kbd> <kbd>t</kbd> <kbd>n</kbd> <kbd>p</kbd> <kbd>w</kbd> <kbd>b</kbd>
+     <kbd>W</kbd> <kbd>B</kbd> <kbd>f</kbd> <kbd>l</kbd></p>
+  <dl class="props">
+    <dt>Selection type</dt><dd><em>cursor-with-hint</em> \u2014 highlighted, but often <em>not</em> an active region.</dd>
+    <dt>Digit expansion?</dt><dd><span class="yes">Yes</span> \u2014 <kbd>w</kbd><kbd>3</kbd> selects 3 words.</dd>
+    <dt>Region-active?</dt><dd><span class="no">Not reliably</span> \u2014 hence the <kbd>d</kbd> foot-gun.</dd>
+    <dt>Best verb</dt><dd><kbd>k</kbd> (kill), which is fallback-safe. Avoid <kbd>d</kbd>.</dd>
+  </dl>
+  <p><strong>Use for:</strong> quick word/char-level edits. <strong>Not for:</strong> "select a structural unit and act on it" \u2014 use family 2 or 3.</p>
+</div>
+
+<div class="family f2">
+  <h3>2. Expand-* selections \u2014 the workhorse</h3>
+  <p><kbd>e</kbd> line \u00b7 <kbd>o</kbd> block \u00b7 <kbd>m</kbd> mark-word \u00b7 <kbd>M</kbd> mark-symbol
+     \u00b7 capitals <kbd>H</kbd> <kbd>T</kbd> <kbd>N</kbd> <kbd>P</kbd> (expand versions of arrows)</p>
+  <dl class="props">
+    <dt>Selection type</dt><dd><code>expand line</code> / <code>expand block</code> / etc. Explicitly designed to grow.</dd>
+    <dt>Digit expansion?</dt><dd><span class="yes">Yes, cleanly</span> \u2014 <kbd>e</kbd><kbd>4</kbd> = 4 lines. This is the family digits were built for.</dd>
+    <dt>Region-active?</dt><dd><span class="yes">Yes</span> \u2014 always a real Emacs region. Every verb works.</dd>
+    <dt>Best verb</dt><dd>Anything: <kbd>k</kbd> <kbd>c</kbd> <kbd>d</kbd> <kbd>x</kbd> <kbd>;</kbd> <kbd>/</kbd>.</dd>
+  </dl>
+  <p><strong>Use for:</strong> "N of X" edits. Counted-line operations. Same-symbol renames within a scope.</p>
+</div>
+
+<div class="family f3">
+  <h3>3. Things \u2014 structural one-shots</h3>
+  <p><kbd>,</kbd> inner \u00b7 <kbd>.</kbd> bounds \u00b7 <kbd>&lt;</kbd> to-start \u00b7 <kbd>&gt;</kbd> to-end,
+     then a thing-key: <kbd>r</kbd> round \u00b7 <kbd>s</kbd> square \u00b7 <kbd>c</kbd> curly
+     \u00b7 <kbd>g</kbd> string \u00b7 <kbd>p</kbd> paragraph \u00b7 <kbd>l</kbd> line \u00b7 <kbd>d</kbd> defun
+     \u00b7 <kbd>b</kbd> buffer</p>
+  <dl class="props">
+    <dt>Selection type</dt><dd>Structural / bounded. Not an <code>expand-*</code> type.</dd>
+    <dt>Digit expansion?</dt><dd><span class="maybe">Not the same way as family 2.</span> Don't rely on it for counting. For counted lines use <kbd>e</kbd>, not <kbd>.</kbd><kbd>l</kbd>.</dd>
+    <dt>Region-active?</dt><dd><span class="yes">Yes</span> \u2014 real active region. Verbs work.</dd>
+    <dt>Best verb</dt><dd>Anything, especially <kbd>c</kbd> (change contents) and <kbd>x</kbd> (copy).</dd>
+  </dl>
+  <p><strong>Use for:</strong> one-shot "select the inside of this string / the whole function / this paragraph". <strong>Not for:</strong> counted repetition \u2014 use family 2 for that.</p>
+</div>
+
+<div class="family f4">
+  <h3>4. Secondary selection (the beacon gateway)</h3>
+  <p><kbd>G</kbd> grab \u00b7 <kbd>R</kbd> swap-grab \u00b7 <kbd>X</kbd> sync-grab</p>
+  <dl class="props">
+    <dt>Selection type</dt><dd>A <em>persistent</em> region that stays highlighted while you do other things. Not the primary selection.</dd>
+    <dt>Digit expansion?</dt><dd>N/A \u2014 you build it out of a family 2/3 selection first, then <kbd>G</kbd> to promote it.</dd>
+    <dt>Region-active?</dt><dd>It's its own thing. When your cursor enters it, <strong>BEACON state activates automatically</strong>.</dd>
+    <dt>Best verb</dt><dd>Only <kbd>i</kbd> / <kbd>a</kbd> / <kbd>c</kbd> \u2014 <em>not</em> <kbd>I</kbd> / <kbd>A</kbd>. See <a href=\"../learning-records/0006-beacon-only-uses-i-a-c-to-record.md\">record 0006</a>.</dd>
+  </dl>
+  <p><strong>Use for:</strong> multi-place edits (beacon workflow). <strong>Not for:</strong> anything single-shot \u2014 for that, families 2 and 3 are simpler.</p>
+</div>
+
+<h2>The decision tree</h2>
+
+<table>
+  <tr><th>You want to select\u2026</th><th>Family</th><th>Keys</th></tr>
+  <tr><td>N words / chars</td><td>1</td><td><kbd>w</kbd><kbd>N</kbd> or <kbd>h</kbd><kbd>N</kbd></td></tr>
+  <tr><td>N lines</td><td>2</td><td><kbd>e</kbd><kbd>N</kbd></td></tr>
+  <tr><td>Every occurrence of this word/symbol (in a scope)</td><td>2</td><td><kbd>m</kbd> or <kbd>M</kbd></td></tr>
+  <tr><td>The inside of a string / parens / braces</td><td>3</td><td><kbd>,</kbd> + thing-key</td></tr>
+  <tr><td>A whole function / paragraph / buffer</td><td>3</td><td><kbd>.</kbd> + thing-key</td></tr>
+  <tr><td>A persistent scope for multi-edits</td><td>4</td><td>Build with 2 or 3, then <kbd>G</kbd></td></tr>
+</table>
+
+<h2>The two most confusing overlaps, cleared up</h2>
+
+<h3>Line: <kbd>e</kbd> vs <kbd>.</kbd><kbd>l</kbd></h3>
+<p>Both "select this line". Use <kbd>e</kbd> for anything counted (family 2 \u2014 digits
+work). <kbd>.</kbd><kbd>l</kbd> exists for API symmetry within the thing family but
+you probably won't reach for it.</p>
+
+<h3>Word: <kbd>w</kbd> vs <kbd>m</kbd></h3>
+<p>Both involve a word. <kbd>w</kbd> is family 1: moves forward, selects one word,
+weak region. <kbd>m</kbd> is family 2: marks the word under cursor as a real region,
+plus (in beacon) marks every occurrence. Use <kbd>m</kbd> when you want to
+<em>act</em> on the word; <kbd>w</kbd> when you want to <em>traverse</em>.</p>
+
+<footer>
+  <p>Sources:
+  <a href="https://github.com/meow-edit/meow/blob/master/COMMANDS.org">COMMANDS.org</a>,
+  <a href="https://github.com/meow-edit/meow/blob/master/TUTORIAL.org">TUTORIAL.org</a>.
+  Triggered by learning records
+  <a href="../learning-records/0005-e4-not-l4-for-line-expansion.md">0005</a> and
+  <a href="../learning-records/0006-beacon-only-uses-i-a-c-to-record.md">0006</a>.</p>
+</footer>
+
+</body>
+</html>

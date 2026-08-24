@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reference — Selection + Verb Combos</title>
+<style>
+  :root {
+    --ink: #1d1d1f;
+    --paper: #faf8f3;
+    --rule: #d8d2c2;
+    --accent: #8a3324;
+    --muted: #6e6a5e;
+    --kbd-bg: #efeadb;
+    --kbd-border: #c3bda9;
+    --code-bg: #f1ecdc;
+    --hl: #fff5cf;
+  }
+  html { background: var(--paper); }
+  body {
+    color: var(--ink);
+    font: 15px/1.5 "Iowan Old Style", "Charter", "Source Serif Pro", Georgia, serif;
+    max-width: 46rem;
+    margin: 2rem auto;
+    padding: 0 1.5rem 3rem;
+  }
+  header { border-bottom: 1px solid var(--rule); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+  .eyebrow {
+    font: 600 11px/1 "Inter", system-ui, sans-serif;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.5rem;
+  }
+  h1 { font-size: 1.6rem; margin: 0; letter-spacing: -0.01em; }
+  h2 { margin-top: 1.8rem; font-size: 1.05rem; border-bottom: 1px solid var(--rule); padding-bottom: 0.25rem; }
+  p, li { font-size: 0.97rem; }
+  kbd {
+    display: inline-block;
+    background: var(--kbd-bg);
+    border: 1px solid var(--kbd-border);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 0.05rem 0.45rem;
+    font: 600 0.9em ui-monospace, "JetBrains Mono", "Sarasa Mono J", Menlo, monospace;
+    margin: 0 1px;
+  }
+  code { font-family: ui-monospace, "JetBrains Mono", "Sarasa Mono J", Menlo, monospace; background: var(--code-bg); padding: 0.05rem 0.35rem; border-radius: 3px; font-size: 0.88em; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.92rem; }
+  th, td { border: 1px solid var(--rule); padding: 0.45rem 0.65rem; text-align: left; vertical-align: top; }
+  th { background: var(--kbd-bg); font-weight: 600; }
+  .keys { white-space: nowrap; font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; font-size: 0.85em; }
+  .star { color: var(--accent); font-weight: 600; }
+  .verbs td:first-child { width: 8.5rem; }
+  .combos td:first-child { width: 8rem; }
+  .rule {
+    background: #fffdf7;
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--accent);
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(138, 51, 36, 0.35); }
+  footer { margin-top: 2rem; padding-top: 0.8rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: 0.85rem; }
+  @media print {
+    body { margin: 0; padding: 1rem; max-width: 100%; font-size: 13px; }
+    h2 { margin-top: 1.2rem; }
+    table { font-size: 0.85em; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Reference · Composition Card</p>
+  <h1>Selection + Verb Combos</h1>
+  <p style="color: var(--muted); font-size: 0.92rem; margin: 0.3rem 0 0;">
+    Selection is the noun. Verb is what happens to it. Chain them. Print this.
+  </p>
+</header>
+
+<div class="rule">
+  <strong>The pattern:</strong> <em>build a selection</em> (motion / thing / expansion)
+  <em>then press a verb</em> (k / c / x / ; / / / y / ?). One unit of thought.
+</div>
+
+<h2>The verbs you have</h2>
+
+<table class="verbs">
+  <tr><th>Key</th><th>Verb</th><th>What it does to the selection</th></tr>
+  <tr><td><kbd>k</kbd></td><td><code>meow-kill</code></td><td>Cut to kill-ring. <span class="star">The default verb.</span></td></tr>
+  <tr><td><kbd>c</kbd></td><td><code>meow-change</code></td><td>Delete + enter insert. Replace the selection by typing.</td></tr>
+  <tr><td><kbd>x</kbd></td><td><code>meow-save</code></td><td>Copy. Like <kbd>M-w</kbd>.</td></tr>
+  <tr><td><kbd>y</kbd></td><td><code>meow-yank</code></td><td>Paste — replaces the selection if active.</td></tr>
+  <tr><td><kbd>;</kbd></td><td><code>meow-comment</code></td><td>Comment / uncomment the selection.</td></tr>
+  <tr><td><kbd>/</kbd></td><td><code>rock--meow-duplicate</code></td><td>Your custom: duplicate the selection.</td></tr>
+  <tr><td><kbd>?</kbd></td><td><code>rock--meow-duplicate-and-comment</code></td><td>Your custom: duplicate then comment the original.</td></tr>
+  <tr><td><kbd>r</kbd></td><td><code>meow-replace</code></td><td>Replace selection with yanked text. Like a one-shot paste-over.</td></tr>
+  <tr><td><kbd>j</kbd></td><td><code>meow-join</code></td><td>Join lines in selection. (Underused — try it.)</td></tr>
+  <tr><td><kbd>u</kbd></td><td><code>meow-pop-selection</code></td><td>Undo last selection (not edit). Saves you when you over-expand.</td></tr>
+  <tr><td><kbd>g</kbd></td><td><code>meow-cancel-selection</code></td><td>Drop the selection, keep the cursor.</td></tr>
+</table>
+
+<h2>Combos that probably belong in your day</h2>
+
+<table class="combos">
+  <tr><th>Combo</th><th>Result</th><th>Replaces</th></tr>
+  <tr>
+    <td class="keys"><kbd>,</kbd><kbd>g</kbd><kbd>c</kbd></td>
+    <td>Change contents of a string</td>
+    <td>position, <kbd>C-SPC</kbd>, move, <kbd>C-w</kbd>, type</td>
+  </tr>
+  <tr>
+    <td class="keys"><kbd>,</kbd><kbd>r</kbd><kbd>c</kbd></td>
+    <td>Change contents of parens</td>
+    <td>same as above, for arg lists</td>
+  </tr>
+  <tr>
+    <td class="keys"><kbd>,</kbd><kbd>r</kbd><kbd>x</kbd></td>
+    <td>Copy what's inside the parens</td>
+    <td>manual region + <kbd>M-w</kbd></td>
+  </tr>
+  <tr>
+    <td class="keys"><kbd>.</kbd><kbd>d</kbd><kbd>k</kbd></td>
+    <td>Kill the whole function</td>
+    <td><kbd>C-M-h</kbd> then <kbd>C-w</kbd></td>
+  </tr>
+  <tr>
+    <td class="keys"><kbd>.</kbd><kbd>d</kbd><kbd>/</kbd></td>
+    <td>Duplicate the whole function</td>
+    <td><kbd>C-M-h</kbd>, copy, paste, fiddle</td>
+  </tr>
+  <tr>
+    <td class="keys"><kbd>.</kbd><kbd>p</kbd><kbd>;</kbd></td>
+    <td>Comment the paragraph</td>
+    <td><kbd>M-h</kbd> then <kbd>M-;</kbd></td>
+  </tr>
+  <tr>
+    <td class="keys"><kbd>e</kbd><kbd>3</kbd><kbd>/</kbd></td>
+    <td>Duplicate 3 lines</td>
+    <td>kill-ring gymnastics</td>
+  </tr>
+  <tr>
+    <td class="keys"><kbd>e</kbd><kbd>5</kbd><kbd>;</kbd></td>
+    <td>Comment 5 lines</td>
+    <td><kbd>C-SPC</kbd>, <kbd>C-n</kbd>×5, <kbd>M-;</kbd></td>
+  </tr>
+  <tr>
+    <td class="keys"><kbd>e</kbd><kbd>j</kbd></td>
+    <td>Join this line with the next</td>
+    <td><kbd>M-^</kbd> (which is fine, but <code>j</code> works on selections too)</td>
+  </tr>
+  <tr>
+    <td class="keys"><kbd>w</kbd><kbd>3</kbd><kbd>?</kbd></td>
+    <td>Duplicate-and-comment 3 words<br><em>(your custom verb)</em></td>
+    <td>nothing — this is yours alone</td>
+  </tr>
+  <tr>
+    <td class="keys"><kbd>.</kbd><kbd>b</kbd><kbd>x</kbd></td>
+    <td>Copy the whole buffer</td>
+    <td><kbd>C-x</kbd> <kbd>h</kbd> <kbd>M-w</kbd></td>
+  </tr>
+</table>
+
+<h2>The forgotten verbs</h2>
+
+<p>These are verbs you have bound that you almost certainly don't use yet. They each
+unlock a workflow:</p>
+
+<ul>
+  <li><strong><kbd>j</kbd> <code>meow-join</code></strong> — joins lines in the
+    selection. Try <kbd>.</kbd><kbd>p</kbd><kbd>j</kbd> to collapse a paragraph onto
+    one line.</li>
+  <li><strong><kbd>u</kbd> <code>meow-pop-selection</code></strong> — undoes the last
+    selection change, not the last edit. Saved you many times when you over-expand
+    with a digit.</li>
+  <li><strong><kbd>r</kbd> <code>meow-replace</code></strong> — replaces the selection
+    with the current kill-ring head. <kbd>x</kbd> (copy) then later
+    <kbd>.</kbd><kbd>p</kbd><kbd>r</kbd> = "replace this paragraph with what I just copied."</li>
+  <li><strong><kbd>G</kbd> <code>meow-grab</code></strong> and <strong><kbd>R</kbd>
+    <code>meow-swap-grab</code></strong> — secondary-selection clipboard. For another
+    lesson.</li>
+</ul>
+
+<h2>The one rule that ties them all</h2>
+
+<div class="rule">
+  After every motion, ask yourself: <strong>"what verb?"</strong> If the answer is
+  "none, I just wanted to move there", press <kbd>g</kbd> to cancel the selection.
+  Otherwise, finish the thought with a verb.
+</div>
+
+<h2>One gotcha</h2>
+
+<p>For selecting N lines, use <kbd>e</kbd><kbd>N</kbd> (<code>meow-line</code> + digit),
+<strong>not</strong> <kbd>.</kbd><kbd>l</kbd><kbd>N</kbd>. They look similar but they're
+different selection types — only <code>meow-line</code> is an <em>expand-line</em>
+selection that grows cleanly with digits. Thing-selection
+(<kbd>.</kbd><kbd>l</kbd>) is for one-shot "select this line as a thing" — not for
+counting.</p>
+
+<p>Use <kbd>.</kbd> + thing-key when the thing has a natural boundary (paragraph <kbd>p</kbd>,
+defun <kbd>d</kbd>, string <kbd>g</kbd>, parens <kbd>r</kbd>/<kbd>s</kbd>/<kbd>c</kbd>,
+buffer <kbd>b</kbd>). Use expand-* keys (<kbd>e</kbd>, <kbd>m</kbd>, <kbd>M</kbd>,
+<kbd>o</kbd>) when you want to expand by count.</p>
+
+<footer>
+  <p>Triggered by <a href="../learning-records/0004-things-already-known-c-was-the-missing-piece.md">learning-record 0004</a>
+  ("the verb side was the missing piece"). · See also
+  <a href="kill-vs-delete.html">kill-vs-delete reference</a>.</p>
+</footer>
+
+</body>
+</html>

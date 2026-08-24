@@ -13,15 +13,145 @@
 (defun rock/todo-fg-face (color)
   `(:foreground ,color :weight bold))
 
+;; --- Agent tickets ---------------------------------------------------
+;; Tickets written by `org-ticket' live in org-roam feature nodes. The agenda
+;; groups them by feature; these two helpers drive that view.
+
+(defconst rock/org-ticket-state-order
+  '("IN PROGRESS" "TODO" "CODE REVIEW" "QA" "UPLOAD" "BLOCKED")
+  "Order tickets appear in within a feature: doing, to do, review, blocked last.")
+
+(defun rock/org-ticket--rank (item)
+  "Rank agenda ITEM by its todo keyword, unknown keywords last."
+  (or (cl-position (get-text-property 0 'todo-state item)
+                   rock/org-ticket-state-order :test #'equal)
+      99))
+
+(defun rock/org-ticket-cmp (a b)
+  "Compare agenda items A and B by `rock/org-ticket-state-order'."
+  (let ((ra (rock/org-ticket--rank a))
+        (rb (rock/org-ticket--rank b)))
+    (cond ((< ra rb) -1)
+          ((> ra rb) +1))))
+
+(defun rock/org-ticket-feature-name (_item)
+  "Return the feature node's title, plus its own ADO ids when it has any.
+Called by org-super-agenda auto-groups with the item's buffer current."
+  (let ((title (or (cadr (assoc "TITLE" (org-collect-keywords '("TITLE"))))
+                   "Unfiled"))
+        (ado (org-entry-get (point-min) "ADO")))
+    (if (and ado (not (string-empty-p ado)))
+        (format "%s  [ADO %s]" title ado)
+      title)))
+
+(defun rock/org-feature-file-mtime (file)
+  "Return FILE's last-modified time, or the epoch when it has none."
+  (or (and file (file-exists-p file)
+           (file-attribute-modification-time (file-attributes file)))
+      '(0 0)))
+
+(defun rock/org-super-agenda-group-by-feature-mtime (all-items &rest _args)
+  "Group ALL-ITEMS into one section per feature, newest-touched file first.
+A registered org-super-agenda auto-group, like `:auto-map' but ordered
+by the feature file's mtime instead of alphabetically by name, so the
+Agent tickets view surfaces whatever feature was worked on most recently."
+  (let ((items-by-feature (make-hash-table :test #'equal))
+        (file-by-feature (make-hash-table :test #'equal)))
+    (dolist (item all-items)
+      (let* ((marker (org-super-agenda--get-marker item))
+             (feature (org-super-agenda--when-with-marker-buffer marker
+                        (rock/org-ticket-feature-name item))))
+        (when feature
+          (push item (gethash feature items-by-feature))
+          (unless (gethash feature file-by-feature)
+            (puthash feature (buffer-file-name (marker-buffer marker))
+                     file-by-feature)))))
+    (let* ((features (cl-loop for k being the hash-keys of items-by-feature collect k))
+           (mtime (lambda (feature)
+                    (rock/org-feature-file-mtime (gethash feature file-by-feature))))
+           (newest-first (sort features
+                               (lambda (a b) (time-less-p (funcall mtime b) (funcall mtime a))))))
+      (list :auto-feature-mtime
+            nil
+            (cl-loop for f in newest-first
+                     collect (list :name f
+                                   :items (nreverse (gethash f items-by-feature))))))))
+
+(defun rock/org-agent-feature-file-p (file)
+  "Return non-nil when FILE's org header tags it as an agent feature.
+Only the first 4k of the file is read, so this stays cheap over a whole
+org-roam directory: `#+filetags:' always lives in the header."
+  (with-temp-buffer
+    (insert-file-contents file nil 0 4096)
+    (goto-char (point-min))
+    (re-search-forward "^#\\+filetags:.*:AgentFeature:" nil t)))
+
+(defun rock/org-agent-feature-files ()
+  "Return the org-roam files that hold agent feature nodes.
+Used as `org-agenda-files' for the agent ticket view so the agenda scans
+only feature files instead of every roam note."
+  (seq-filter #'rock/org-agent-feature-file-p
+              (directory-files-recursively org-roam-directory "\\.org\\'")))
+
+(defun rock/org-ticket-ado-prefix ()
+  "Agenda prefix cell showing the ticket's *own* ADO ids.
+Inherited feature-level ids are deliberately omitted: they are stated
+once in the group header instead of repeated on every line."
+  (let ((ado (org-entry-get nil "ADO")))
+    (if (and ado (not (string-empty-p ado)))
+        (format "ADO#%s" ado)
+      "")))
+
+;; Closing a ticket by hand should free whatever it blocked, exactly as
+;; `org-ticket done' does from the CLI. The tracker backend ships with the
+;; skill and is deliberately never loaded from init.el, so load it on demand
+;; and let no failure in it break an ordinary TODO state change.
+(defconst rock/org-tracker-file
+  (expand-file-name "~/.agents/skills/org-tracker/scripts/org-tracker.el")
+  "Path to the `org-ticket' backend that owns ticket blocking edges.")
+
+(defun rock/org-tracker-unblock-dependents ()
+  "Flip tickets blocked by the entry at point to TODO once it closes.
+Cheap file-tag test first, so ordinary org files never load the backend."
+  (when (and (derived-mode-p 'org-mode)
+             (member "AgentFeature" (bound-and-true-p org-file-tags)))
+    (condition-case err
+        (progn
+          (unless (fboundp 'org-tracker-unblock-dependents)
+            (load rock/org-tracker-file nil t))
+          (org-tracker-unblock-dependents))
+      (error (message "org-tracker: auto-unblock failed (%s)"
+                      (error-message-string err))))))
+
+;; Azure DevOps work items are referenced by bare id; this makes
+;; [[ado:31819]] clickable anywhere in org.
+(defvar rock/org-ado-url-format
+  "https://dev.azure.com/fctg-corp/TripServices/_workitems/edit/%s"
+  "URL template for `ado:' links, taking the work item id.")
+
+(defun rock/org-ado-url (id)
+  "Return the Azure DevOps URL for work item ID.
+Pure: builds the string and opens nothing, so it is safe to test."
+  (format rock/org-ado-url-format (string-trim id)))
+
+(defun rock/org-ado-open (id &optional _arg)
+  "Open Azure DevOps work item ID in a browser."
+  (browse-url (rock/org-ado-url id)))
+
 (defun rock/todo-bg-face (color)
   (let ((dark-p (member color '("purple" "magenta" "forest green"))))
     `(:background ,color :foreground ,(if dark-p "white" "black") :weight semibold)))
 
-(use-package org :ensure nil
+(use-package org :ensure t :demand t
   :config
 
   (require 'org-tempo)
   (setq-default org-src-fontify-natively t)
+  ;; Set priority range here (not via setopt) to avoid the :type validator
+  ;; calling org-priority-valid-value-p before org.el is fully loaded.
+  (setq org-priority-highest 1
+        org-priority-lowest  5
+        org-priority-default 4)
 
   (unless (file-exists-p org-directory)
     (make-directory org-directory t))
@@ -57,9 +187,12 @@
   (org-todo-keyword-faces
           (mapcar (lambda (kv) (cons (car kv) (rock/todo-fg-face (cdr kv)))) rock--todo-colors))
 
-  (org-priority-highest 1)
-  (org-priority-lowest  5)
-  (org-priority-default 4)
+  ;; These use a :type validator that calls org-priority-valid-value-p at
+  ;; setopt time. Use setq instead to avoid triggering the validator before
+  ;; org.el is fully loaded.
+  ;; (org-priority-highest 1)
+  ;; (org-priority-lowest  5)
+  ;; (org-priority-default 4)
 
   (org-tag-alist '((:startgroup . nil)
                    ;; Projects
@@ -115,10 +248,39 @@
                                                (:name "BFF favors" :and (:tag "@tripservice" :tag "bff") :order 20)
                                                (:name "Other TripService projects" :tag "@tripservice" :order 25)
                                                (:discard (:anything t))
-                                               ))))))))
+                                               ))))))
+                                ;; Agent tickets live in org-roam feature
+                                ;; nodes, deliberately outside org-agenda-files
+                                ;; so they never crowd the daily agenda.
+                                ("g" "Agent tickets"
+                                 ((tags-todo "Ticket"
+                                             ((org-agenda-overriding-header "Agent tickets")
+                                              ;; One section per feature node,
+                                              ;; newest-touched feature file
+                                              ;; first. org-super-agenda groups
+                                              ;; are flat, so state order within
+                                              ;; a feature is a sort, not a
+                                              ;; second grouping.
+                                              (org-super-agenda-groups
+                                               '((:auto-feature-mtime t)))
+                                              (org-agenda-sorting-strategy '(user-defined-up))
+                                              (org-agenda-cmp-user-defined #'rock/org-ticket-cmp)
+                                              ;; Drop the filename prefix: the
+                                              ;; feature is already the heading.
+                                              ;; Keep a fixed ADO column so the
+                                              ;; keywords still line up.
+                                              (org-agenda-prefix-format
+                                               '((tags . "  %-11(rock/org-ticket-ado-prefix) ")))
+                                              ;; Hide the tags that are true of
+                                              ;; every ticket and say nothing.
+                                              (org-agenda-show-inherited-tags nil)
+                                              (org-agenda-hide-tags-regexp
+                                               "\\`\\(Ticket\\|AgentFeature\\)\\'"))))
+                                 ((org-agenda-files (rock/org-agent-feature-files))))))
 
   :hook
-  (org-after-todo-statistics . rock--org-autodone)
+  ((org-after-todo-statistics . rock--org-autodone)
+   (org-after-todo-state-change . rock/org-tracker-unblock-dependents))
 
   :bind
   (("C-c l" . org-store-link)
@@ -126,6 +288,10 @@
    ("C-c a" . org-agenda)
    ("C-c b" . org-switchb))
   )
+
+;; Block until Elpaca has fully built and activated the new Org before any
+;; org-dependent packages below attempt to load it.
+(elpaca-wait)
 
 (use-package org-super-agenda
   :ensure t
@@ -166,10 +332,17 @@
      ;; match any of these groups, with the default order position of 99
      ))
   :config
+  ;; Registers `:auto-feature-mtime' alongside org-super-agenda's built-in
+  ;; `:auto-*' groupers, for the Agent tickets view's newest-first ordering.
+  (setq org-super-agenda-group-types
+        (plist-put org-super-agenda-group-types
+                   :auto-feature-mtime #'rock/org-super-agenda-group-by-feature-mtime))
+  (add-to-list 'org-super-agenda-auto-selector-keywords :auto-feature-mtime)
   (org-super-agenda-mode))
 
 (use-package org-download
   :ensure t
+  :after org
   :config
   (defun rock--org-roam-download-directory ()
     "Set `org-download-image-dir` to the directory of the currentbuffer's file."
@@ -211,8 +384,8 @@
       :unnarrowed t)
 
      ("l" "link" plain
-      "* Info\n\n- Link: %c%? \n- Saw in: \n\n* Notes:\n\n"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" ":PROPERTIES:\n:ROAM_REFS: %^{Link}\n:END:\n#+date: %U\n#+title: ${title}\n#+filetags: :Link:")
+      "* Info\n\n- Link: %a\n- Saw in: \n\n* Notes:\n\n%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" ":PROPERTIES:\n:ROAM_REFS: ${url}\n:END:\n#+date: %U\n#+title: ${title}\n#+filetags: :Link:")
       :unnarrowed t)
 
      ("p" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Resources\n\n"
@@ -225,7 +398,8 @@
        :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
 
   :bind (("C-c n l" . org-roam-buffer-toggle)
-        ("C-c n f" . org-roam-node-find)
+        ("C-c n f" . rock/org-roam-node-find-notes)
+        ("C-c n F" . org-roam-node-find)
         ("C-c n i" . org-roam-node-insert)
         ("C-c n I" . org-roam-node-insert-immediate)
         ("C-c n t" . org-roam-tag-add)
@@ -245,14 +419,27 @@
   :init
   (defvar org-roam-refs-map (make-sparse-keymap))
   (define-prefix-command 'org-roam-refs-map)
+
+  ;; Agent tickets carry an :ID:, so org-roam indexes every one of them as a
+  ;; node and they flood node-find. `C-c n f' skips them; `C-c n F' shows all.
+  (defun rock/org-roam-node-find-notes ()
+    "Find an org-roam node, excluding agent tickets."
+    (interactive)
+    (org-roam-node-find
+     nil nil
+     (lambda (node) (not (member "Ticket" (org-roam-node-tags node))))))
   :config
   (require 'org-roam-dailies) ;; Ensure the keymap is available
   (org-roam-db-autosync-mode))
+
+(with-eval-after-load 'org
+  (org-link-set-parameters "ado" :follow #'rock/org-ado-open))
 
 ;; CALENDAR settings
 
 (use-package org-gcal
   :ensure t
+  :after org
 
   :init
   (setq plstore-cache-passphrase-for-symmetric-encryption t)
@@ -263,12 +450,14 @@
   (org-gcal-client-secret  (efs/lookup-password :host "calendar.google.com" :user "client-secret"))
   (org-gcal-fetch-file-alist `(("miguelglafuente@gmail.com" . ,org-calendar-file-personal)
                                ("9afjkjrns5t3orjlidadp53tl6a4j912@import.calendar.google.com" . ,org-calendar-file-work)))
+  (org-gcal-remove-api-cancelled-events t)
 
   (org-gcal-local-timezone "Europe/Madrid")
   (request-log-level 'warn))
 
 (use-package calfw
   :ensure t
+  :after org-gcal
   :setopt
   (calendar-week-start-day 1) ; 0:Sunday, 1:Monday
   )
@@ -396,5 +585,16 @@
                                     (format "yes (Org %s)" org-version)
                                   "no")
                        :face (if (fboundp 'org-lint) 'success 'warning)))))))
+
+;; (use-package orgnote
+;;   :ensure (:host github :repo "Artawower/orgnote.el" :branch "dev")
+;;   :bind
+;;   (("C-c n p" . orgnote-publish-file)
+;;    ("C-c n F" . orgnote-force-sync)
+;;    ("C-c n S" . orgnote-sync))
+;;   :hook (org-mode . orgnote-autosync-mode)
+;;   :custom
+;;   (orgnote-debug-p t)
+;;   (orgnote-enable-roam-sync-p t))
 
 (provide 'org-settings)

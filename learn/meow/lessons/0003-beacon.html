@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lesson 0003 — Beacon (batch kmacro, not multi-cursor)</title>
+<style>
+  :root {
+    --ink: #1d1d1f;
+    --paper: #faf8f3;
+    --rule: #d8d2c2;
+    --accent: #8a3324;
+    --good: #2f5d3a;
+    --muted: #6e6a5e;
+    --kbd-bg: #efeadb;
+    --kbd-border: #c3bda9;
+    --code-bg: #f1ecdc;
+    --hl: #fff5cf;
+  }
+  html { background: var(--paper); }
+  body {
+    color: var(--ink);
+    font: 17px/1.55 "Iowan Old Style", "Charter", "Source Serif Pro", Georgia, serif;
+    max-width: 42rem;
+    margin: 3rem auto;
+    padding: 0 1.5rem 4rem;
+  }
+  header { border-bottom: 1px solid var(--rule); padding-bottom: 1.2rem; margin-bottom: 2rem; }
+  .eyebrow {
+    font: 600 11px/1 "Inter", system-ui, sans-serif;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+  }
+  h1 { font-size: 2rem; margin: 0; letter-spacing: -0.01em; }
+  h2 { margin-top: 2.4rem; font-size: 1.25rem; border-bottom: 1px solid var(--rule); padding-bottom: 0.3rem; }
+  h3 { margin-top: 1.6rem; font-size: 1.02rem; color: var(--accent); }
+  p, li { font-size: 1.02rem; }
+  ol li, ul li { margin: 0.4rem 0; }
+  kbd {
+    display: inline-block;
+    background: var(--kbd-bg);
+    border: 1px solid var(--kbd-border);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 0.05rem 0.45rem;
+    font: 600 0.92em ui-monospace, "JetBrains Mono", "Sarasa Mono J", Menlo, monospace;
+    color: var(--ink);
+    margin: 0 1px;
+  }
+  code, pre { font-family: ui-monospace, "JetBrains Mono", "Sarasa Mono J", Menlo, monospace; }
+  code { background: var(--code-bg); padding: 0.05rem 0.35rem; border-radius: 3px; font-size: 0.92em; }
+  pre {
+    background: var(--code-bg);
+    padding: 0.9rem 1.1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.92em;
+    line-height: 1.5;
+  }
+  blockquote {
+    border-left: 3px solid var(--accent);
+    margin: 1.4rem 0;
+    padding: 0.4rem 1rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .drill {
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1rem 1.3rem;
+    margin: 1.5rem 0;
+    background: #fffdf7;
+  }
+  .drill h3 { margin-top: 0; color: var(--accent); }
+  .check {
+    background: var(--hl);
+    border-left: 3px solid #d4a017;
+    padding: 0.6rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+  .warn {
+    background: #fbe9e3;
+    border-left: 3px solid var(--accent);
+    padding: 0.6rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+  .steps {
+    background: #f5f1e1;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1rem 1.4rem;
+    margin: 1.4rem 0;
+  }
+  .steps h4 { margin: 0 0 0.5rem; font-size: 0.95rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; }
+  .steps ol { margin: 0; padding-left: 1.3rem; }
+  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: 0.9rem; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(138, 51, 36, 0.35); }
+  a:hover { border-bottom-color: var(--accent); }
+  .meta { color: var(--muted); font-size: 0.9rem; }
+  .tag {
+    display: inline-block;
+    font: 600 10px/1 "Inter", system-ui, sans-serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--kbd-bg);
+    color: var(--muted);
+    padding: 0.25rem 0.55rem;
+    border-radius: 3px;
+    margin-right: 0.4rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Lesson 0003 · ~15 minutes · v2 (fixes: e4 not .l4; i not I in BEACON)</p>
+  <h1>Beacon — batch kmacro, not multi-cursor</h1>
+  <p class="meta">
+    <span class="tag">Skill</span> Multi-place edits ·
+    <span class="tag">Mission</span> Replace query-replace + multiple-cursors
+  </p>
+</header>
+
+<h2>What beacon is, what it isn't</h2>
+
+<blockquote>
+  "BEACON is the state used for applying kmacro to multiple places quickly. It's kinda
+  like multiple-cursors, but it works differently."
+  <br>— <a href="https://github.com/meow-edit/meow/blob/master/TUTORIAL.org">meow tutorial</a>
+</blockquote>
+
+<p>
+You currently reach for query-replace and multiple-cursors. Beacon replaces both —
+<em>but you have to drop the multiple-cursors mental model</em> to use it well. Beacon
+doesn't put a live cursor at every match. It does this:
+</p>
+
+<ol>
+  <li>You define a <strong>scope</strong> (a secondary selection — like a region, but
+    persists while you do other things).</li>
+  <li>Inside that scope, every cursor-creating motion drops <strong>fake cursors</strong>
+    at all the matches.</li>
+  <li>You then enter insert state. Meow starts <strong>recording a kmacro</strong>.</li>
+  <li>You type your edit. <em>Just at your real cursor.</em> You don't see anything
+    happening at the fake ones.</li>
+  <li>You exit insert state. Meow <strong>plays the recorded kmacro</strong> at every
+    fake cursor.</li>
+</ol>
+
+<p>
+That last step is the mental shift. With multiple-cursors you watch the edit happen
+N times in parallel. With beacon you record one edit and let meow apply it N times.
+The result is the same; the model is different.
+</p>
+
+<h2>Your keys for this</h2>
+
+<p>From your config (<code>settings/meow-settings.el</code>):</p>
+
+<ul>
+  <li><kbd>G</kbd> <code>meow-grab</code> — create the secondary selection from the current selection. <strong>This is the gateway to beacon.</strong></li>
+  <li><kbd>R</kbd> <code>meow-swap-grab</code> — swap your current selection with the secondary selection.</li>
+  <li><kbd>X</kbd> <code>meow-sync-grab</code> — sync the secondary selection's content to the current one.</li>
+</ul>
+
+<p>BEACON state activates <strong>automatically</strong> when your cursor moves
+<em>into</em> the secondary selection. You don't toggle it manually.</p>
+
+<h2>BEACON has its own keymap — the one rule you must know</h2>
+
+<div class="warn">
+  <strong>Only <kbd>i</kbd>, <kbd>a</kbd>, and <kbd>c</kbd> trigger the kmacro
+  recording from BEACON.</strong> This is explicit in meow's state diagram:
+  <code>BEACON ──i/a/c──&gt; INSERT</code>. The commands <kbd>I</kbd>
+  (open-above) and <kbd>A</kbd> (open-below) only transition from NORMAL, not BEACON.
+  If you press <kbd>I</kbd> inside BEACON nothing useful happens. Use <kbd>i</kbd>
+  instead.
+</div>
+
+<h2>The motions that create fake cursors</h2>
+
+<p>Once you're in BEACON state, these movement commands place a fake cursor at every
+match within the secondary selection:</p>
+
+<ul>
+  <li><kbd>w</kbd> / <kbd>W</kbd> — fake cursor at the start of every word/symbol</li>
+  <li><kbd>m</kbd> / <kbd>M</kbd> — fake regions on every occurrence of the same word/symbol under cursor</li>
+  <li><kbd>v</kbd> / <kbd>s</kbd> — fake regions on every match of a regexp</li>
+  <li><kbd>f</kbd> / <kbd>l</kbd> — fake cursors on every matching char</li>
+  <li><kbd>e</kbd> — fake regions on every N lines (N = number of lines in your selection)</li>
+  <li><kbd>j</kbd> — fake cursors at every indentation start</li>
+</ul>
+
+<p>For your day-to-day the big two are <kbd>M</kbd> (every occurrence of this symbol —
+your rename move) and <kbd>e</kbd> (per-line operations).</p>
+
+<h2>Line selection: always use <kbd>e</kbd>, not <kbd>.</kbd><kbd>l</kbd></h2>
+
+<div class="warn">
+  <kbd>e</kbd> (<code>meow-line</code>) is an <em>expand-line</em> selection type.
+  Digits after it expand the count cleanly: <kbd>e</kbd><kbd>4</kbd> = 4 lines.
+  <kbd>.</kbd><kbd>l</kbd> is a <em>thing-selection</em> — a structurally different
+  family. Its digit behaviour is not the same. <strong>For counting lines, always
+  use <kbd>e</kbd><kbd>N</kbd>.</strong> See
+  <a href="../reference/four-selection-families.html">four-selection-families reference</a>.
+</div>
+
+<h2>The canonical workflow</h2>
+
+<div class="steps">
+  <h4>The five-step shape</h4>
+  <ol>
+    <li><strong>Select scope.</strong> Build a selection covering the area for edits.
+      e.g. <kbd>.</kbd><kbd>d</kbd> for "this function", or <kbd>e</kbd><kbd>4</kbd>
+      for "these 4 lines".</li>
+    <li><strong>Grab it.</strong> <kbd>G</kbd> — turns it into a secondary selection.
+      Cursor returns to where it was.</li>
+    <li><strong>Move into it.</strong> Move your cursor inside the highlighted secondary
+      selection. BEACON state activates automatically (check your modeline).</li>
+    <li><strong>Drop fake cursors.</strong> Press a motion: <kbd>M</kbd> for every
+      occurrence of this symbol, <kbd>e</kbd> for per-line, etc.</li>
+    <li><strong>Edit + exit.</strong> Press <kbd>i</kbd>, <kbd>a</kbd>, or <kbd>c</kbd>
+      (not <kbd>I</kbd>/<kbd>A</kbd>). Type your edit. Press <kbd>ESC</kbd>. Meow
+      replays your edit at every fake cursor.</li>
+  </ol>
+</div>
+
+<div class="warn">
+  <strong>The most common mistake:</strong> forgetting step 3. After <kbd>G</kbd>,
+  your cursor is back at its original position — <em>outside</em> the secondary
+  selection. You must move <em>into</em> the highlighted region before BEACON
+  activates. If <kbd>M</kbd> doesn't drop fake cursors, this is why.
+</div>
+
+<h2>Drill</h2>
+
+<div class="drill">
+  <h3>Setup</h3>
+  <p>Open a scratch buffer. Paste:</p>
+  <pre>defmodule Calculator do
+  def add(a, b), do: a + b
+  def sub(a, b), do: a - b
+  def mul(a, b), do: a * b
+  def div(a, b), do: a / b
+
+  def helper_one(x), do: x + 1
+  def helper_two(x), do: x + 2
+end</pre>
+</div>
+
+<div class="drill">
+  <h3>Rep 1 — rename every <code>a</code> to <code>x</code> in the first four defs</h3>
+  <ol>
+    <li>Position cursor on the first <code>def add</code> line.</li>
+    <li><kbd>e</kbd><kbd>4</kbd> — select 4 lines (the four math defs).
+      <span class="check">Use <kbd>e</kbd>, not <kbd>.</kbd><kbd>l</kbd>.</span></li>
+    <li><kbd>G</kbd> — secondary selection. <span class="check">Those 4 lines highlight
+      in a different shade. Cursor returns to where it was.</span></li>
+    <li>Move cursor into the highlighted block. <strong>BEACON state now active</strong>
+      (check modeline).</li>
+    <li>Put cursor on any <code>a</code>. Press <kbd>M</kbd> — fake regions appear over
+      every <code>a</code> in the scope.</li>
+    <li>Press <kbd>c</kbd>, type <kbd>x</kbd>, press <kbd>ESC</kbd>.</li>
+    <li>Every <code>a</code> becomes <code>x</code> in scope. The
+      <code>helper_*</code> defs below are untouched.</li>
+    <li><kbd>z</kbd> to undo.</li>
+  </ol>
+</div>
+
+<div class="drill">
+  <h3>Rep 2 — add <code>@spec</code> above every def in the scope</h3>
+  <p>The kmacro power multiple-cursors doesn't have: the recorded edit can include
+  movement and newlines, not just inserted text.</p>
+
+  <p><strong>Important:</strong> <kbd>I</kbd> (open-above) does not work here —
+  only <kbd>i</kbd>/<kbd>a</kbd>/<kbd>c</kbd> start kmacro recording from BEACON.
+  The trick: <kbd>i</kbd> enters INSERT at the <em>start</em> of an
+  <kbd>e</kbd>-selected line (column 0). Typing content then
+  <kbd>Enter</kbd> pushes the original line down — same visual result as
+  open-above, built from BEACON-legal primitives.</p>
+
+  <ol>
+    <li>Cursor on the first <code>def add</code> line.</li>
+    <li><kbd>e</kbd><kbd>4</kbd> then <kbd>G</kbd> — grab 4 lines as secondary.</li>
+    <li>Move cursor into the secondary selection.</li>
+    <li><kbd>e</kbd> — fake regions per line.</li>
+    <li><kbd>i</kbd> — enter INSERT at the start of the region (column 0 of each line).</li>
+    <li>Type <code>@spec todo</code>, then press <kbd>Enter</kbd>.</li>
+    <li>Press <kbd>ESC</kbd> — meow replays the recording. Every def now has a
+      <code>@spec todo</code> line above it.</li>
+    <li><kbd>z</kbd> to undo.</li>
+  </ol>
+
+  <div class="check">
+    <strong>If Method A doesn't behave cleanly</strong>, use the general kmacro escape
+    hatch: after fake cursors are placed, press <kbd>F3</kbd> to start recording (this
+    bypasses the BEACON keymap restriction), do any edit you want including
+    <kbd>I</kbd>, then press <kbd>F4</kbd> to end and apply. This is the tutorial's
+    "generally" path.
+  </div>
+</div>
+
+<div class="drill">
+  <h3>Rep 3 — the query-replace replacement</h3>
+  <p>Your old habit: narrow region, <kbd>M-%</kbd>, type from, type to, <kbd>!</kbd>.
+  Five steps including two prompts.</p>
+
+  <p>The beacon version, to rename every <code>b</code> to <code>y</code> in the math defs:</p>
+  <ol>
+    <li><kbd>e</kbd><kbd>4</kbd><kbd>G</kbd> — scope</li>
+    <li>Move in. <kbd>M</kbd> on a <code>b</code> — fake regions on every <code>b</code>.</li>
+    <li><kbd>c</kbd> <kbd>y</kbd> <kbd>ESC</kbd> — done.</li>
+  </ol>
+  <p>Three steps, no prompts. Visible scope. Undoable as one action.</p>
+</div>
+
+<h2>When to still reach for query-replace or LSP rename</h2>
+
+<ul>
+  <li><strong>Regexp replacements.</strong> Beacon's <kbd>M</kbd> matches a literal
+    symbol. <kbd>M-%</kbd> with regexp still wins for "swap order of two captured
+    groups."</li>
+  <li><strong>Multiple files.</strong> Beacon is one-buffer. Project-wide rename →
+    LSP rename or <code>project-query-replace-regexp</code>.</li>
+  <li><strong>Confirmation per match.</strong> Beacon is all-or-nothing after ESC.
+    <kbd>M-%</kbd> still wins when you want to skip some matches.</li>
+</ul>
+
+<h2>Win condition</h2>
+
+<ul>
+  <li>You can rename a symbol within a function in these keystrokes:
+    <kbd>.</kbd><kbd>d</kbd><kbd>G</kbd>, move in, place cursor on symbol,
+    <kbd>M</kbd><kbd>c</kbd>, type new name, <kbd>ESC</kbd>.</li>
+  <li>You catch yourself reaching for <kbd>M-%</kbd> on a scoped rename and switch
+    to beacon instead.</li>
+  <li>You can explain: <em>"it's a recorded kmacro played at fake cursors, not parallel
+    edits."</em></li>
+</ul>
+
+<h2>What's next</h2>
+
+<p>After this lesson you've covered the three big primitives:</p>
+<ol>
+  <li>Expansion (<a href="0001-expansion-as-a-prefix.html">L0001</a>) — selection-as-argument.</li>
+  <li>Things (<a href="0002-things.html">L0002</a>) — structural selection.</li>
+  <li>Beacon (this) — selection-driven multi-edit.</li>
+</ol>
+<p>Beyond this is breadth: custom things for Elixir <code>do...end</code> blocks,
+forgotten verbs (<kbd>j</kbd> join, <kbd>u</kbd> pop-selection, <kbd>r</kbd> replace),
+keypad mode, meow-tree-sitter extras.</p>
+
+<h2>Reference</h2>
+<ul>
+  <li><a href="https://github.com/meow-edit/meow/blob/master/TUTORIAL.org#beacon">Meow tutorial — BEACON section</a></li>
+  <li><a href="../reference/four-selection-families.html">Four selection families</a> — why <kbd>e</kbd>N, not <kbd>.</kbd><kbd>l</kbd>N</li>
+  <li><a href="../reference/selection-verb-combos.html">Selection + verb combos</a></li>
+  <li><a href="../reference/kill-vs-delete.html">Kill vs delete</a></li>
+</ul>
+
+<footer>
+  <p><strong>Stuck?</strong> Most likely causes: (1) BEACON didn't activate — cursor
+  not inside secondary selection after <kbd>G</kbd>. (2) <kbd>M</kbd> didn't drop fake
+  cursors — cursor not on the symbol you want to match. (3) Replay went wrong — your
+  edit included a motion that didn't generalise (e.g. hard-coded column move). Ask
+  the agent.</p>
+  <p>v2 — fixes from learning records
+  <a href="../learning-records/0005-e4-not-l4-for-line-expansion.md">0005</a> and
+  <a href="../learning-records/0006-beacon-only-uses-i-a-c-to-record.md">0006</a>.</p>
+</footer>
+
+</body>
+</html>

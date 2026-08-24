@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lesson 0002 — Things (the C-SPC killer)</title>
+<style>
+  :root {
+    --ink: #1d1d1f;
+    --paper: #faf8f3;
+    --rule: #d8d2c2;
+    --accent: #8a3324;
+    --good: #2f5d3a;
+    --muted: #6e6a5e;
+    --kbd-bg: #efeadb;
+    --kbd-border: #c3bda9;
+    --code-bg: #f1ecdc;
+  }
+  html { background: var(--paper); }
+  body {
+    color: var(--ink);
+    font: 17px/1.55 "Iowan Old Style", "Charter", "Source Serif Pro", Georgia, serif;
+    max-width: 42rem;
+    margin: 3rem auto;
+    padding: 0 1.5rem 4rem;
+  }
+  header { border-bottom: 1px solid var(--rule); padding-bottom: 1.2rem; margin-bottom: 2rem; }
+  .eyebrow {
+    font: 600 11px/1 "Inter", system-ui, sans-serif;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+  }
+  h1 { font-size: 2rem; margin: 0; letter-spacing: -0.01em; }
+  h2 { margin-top: 2.4rem; font-size: 1.25rem; border-bottom: 1px solid var(--rule); padding-bottom: 0.3rem; }
+  h3 { margin-top: 1.6rem; font-size: 1.02rem; color: var(--accent); }
+  p, li { font-size: 1.02rem; }
+  ol li, ul li { margin: 0.35rem 0; }
+  kbd {
+    display: inline-block;
+    background: var(--kbd-bg);
+    border: 1px solid var(--kbd-border);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 0.05rem 0.45rem;
+    font: 600 0.92em ui-monospace, "JetBrains Mono", "Sarasa Mono J", Menlo, monospace;
+    color: var(--ink);
+    margin: 0 1px;
+  }
+  code, pre { font-family: ui-monospace, "JetBrains Mono", "Sarasa Mono J", Menlo, monospace; }
+  code { background: var(--code-bg); padding: 0.05rem 0.35rem; border-radius: 3px; font-size: 0.92em; }
+  pre {
+    background: var(--code-bg);
+    padding: 0.9rem 1.1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.92em;
+    line-height: 1.5;
+  }
+  blockquote {
+    border-left: 3px solid var(--accent);
+    margin: 1.4rem 0;
+    padding: 0.4rem 1rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .drill {
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1rem 1.3rem;
+    margin: 1.5rem 0;
+    background: #fffdf7;
+  }
+  .drill h3 { margin-top: 0; color: var(--accent); }
+  .check {
+    background: #f1ecdc;
+    border-left: 3px solid var(--muted);
+    padding: 0.6rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+  table { border-collapse: collapse; width: 100%; margin: 0.8rem 0; font-size: 0.97rem; }
+  th, td { border: 1px solid var(--rule); padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; }
+  th { background: var(--kbd-bg); font-weight: 600; }
+  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: 0.9rem; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(138, 51, 36, 0.35); }
+  a:hover { border-bottom-color: var(--accent); }
+  .meta { color: var(--muted); font-size: 0.9rem; }
+  .tag {
+    display: inline-block;
+    font: 600 10px/1 "Inter", system-ui, sans-serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--kbd-bg);
+    color: var(--muted);
+    padding: 0.25rem 0.55rem;
+    border-radius: 3px;
+    margin-right: 0.4rem;
+  }
+  .pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .pair > div {
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    background: #fffdf7;
+  }
+  .pair h4 { margin: 0 0 0.4rem; font-size: 0.95rem; color: var(--accent); }
+  .pair code { font-size: 0.85em; }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Lesson 0002 · ~10 minutes</p>
+  <h1>Things — the <code>C-SPC</code> killer</h1>
+  <p class="meta">
+    <span class="tag">Skill</span> Structural selection ·
+    <span class="tag">Mission</span> Refactor without leaving normal state
+  </p>
+</header>
+
+<h2>Why this lesson, for you specifically</h2>
+
+<p>
+You said: <em>"I build regions by hand with <code>C-SPC</code> and move."</em> Ten years
+of muscle memory.
+</p>
+
+<p>
+That habit is the single biggest thing standing between you and meow's payoff. Every
+time you press <kbd>C-SPC</kbd> and move, you're doing in 4–8 keystrokes what meow does
+in 2. <strong>Things</strong> are how you stop doing that — without losing the
+selection-first thinking you just learned in <a href="0001-expansion-as-a-prefix.html">Lesson
+0001</a>.
+</p>
+
+<h2>The idea</h2>
+
+<p>
+A <strong>thing</strong> is a structural unit of text: a paragraph, a string, the
+contents of parens, a function, the whole buffer. Meow gives you four verbs to select
+relative to a thing, and a second key to say <em>which</em> thing.
+</p>
+
+<table>
+  <tr><th>Key</th><th>Command</th><th>What it selects</th></tr>
+  <tr><td><kbd>,</kbd></td><td><code>meow-inner-of-thing</code></td><td>the <em>inside</em> of the thing (no delimiters)</td></tr>
+  <tr><td><kbd>.</kbd></td><td><code>meow-bounds-of-thing</code></td><td>the <em>whole</em> thing (with delimiters)</td></tr>
+  <tr><td><kbd>&lt;</kbd></td><td><code>meow-beginning-of-thing</code></td><td>from point to <em>start</em> of thing</td></tr>
+  <tr><td><kbd>&gt;</kbd></td><td><code>meow-end-of-thing</code></td><td>from point to <em>end</em> of thing</td></tr>
+</table>
+
+<p>Then a second key picks the thing:</p>
+
+<table>
+  <tr><th>Key</th><th>Thing</th></tr>
+  <tr><td><kbd>r</kbd></td><td>round parens <code>( )</code></td></tr>
+  <tr><td><kbd>s</kbd></td><td>square brackets <code>[ ]</code></td></tr>
+  <tr><td><kbd>c</kbd></td><td>curly braces <code>{ }</code></td></tr>
+  <tr><td><kbd>g</kbd></td><td>string <code>" "</code></td></tr>
+  <tr><td><kbd>p</kbd></td><td>paragraph</td></tr>
+  <tr><td><kbd>l</kbd></td><td>line</td></tr>
+  <tr><td><kbd>d</kbd></td><td>defun (function)</td></tr>
+  <tr><td><kbd>b</kbd></td><td>buffer</td></tr>
+</table>
+
+<p>So <kbd>,</kbd><kbd>g</kbd> = "inner of string" — selects the string contents
+without the quotes. <kbd>.</kbd><kbd>d</kbd> = "whole defun." Two keystrokes.</p>
+
+<blockquote>
+  "<code>meow-inner-of-thing</code> — Select the inner part of thing. e.g. A Lisp
+  expression without parentheses."<br>
+  — <a href="https://github.com/meow-edit/meow/blob/master/COMMANDS.org">meow COMMANDS.org</a>
+</blockquote>
+
+<h2>Inner vs bounds — the only thing you must remember</h2>
+
+<div class="pair">
+  <div>
+    <h4><kbd>,</kbd> inner</h4>
+    <p>"Give me what's <em>inside</em>."</p>
+    <pre>("hello world")
+   ^^^^^^^^^^^</pre>
+    <p style="font-size: 0.9em; color: var(--muted);">Selection on a string: just the text, no quotes.</p>
+  </div>
+  <div>
+    <h4><kbd>.</kbd> bounds</h4>
+    <p>"Give me the <em>whole</em> thing."</p>
+    <pre>("hello world")
+  ^^^^^^^^^^^^^</pre>
+    <p style="font-size: 0.9em; color: var(--muted);">Selection on a string: quotes included.</p>
+  </div>
+</div>
+
+<p>Mnemonic: <strong>comma is small (inner), period is bigger (whole).</strong></p>
+
+<h2>The Emacs translation table</h2>
+
+<p>Since you've been on standard Emacs for 10+ years, here's how each of these maps to
+something you may already know:</p>
+
+<table>
+  <tr><th>Old habit</th><th>New move</th></tr>
+  <tr><td><kbd>C-SPC</kbd> then <kbd>M-}</kbd> (mark to end of paragraph)</td><td><kbd>.</kbd><kbd>p</kbd> — bounds of paragraph</td></tr>
+  <tr><td><kbd>C-SPC</kbd> then <kbd>C-M-e</kbd> (end of defun)</td><td><kbd>.</kbd><kbd>d</kbd> — bounds of defun</td></tr>
+  <tr><td><kbd>M-h</kbd> (mark-paragraph)</td><td><kbd>.</kbd><kbd>p</kbd></td></tr>
+  <tr><td><kbd>C-M-h</kbd> (mark-defun)</td><td><kbd>.</kbd><kbd>d</kbd></td></tr>
+  <tr><td><kbd>C-x h</kbd> (mark-whole-buffer)</td><td><kbd>.</kbd><kbd>b</kbd></td></tr>
+  <tr><td><em>no easy equivalent</em></td><td><kbd>,</kbd><kbd>g</kbd> — inside a string</td></tr>
+  <tr><td><em>no easy equivalent</em></td><td><kbd>,</kbd><kbd>r</kbd> — inside parens</td></tr>
+</table>
+
+<p>The last two rows are the cleanest wins — <strong>things you'd build by hand today
+that become one keystroke pair</strong>.</p>
+
+<h2>Drill</h2>
+
+<div class="drill">
+  <h3>Setup</h3>
+  <p>Open a scratch buffer. Paste:</p>
+  <pre>defmodule Greeter do
+  @doc "Greets a person by name and returns a friendly message."
+  def hello(name) do
+    parts = ["Hello", name, "welcome aboard"]
+    Enum.join(parts, ", ")
+  end
+
+  def goodbye(name) do
+    "See you later, #{name}!"
+  end
+end</pre>
+</div>
+
+<div class="drill">
+  <h3>Reps — feel the things</h3>
+  <ol>
+    <li>Put cursor anywhere inside <code>"Greets a person..."</code>. Press <kbd>,</kbd><kbd>g</kbd>.
+      <br>→ Selection: <em>just</em> the text inside the quotes.</li>
+    <li><kbd>g</kbd> (cancel selection). Now <kbd>.</kbd><kbd>g</kbd>.
+      <br>→ Selection: the string <em>including</em> quotes. Feel the difference.</li>
+    <li>Put cursor inside the <code>[...]</code> on the <code>parts =</code> line. Press <kbd>,</kbd><kbd>s</kbd>.
+      <br>→ Selection: <code>"Hello", name, "welcome aboard"</code>.</li>
+    <li>Put cursor anywhere inside the <code>hello</code> function body. Press <kbd>.</kbd><kbd>d</kbd>.
+      <br>→ Selection: the whole <code>def hello(name) do ... end</code>.
+      <span class="check">If this doesn't work cleanly in Elixir mode, that's
+      <code>meow-tree-sitter</code> earning its keep. You have it installed; the defun thing
+      uses tree-sitter when available.</span>
+    </li>
+    <li>Cursor on any line. Press <kbd>.</kbd><kbd>p</kbd>.
+      <br>→ Selection: the whole paragraph (separated by blank lines).</li>
+    <li>Anywhere. Press <kbd>.</kbd><kbd>b</kbd>.
+      <br>→ Selection: the entire buffer. (One keystroke pair instead of <kbd>C-x</kbd> <kbd>h</kbd>.)</li>
+  </ol>
+</div>
+
+<div class="drill">
+  <h3>Apply — a real refactor, no <code>C-SPC</code></h3>
+  <p>Goal: change the docstring on <code>hello</code>.</p>
+  <ol>
+    <li>Move cursor onto the docstring line (any column inside the string).</li>
+    <li><kbd>,</kbd><kbd>g</kbd> — select inside the quotes.</li>
+    <li><kbd>c</kbd> (<code>meow-change</code>) — deletes selection, drops you in insert state.</li>
+    <li>Type the new docstring. <kbd>ESC</kbd> back to normal.</li>
+  </ol>
+  <p>Compare to your old workflow: position cursor at start of text, <kbd>C-SPC</kbd>,
+  move to end of text, <kbd>C-w</kbd>, type. <strong>You just saved 4–6 keystrokes on a
+  move you do dozens of times a day.</strong></p>
+</div>
+
+<div class="drill">
+  <h3>Stretch — combine with expansion from Lesson 0001</h3>
+  <p>Things compose with expansion. Cursor on the <code>parts =</code> line:</p>
+  <ol>
+    <li><kbd>.</kbd><kbd>l</kbd> — select this line as a thing.</li>
+    <li><kbd>3</kbd> — expand to 3 things (lines).</li>
+    <li><kbd>k</kbd> — kill all three. (Remember: <kbd>k</kbd>, not <kbd>d</kbd>. See the
+      <a href="../reference/kill-vs-delete.html">kill-vs-delete card</a>.)</li>
+    <li><kbd>z</kbd> to undo.</li>
+  </ol>
+  <p>Same shape as Lesson 0001, structural unit instead of word. The mental model is
+  paying compound interest already.</p>
+</div>
+
+<h2>Win condition</h2>
+
+<p>You're done when, without thinking:</p>
+<ul>
+  <li>You can change a string's contents in 3 keystrokes (<kbd>,</kbd><kbd>g</kbd><kbd>c</kbd>).</li>
+  <li>You can kill an entire function in 2 (<kbd>.</kbd><kbd>d</kbd>) then <kbd>k</kbd>.</li>
+  <li>The next time you start to press <kbd>C-SPC</kbd>, you pause and ask: <em>"is this a thing?"</em></li>
+</ul>
+
+<h2>What's next</h2>
+
+<p>Lesson 0003 will be <strong>beacon mode</strong> — meow's answer to multiple-cursors.
+The shape: thing-select a scope, beacon, then edit once and watch it happen at every
+match. This will replace your query-replace + multiple-cursors habit for in-buffer
+refactors.</p>
+
+<h2>Cite &amp; dig deeper</h2>
+<ul>
+  <li><a href="https://github.com/meow-edit/meow/blob/master/COMMANDS.org">Meow COMMANDS.org — thing reference</a></li>
+  <li><a href="../reference/kill-vs-delete.html">Reference: kill vs delete</a></li>
+  <li><a href="../lessons/0001-expansion-as-a-prefix.html">Lesson 0001: expansion</a></li>
+  <li><a href="https://github.com/skissue/meow-tree-sitter">meow-tree-sitter</a> — what makes <kbd>.</kbd><kbd>d</kbd> work properly in Elixir.</li>
+  <li>Custom things: <code>meow-thing-register</code> — you can teach meow about new things (e.g. an Elixir <code>do...end</code> block as its own thing). Worth a future lesson.</li>
+</ul>
+
+<footer>
+  <p><strong>Stuck or curious?</strong> Ask the teaching agent. Particularly worth
+  asking: "what happens when I <kbd>.</kbd><kbd>d</kbd> on nested defuns?" and "can I
+  define my own thing for an Elixir <code>do...end</code> block?"</p>
+  <p>Lesson file: <code>lessons/0002-things.html</code> · Mission: <a href="../MISSION.md">MISSION.md</a></p>
+</footer>
+
+</body>
+</html>

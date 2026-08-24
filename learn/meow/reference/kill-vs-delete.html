@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reference — Kill vs Delete in Meow</title>
+<style>
+  :root {
+    --ink: #1d1d1f;
+    --paper: #faf8f3;
+    --rule: #d8d2c2;
+    --accent: #8a3324;
+    --good: #2f5d3a;
+    --bad: #8a3324;
+    --muted: #6e6a5e;
+    --kbd-bg: #efeadb;
+    --kbd-border: #c3bda9;
+    --code-bg: #f1ecdc;
+  }
+  html { background: var(--paper); }
+  body {
+    color: var(--ink);
+    font: 16px/1.5 "Iowan Old Style", "Charter", "Source Serif Pro", Georgia, serif;
+    max-width: 44rem;
+    margin: 2rem auto;
+    padding: 0 1.5rem 3rem;
+  }
+  header { border-bottom: 1px solid var(--rule); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+  .eyebrow {
+    font: 600 11px/1 "Inter", system-ui, sans-serif;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.5rem;
+  }
+  h1 { font-size: 1.7rem; margin: 0; letter-spacing: -0.01em; }
+  h2 { margin-top: 1.8rem; font-size: 1.1rem; border-bottom: 1px solid var(--rule); padding-bottom: 0.25rem; }
+  kbd {
+    display: inline-block;
+    background: var(--kbd-bg);
+    border: 1px solid var(--kbd-border);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 0.05rem 0.45rem;
+    font: 600 0.92em ui-monospace, "JetBrains Mono", "Sarasa Mono J", Menlo, monospace;
+    margin: 0 1px;
+  }
+  code, pre { font-family: ui-monospace, "JetBrains Mono", "Sarasa Mono J", Menlo, monospace; }
+  code { background: var(--code-bg); padding: 0.05rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+  pre {
+    background: var(--code-bg);
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.88em;
+  }
+  blockquote {
+    border-left: 3px solid var(--accent);
+    margin: 1rem 0;
+    padding: 0.3rem 1rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.95rem; }
+  th, td { border: 1px solid var(--rule); padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; }
+  th { background: var(--kbd-bg); font-weight: 600; }
+  .good { color: var(--good); font-weight: 600; }
+  .bad  { color: var(--bad);  font-weight: 600; }
+  .rule {
+    background: #fffdf7;
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--accent);
+    padding: 0.7rem 1rem;
+    border-radius: 4px;
+    margin: 1.2rem 0;
+    font-size: 1.05rem;
+  }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(138, 51, 36, 0.35); }
+  footer { margin-top: 2rem; padding-top: 0.8rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: 0.85rem; }
+  @media print {
+    body { margin: 0; padding: 1rem; max-width: 100%; }
+    header, footer { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Reference · Quick Card</p>
+  <h1>Kill vs Delete in Meow</h1>
+  <p style="color: var(--muted); font-size: 0.95rem; margin: 0.3rem 0 0;">
+    The single most-confusing thing in meow. Print this.
+  </p>
+</header>
+
+<div class="rule">
+  <strong>The rule:</strong> after a selection, the verb is <kbd>k</kbd> (<code>meow-kill</code>),
+  <em>not</em> <kbd>d</kbd> (<code>meow-delete</code>).
+</div>
+
+<h2>Why <kbd>d</kbd> "didn't work"</h2>
+
+<p>
+Meow has two different notions of "what's selected":
+</p>
+
+<table>
+  <tr>
+    <th>Concept</th>
+    <th>What it is</th>
+    <th>How you got it</th>
+  </tr>
+  <tr>
+    <td><strong>Meow selection</strong></td>
+    <td>A highlighted range with expansion hints, but Emacs's <code>region-active-p</code> may be <code>nil</code>.</td>
+    <td><kbd>w</kbd> next-word, <kbd>b</kbd> back-word, <kbd>f</kbd> find, <kbd>l</kbd> till, plain <kbd>h t n p</kbd>.</td>
+  </tr>
+  <tr>
+    <td><strong>Active region</strong></td>
+    <td>Real Emacs region. <code>region-active-p</code> is <code>t</code>.</td>
+    <td><kbd>e</kbd> line, <kbd>m</kbd> mark-word, <kbd>M</kbd> mark-symbol, <kbd>o</kbd> block, the things (<kbd>,</kbd> <kbd>.</kbd>), and the capital <em>-expand</em> motions <kbd>H T N P W</kbd>.</td>
+  </tr>
+</table>
+
+<p>
+Verbs marked "supports fallback behaviour" in the meow docs (<kbd>d</kbd>, <kbd>c</kbd>,
+<kbd>x</kbd>) check <code>region-active-p</code>. When it's <code>nil</code>, they fall back to
+the single-character version.
+</p>
+
+<blockquote>
+  "<code>meow-kill</code> — Kill current region. This command supports fallback behaviour. Default to <code>meow-C-k</code>."<br>
+  — <a href="https://github.com/meow-edit/meow/blob/master/COMMANDS.org">meow COMMANDS.org</a>
+</blockquote>
+
+<p>So <kbd>w</kbd><kbd>3</kbd><kbd>d</kbd> deletes one char: the word motion left a meow
+selection but not an active region, so <kbd>d</kbd> fell back to <code>delete-char</code>.</p>
+
+<h2>The lookup table</h2>
+
+<table>
+  <tr>
+    <th>You want…</th>
+    <th>After a selection use</th>
+    <th>For single-char use</th>
+  </tr>
+  <tr><td>Remove + put on kill-ring</td><td><kbd>k</kbd> <code>meow-kill</code> <span class="good">✓</span></td><td><kbd>d</kbd> <code>meow-delete</code></td></tr>
+  <tr><td>Copy</td><td><kbd>x</kbd> <code>meow-save</code> <span class="good">✓</span></td><td>—</td></tr>
+  <tr><td>Replace + enter insert</td><td><kbd>c</kbd> <code>meow-change</code> <span class="good">✓</span></td><td><kbd>c</kbd> falls back to <code>meow-change-char</code></td></tr>
+  <tr><td>Comment</td><td><kbd>;</kbd> <code>meow-comment</code> <span class="good">✓</span></td><td>—</td></tr>
+  <tr><td>Duplicate (your custom)</td><td><kbd>/</kbd> <code>rock--meow-duplicate</code> <span class="good">✓</span></td><td>same key — duplicates char when no region</td></tr>
+</table>
+
+<h2>Two motions that always leave an active region</h2>
+
+<p>These are the "safe" motions where <kbd>d</kbd> <em>does</em> work, because they
+create a real Emacs region. Worth knowing because they're the bridge between meow's
+selection world and Emacs's region world:</p>
+
+<ul>
+  <li><kbd>e</kbd> <code>meow-line</code> — always selects whole lines as an active region.</li>
+  <li><kbd>m</kbd> <code>meow-mark-word</code>, <kbd>M</kbd> <code>meow-mark-symbol</code> — wraps the thing under cursor.</li>
+  <li><kbd>,</kbd> <kbd>.</kbd> <kbd>&lt;</kbd> <kbd>&gt;</kbd> — the "things" family (lesson 0002).</li>
+  <li>Capital movement keys <kbd>H</kbd> <kbd>T</kbd> <kbd>N</kbd> <kbd>P</kbd> <kbd>W</kbd> <kbd>B</kbd> — the <em>-expand</em> variants.</li>
+</ul>
+
+<h2>Mnemonic</h2>
+
+<div class="rule">
+  <strong>k</strong> for <strong>k</strong>ill the selection.<br>
+  <strong>d</strong> for <strong>d</strong>elete one char.
+</div>
+
+<footer>
+  <p>Source: <a href="https://github.com/meow-edit/meow/blob/master/COMMANDS.org">meow COMMANDS.org</a> ·
+  Recorded in <a href="../learning-records/0002-kill-is-the-verb-not-delete.md">learning-record 0002</a> ·
+  Triggered by <a href="../lessons/0001-expansion-as-a-prefix.html">lesson 0001</a> practice.</p>
+</footer>
+
+</body>
+</html>

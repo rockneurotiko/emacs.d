@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lesson 0001 — Expansion as a prefix</title>
+<style>
+  :root {
+    --ink: #1d1d1f;
+    --paper: #faf8f3;
+    --rule: #d8d2c2;
+    --accent: #8a3324;
+    --muted: #6e6a5e;
+    --kbd-bg: #efeadb;
+    --kbd-border: #c3bda9;
+    --code-bg: #f1ecdc;
+  }
+  html { background: var(--paper); }
+  body {
+    color: var(--ink);
+    font: 17px/1.55 "Iowan Old Style", "Charter", "Source Serif Pro", Georgia, serif;
+    max-width: 42rem;
+    margin: 3rem auto;
+    padding: 0 1.5rem 4rem;
+  }
+  header { border-bottom: 1px solid var(--rule); padding-bottom: 1.2rem; margin-bottom: 2rem; }
+  .eyebrow {
+    font: 600 11px/1 "Inter", system-ui, sans-serif;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+  }
+  h1 { font-size: 2rem; margin: 0; letter-spacing: -0.01em; }
+  h2 { margin-top: 2.4rem; font-size: 1.25rem; border-bottom: 1px solid var(--rule); padding-bottom: 0.3rem; }
+  h3 { margin-top: 1.6rem; font-size: 1.02rem; color: var(--accent); }
+  p, li { font-size: 1.02rem; }
+  ol li { margin: 0.4rem 0; }
+  kbd {
+    display: inline-block;
+    background: var(--kbd-bg);
+    border: 1px solid var(--kbd-border);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 0.05rem 0.45rem;
+    font: 600 0.92em ui-monospace, "JetBrains Mono", "Sarasa Mono J", Menlo, monospace;
+    color: var(--ink);
+    margin: 0 1px;
+  }
+  code, pre {
+    font-family: ui-monospace, "JetBrains Mono", "Sarasa Mono J", Menlo, monospace;
+  }
+  code { background: var(--code-bg); padding: 0.05rem 0.35rem; border-radius: 3px; font-size: 0.92em; }
+  pre {
+    background: var(--code-bg);
+    padding: 0.9rem 1.1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.92em;
+    line-height: 1.5;
+  }
+  blockquote {
+    border-left: 3px solid var(--accent);
+    margin: 1.4rem 0;
+    padding: 0.4rem 1rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .drill {
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 1rem 1.3rem;
+    margin: 1.5rem 0;
+    background: #fffdf7;
+  }
+  .drill h3 { margin-top: 0; color: var(--accent); }
+  .check {
+    background: #f1ecdc;
+    border-left: 3px solid var(--muted);
+    padding: 0.6rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+  }
+  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: 0.9rem; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(138, 51, 36, 0.35); }
+  a:hover { border-bottom-color: var(--accent); }
+  .meta { color: var(--muted); font-size: 0.9rem; }
+  .tag {
+    display: inline-block;
+    font: 600 10px/1 "Inter", system-ui, sans-serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--kbd-bg);
+    color: var(--muted);
+    padding: 0.25rem 0.55rem;
+    border-radius: 3px;
+    margin-right: 0.4rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Lesson 0001 · ~7 minutes</p>
+  <h1>Expansion as a prefix</h1>
+  <p class="meta">
+    <span class="tag">Skill</span> Selection-first thinking ·
+    <span class="tag">Mission</span> Reflexive expansion · advanced moves
+  </p>
+</header>
+
+<h2>The one idea</h2>
+
+<p>
+In meow, <strong>a selection is the argument</strong> to your next command. Most "movement" keys
+don't just move the cursor — they grow, shrink, or reshape the selection that any verb
+(<kbd>d</kbd>, <kbd>c</kbd>, <kbd>k</kbd>, <kbd>x</kbd>, <kbd>;</kbd>) will then act on.
+</p>
+
+<p>
+The fastest entry point to that mindset is <strong>expansion</strong>: the digits
+<kbd>1</kbd>–<kbd>9</kbd> in normal state don't type digits — they expand your last
+motion <em>N</em> times.
+</p>
+
+<blockquote>
+  "<code>meow-line</code> will create regions for every N lines (N is the number of selected lines)."
+  <br>— <a href="https://github.com/meow-edit/meow/blob/master/TUTORIAL.org">meow tutorial</a>
+</blockquote>
+
+<h2>The mechanic</h2>
+
+<p>Every meow motion that selects something — <kbd>w</kbd> (next word), <kbd>e</kbd> (line),
+<kbd>W</kbd> (next symbol), <kbd>f</kbd> (find char) — leaves an active <em>selection
+direction</em>. Then:</p>
+
+<ul>
+  <li><kbd>3</kbd> means "do that selection 3 times". <kbd>w</kbd><kbd>3</kbd> → select 3 words.</li>
+  <li><kbd>:</kbd> reverses the selection direction. <kbd>w</kbd><kbd>:</kbd><kbd>2</kbd> → 2 words backward.</li>
+  <li>Any verb you press next operates on the whole selection. <kbd>w</kbd><kbd>3</kbd><kbd>d</kbd>
+      deletes three words; <kbd>e</kbd><kbd>5</kbd><kbd>;</kbd> comments five lines.</li>
+</ul>
+
+<p>This is the prefix-argument pattern that vim spells <code>3dw</code>. Meow flips it:
+<strong>select first, verb last</strong>. Once you internalise that, you stop thinking
+"how many?" before you act, and start <em>seeing</em> the change before you commit to it.</p>
+
+<h3>Why this matters for your mission</h3>
+
+<p>
+Every advanced meow feature you want — <a href="../reference/index.html">things</a>,
+beacon mode, tree-sitter selection — uses the same shape: <em>build a selection, then
+verb it</em>. Expansion is the smallest place to feel that shape.
+</p>
+
+<h2>Drill it</h2>
+
+<div class="drill">
+  <h3>Setup (30 seconds)</h3>
+  <p>Open a scratch buffer with some real text. Paste this snippet in (any code is fine, but
+  prose works too):</p>
+  <pre>defmodule Counter do
+  def inc(n), do: n + 1
+  def dec(n), do: n - 1
+  def double(n), do: n * 2
+  def square(n), do: n * n
+end</pre>
+  <p>Put your cursor at the start of <code>defmodule</code>. Make sure you're in
+  <strong>normal</strong> state (no insert).</p>
+</div>
+
+<div class="drill">
+  <h3>Reps — feel the selection grow</h3>
+  <ol>
+    <li>
+      <kbd>w</kbd> → one word selected. Look at the highlight.
+    </li>
+    <li>
+      <kbd>3</kbd> → highlight now covers 3 words.
+      <span class="check">If you don't see expansion hints (the little 1-9 badges over the next words), run
+        <code>M-x meow-cheatsheet</code> once to confirm meow is active. The expansion overlay
+        is on by default.</span>
+    </li>
+    <li>
+      <kbd>:</kbd> → direction flips; selection now goes backward from where you started.
+    </li>
+    <li>
+      <kbd>2</kbd> → 2 words backward.
+    </li>
+    <li>
+      <kbd>g</kbd> → cancel the selection (back to a clean cursor).
+    </li>
+  </ol>
+  <p>That's the whole loop: <em>motion → digit → (optional reverse) → verb</em>.</p>
+</div>
+
+<div class="drill">
+  <h3>Apply — a real edit, no insert state</h3>
+  <p>Cursor on the <code>def inc</code> line.</p>
+  <ol>
+    <li><kbd>e</kbd> → select this line. (<kbd>e</kbd> = <code>meow-line</code>, always leaves a real active region — verbs work.)</li>
+    <li><kbd>4</kbd> → expand to 4 lines (all four <code>def</code> lines).</li>
+    <li><kbd>;</kbd> → comment them all out. <em>(That's your <code>meow-comment</code> binding.)</em></li>
+    <li><kbd>z</kbd> → undo, so the buffer is clean again.</li>
+    <li>Now try the word version: cursor on <code>defmodule</code>, then <kbd>w</kbd> <kbd>3</kbd> <kbd>k</kbd> → kills 3 words. (Note <kbd>k</kbd>, not <kbd>d</kbd>.)</li>
+    <li><kbd>z</kbd> → undo. Then <kbd>e</kbd> <kbd>4</kbd> <kbd>/</kbd> → duplicate all four lines
+      (your custom <code>rock--meow-duplicate</code>).</li>
+  </ol>
+  <p>You just did two non-trivial multi-line edits without ever leaving normal state. That's the
+  shape every later lesson will reuse.</p>
+</div>
+
+<h2>Win condition</h2>
+
+<p>You're done with this lesson when, without looking at the cheatsheet, you can:</p>
+<ul>
+  <li>Select 5 words forward and kill them. <span style="color:var(--muted)">(<kbd>w</kbd> <kbd>5</kbd> <kbd>k</kbd>)</span></li>
+  <li>Select 3 lines backward and comment them. <span style="color:var(--muted)">(<kbd>e</kbd> <kbd>:</kbd> <kbd>3</kbd> <kbd>;</kbd>)</span></li>
+  <li>Say out loud: <em>"the digit comes after the motion, the verb comes after the digit."</em></li>
+</ul>
+
+<h2>What's next</h2>
+
+<p>Lesson 0002 will take the same selection-first shape and apply it to <strong>things</strong>
+(<kbd>,</kbd> <kbd>.</kbd> <kbd>&lt;</kbd> <kbd>&gt;</kbd>) — selecting "the inside of a string",
+"the whole function", "this paragraph" in one keystroke. Same mental model, much bigger payoff.</p>
+
+<h2>Cite &amp; dig deeper</h2>
+<ul>
+  <li><a href="https://github.com/meow-edit/meow/blob/master/TUTORIAL.org">Meow tutorial (official)</a></li>
+  <li><a href="https://github.com/meow-edit/meow/blob/master/CHEATSHEET.org">Meow cheatsheet (commands reference)</a></li>
+  <li>Your own bindings: <code>~/Git/emacs.d/settings/meow-settings.el</code></li>
+  <li>Run <code>M-x meow-cheatsheet</code> for the version rendered on your Dvorak layout.</li>
+</ul>
+
+<footer>
+  <p><strong>Stuck or curious?</strong> Ask the teaching agent. Questions like
+  "what happens if I press a digit twice?" or "does expansion work on
+  <kbd>f</kbd> (find)?" are exactly the right thing to ask — they map the territory.</p>
+  <p>Lesson file: <code>lessons/0001-expansion-as-a-prefix.html</code> ·
+  Mission: <a href="../MISSION.md">MISSION.md</a></p>
+</footer>
+
+</body>
+</html>

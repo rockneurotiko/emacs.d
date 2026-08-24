@@ -1,5 +1,5 @@
-(use-package track-changes
-  :ensure (:source gnu-elpa))
+;; (use-package track-changes
+;;   :ensure (:source gnu-elpa))
 
 (use-package copilot
   :ensure (copilot
@@ -23,43 +23,55 @@
   ;; (copilot-server-log-level 4)
   )
 
-(use-package claude-code
-  :ensure (claude-code :host github :repo "stevemolitor/claude-code.el")
-  :after transient)
+;; (use-package pi-coding-agent
+;;   :ensure t
+;;   :config
+;;   (defalias 'pi 'pi-coding-agent)
+;;   :setopt
+;;   (pi-coding-agent-thinking-display 'hidden)
+;;   (pi-coding-agent-input-window-height 0.25)
+;;   (pi-coding-agent-copy-raw-markdown t)
+;;   (pi-coding-agent-visit-file-other-window nil))
+
+;; (use-package claude-code
+;;   :ensure (claude-code :host github :repo "stevemolitor/claude-code.el")
+;;   :after transient)
 
 
-(use-package claude-code-ide
-  :ensure (claude-code-ide :host github :repo "manzaltu/claude-code-ide.el" :files ("*.el"))
-  :after transient
-  ;; :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
-  :setopt
-  (claude-code-ide-terminal-backend 'vterm)
-  (claude-code-ide-enable-mcp-server t)
-  :config
-  (setenv "ANTHROPIC_AUTH_TOKEN" (efs/lookup-password :host "aider.chat" :user "anthropic"))
-  (setenv "ANTHROPIC_BASE_URL" (efs/lookup-password :host "aider.chat" :user "anthropic-url"))
+;; (use-package claude-code-ide
+;;   :ensure (claude-code-ide :host github :repo "manzaltu/claude-code-ide.el" :files ("*.el"))
+;;   :after transient
+;;   ;; :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
+;;   :setopt
+;;   (claude-code-ide-terminal-backend 'vterm)
+;;   (claude-code-ide-enable-mcp-server t)
+;;   :config
+;;   (setenv "ANTHROPIC_AUTH_TOKEN" (efs/lookup-password :host "aider.chat" :user "anthropic"))
+;;   (setenv "ANTHROPIC_BASE_URL" (efs/lookup-password :host "aider.chat" :user "anthropic-url"))
 
-  ;; Optionally enable Emacs MCP tools
-  (claude-code-ide-emacs-tools-setup))
+;;   ;; Optionally enable Emacs MCP tools
+;;   (claude-code-ide-emacs-tools-setup))
 
-(use-package agent-shell
-  :ensure (agent-shell :host github :repo "xenodium/agent-shell" :files ("*.el"))
-  :bind ("C-c C-'" . agent-shell)
-  :ensure-system-package
-  ;; Add agent installation configs here
-  ((claude . "yay claude-code -Syu")
-   (claude-code-acp . "npm install -g @zed-industries/claude-code-acp"))
-  :setopt
-  (agent-shell-anthropic-default-model-id "claude-4-5-sonnet")
-  (agent-shell-prefer-viewport-interaction t)
-  :config
-  (setq agent-shell-anthropic-claude-environment
-        (agent-shell-make-environment-variables
-         :inherit-env t
-         "ANTHROPIC_AUTH_TOKEN" (efs/lookup-password :host "aider.chat" :user "anthropic")
-         "ANTHROPIC_MODEL" "claude-4-5-sonnet"
-         "ANTHROPIC_BASE_URL" (efs/lookup-password :host "aider.chat" :user "anthropic-url")))
-  )
+;; (use-package agent-shell
+;;   :ensure (agent-shell :host github :repo "xenodium/agent-shell" :files ("*.el"))
+;;   :bind ("C-c C-'" . agent-shell)
+;;   :ensure-system-package
+;;   ;; Add agent installation configs here
+;;   ((claude . "yay claude-code -Syu")
+;;    (claude-code-acp . "npm install -g @zed-industries/claude-code-acp"))
+;;   :setopt
+;;   (agent-shell-anthropic-default-model-id "claude-4-5-sonnet")
+;;   (agent-shell-prefer-viewport-interaction t)
+;;   :config
+;;   (setq agent-shell-anthropic-claude-environment
+;;         (agent-shell-make-environment-variables
+;;          :inherit-env t
+;;          "ANTHROPIC_AUTH_TOKEN" (efs/lookup-password :host "aider.chat" :user "anthropic")
+;;          "ANTHROPIC_MODEL" "claude-4-5-sonnet"
+;;          "ANTHROPIC_BASE_URL" (efs/lookup-password :host "aider.chat" :user "anthropic-url")))
+;;   )
+
+
 ;; Generic AI Code
 ;; (use-package ai-code
 ;;   :ensure (ai-code :host github :repo "tninja/ai-code-interface.el")

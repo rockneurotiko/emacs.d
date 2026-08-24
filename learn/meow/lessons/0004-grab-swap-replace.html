@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lesson 0004 — Grab, Swap, Sync: the second clipboard</title>
+<style>
+  :root {
+    --ink: #1d1d1f;
+    --paper: #faf8f3;
+    --rule: #d8d2c2;
+    --accent: #8a3324;
+    --good: #2f5d3a;
+    --muted: #6e6a5e;
+    --kbd-bg: #efeadb;
+    --kbd-border: #c3bda9;
+    --code-bg: #f1ecdc;
+    --hl: #fff5cf;
+    --blue: #1a4a7a;
+  }
+  html { background: var(--paper); }
+  body {
+    color: var(--ink);
+    font: 17px/1.55 "Iowan Old Style", "Charter", "Source Serif Pro", Georgia, serif;
+    max-width: 42rem;
+    margin: 3rem auto;
+    padding: 0 1.5rem 4rem;
+  }
+  header { border-bottom: 1px solid var(--rule); padding-bottom: 1.2rem; margin-bottom: 2rem; }
+  .eyebrow {
+    font: 600 11px/1 "Inter", system-ui, sans-serif;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+  }
+  h1 { font-size: 2rem; margin: 0; letter-spacing: -0.01em; }
+  h2 { margin-top: 2.4rem; font-size: 1.25rem; border-bottom: 1px solid var(--rule); padding-bottom: 0.3rem; }
+  h3 { margin-top: 1.6rem; font-size: 1.02rem; color: var(--accent); }
+  p, li { font-size: 1.02rem; }
+  ol li, ul li { margin: 0.4rem 0; }
+  kbd {
+    display: inline-block;
+    background: var(--kbd-bg);
+    border: 1px solid var(--kbd-border);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 0.05rem 0.45rem;
+    font: 600 0.92em ui-monospace, "JetBrains Mono", "Sarasa Mono J", Menlo, monospace;
+    color: var(--ink);
+    margin: 0 1px;
+  }
+  code, pre { font-family: ui-monospace, "JetBrains Mono", "Sarasa Mono J", Menlo, monospace; }
+  code { background: var(--code-bg); padding: 0.05rem 0.35rem; border-radius: 3px; font-size: 0.92em; }
+  pre {
+    background: var(--code-bg);
+    padding: 0.9rem 1.1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.92em;
+    line-height: 1.5;
+  }
+  .card {
+    background: var(--hl);
+    border-left: 3px solid var(--accent);
+    padding: 0.8rem 1rem;
+    border-radius: 0 6px 6px 0;
+    margin: 1.4rem 0;
+  }
+  .card p { margin: 0; }
+
+  /* verb table */
+  .verb-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.96rem;
+    margin: 1.2rem 0 1.6rem;
+  }
+  .verb-table th {
+    font: 600 0.8rem/1 "Inter", system-ui, sans-serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 0.4rem 0.6rem;
+    border-bottom: 2px solid var(--rule);
+  }
+  .verb-table td {
+    padding: 0.55rem 0.6rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  .verb-table tr:last-child td { border-bottom: none; }
+  .verb-table .key { text-align: center; }
+
+  /* step-by-step drill */
+  .drill {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+  .drill li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 1.8rem 1fr;
+    gap: 0 0.6rem;
+    align-items: baseline;
+    margin: 0.5rem 0;
+    font-size: 1rem;
+  }
+  .drill li::before {
+    content: counter(step);
+    font: 700 0.82rem/1 "Inter", system-ui, sans-serif;
+    color: var(--accent);
+    background: var(--kbd-bg);
+    border-radius: 50%;
+    width: 1.5rem; height: 1.5rem;
+    display: grid; place-items: center;
+    justify-self: center;
+  }
+
+  /* before/after code pair */
+  .diff-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin: 1rem 0;
+  }
+  .diff-pair figure {
+    margin: 0;
+  }
+  .diff-pair figcaption {
+    font: 600 0.75rem/1 "Inter", system-ui, sans-serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.35rem;
+  }
+  .diff-pair pre { margin: 0; }
+
+  mark { background: #ffe08a; border-radius: 2px; padding: 0 2px; }
+
+  /* quiz */
+  .quiz { margin: 2rem 0 0; }
+  .quiz h2 { font-size: 1.15rem; }
+  .question { margin: 1.6rem 0; }
+  .question p { font-weight: 600; margin-bottom: 0.5rem; }
+  .options { display: grid; gap: 0.4rem; }
+  .option-btn {
+    all: unset;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 0.55rem 0.85rem;
+    font: 0.97rem/1.4 "Iowan Old Style", Georgia, serif;
+    text-align: left;
+    transition: background 0.1s, border-color 0.1s;
+  }
+  .option-btn:hover { background: var(--kbd-bg); border-color: var(--accent); }
+  .option-btn.correct { background: #d9f0df; border-color: var(--good); color: var(--good); }
+  .option-btn.wrong   { background: #f8e4e1; border-color: #aa3322; color: #aa3322; }
+  .option-btn:disabled { cursor: default; }
+  .feedback { font-size: 0.92rem; color: var(--muted); margin-top: 0.35rem; min-height: 1.2em; }
+  .score-line { font: 700 1rem/1 "Inter", system-ui, sans-serif; margin-top: 1.4rem; color: var(--accent); }
+
+  /* nav */
+  .lesson-nav { margin-top: 3rem; border-top: 1px solid var(--rule); padding-top: 1rem; font-size: 0.9rem; color: var(--muted); display: flex; justify-content: space-between; }
+  .lesson-nav a { color: var(--accent); }
+  .ask-prompt { margin-top: 2.2rem; background: white; border: 1px solid var(--rule); border-radius: 8px; padding: 0.8rem 1rem; font-size: 0.93rem; color: var(--muted); }
+  .ask-prompt strong { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Meow Mastery · Lesson 0004</p>
+  <h1>Grab, Swap, Sync</h1>
+  <p style="color:var(--muted);margin:0.5rem 0 0;font-size:0.97rem;">
+    The three verbs that turn your secondary selection into a second clipboard — and make swapping two things a single composed action.
+  </p>
+</header>
+
+<h2>The setup: you already have two clipboards</h2>
+
+<p>You've been using Emacs's kill-ring for 10+ years. Meow adds one more: the <strong>secondary selection</strong>. You met it in <a href="0003-beacon.html">Lesson 0003</a> as the engine behind beacon mode. But secondary selection isn't only for multi-cursor work — it's also a persistent, named grab of a piece of text that you can act on anywhere in the buffer.</p>
+
+<p>Three verbs control it. On your layout:</p>
+
+<table class="verb-table">
+  <thead>
+    <tr><th>Key</th><th>Command</th><th>What it does</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="key"><kbd>G</kbd></td>
+      <td><code>meow-grab</code></td>
+      <td>Save current selection as secondary selection. <em>Doesn't change the text.</em></td>
+    </tr>
+    <tr>
+      <td class="key"><kbd>R</kbd></td>
+      <td><code>meow-swap-grab</code></td>
+      <td>Swap current region with secondary selection. Also saves cursor position (for <code>meow-pop-grab</code>).</td>
+    </tr>
+    <tr>
+      <td class="key"><kbd>X</kbd></td>
+      <td><code>meow-sync-grab</code></td>
+      <td>Replace secondary selection with current region's text. Also saves cursor position.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>And one bonus verb you may not be using:</p>
+
+<table class="verb-table">
+  <thead>
+    <tr><th>Key</th><th>Command</th><th>What it does</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="key"><kbd>;</kbd></td>
+      <td><code>meow-replace</code></td>
+      <td>Replace current region with the top of the kill-ring. Selection-first, from the normal kill-ring — no secondary selection needed.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="card">
+  <p><strong>Your Emacs anchor:</strong> Think of <kbd>G</kbd> as "set the other mark." The secondary selection is a named region stored separately from the kill-ring. <kbd>R</kbd> is then "exchange these two named regions," and <kbd>X</kbd> is "copy-replace the secondary with what I have here."</p>
+</div>
+
+<h2>Three real patterns</h2>
+
+<h3>Pattern 1 — Swap two things (<kbd>G</kbd> → move → select → <kbd>R</kbd>)</h3>
+
+<p>Scenario: swap two function arguments in an Elixir call.</p>
+
+<div class="diff-pair">
+  <figure>
+    <figcaption>Before</figcaption>
+    <pre>Map.put(map, <mark>:key</mark>, value)</pre>
+  </figure>
+  <figure>
+    <figcaption>After</figcaption>
+    <pre>Map.put(map, <mark>value</mark>, :key)</pre>
+  </figure>
+</div>
+
+<ol class="drill">
+  <li>Place cursor on <code>:key</code>. Press <kbd>,</kbd><kbd>w</kbd> to select the inner word (or <kbd>m</kbd> to mark word).</li>
+  <li>Press <kbd>G</kbd> — saves <code>:key</code> as the secondary selection. The highlight stays.</li>
+  <li>Move cursor to <code>value</code>. Press <kbd>m</kbd> to select it.</li>
+  <li>Press <kbd>R</kbd> — swaps the two. <code>value</code> goes where <code>:key</code> was, and vice versa.</li>
+</ol>
+
+<div class="card">
+  <p><strong>Why <kbd>R</kbd> works:</strong> <code>meow-swap-grab</code> literally exchanges the text of the two regions. Both the secondary selection and the current region get replaced in one atomic operation.</p>
+</div>
+
+<h3>Pattern 2 — Replace something with a saved piece (<kbd>G</kbd> → move → select → <kbd>X</kbd>)</h3>
+
+<p>Scenario: you have a module alias used in multiple places, and you want a different variable name to appear at a secondary location.</p>
+
+<div class="diff-pair">
+  <figure>
+    <figcaption>Before</figcaption>
+    <pre>alias MyApp.<mark>Schema</mark>
+# ... later ...
+def process(<mark>Schemaa</mark>, opts)</pre>
+  </figure>
+  <figure>
+    <figcaption>After</figcaption>
+    <pre>alias MyApp.<mark>Schema</mark>
+# ... later ...
+def process(<mark>Schema</mark>, opts)</pre>
+  </figure>
+</div>
+
+<ol class="drill">
+  <li>Select <code>Schema</code> (the correct one). Press <kbd>G</kbd> to grab it.</li>
+  <li>Navigate to <code>Schemaa</code> (the typo). Select it with <kbd>m</kbd> or <kbd>M</kbd>.</li>
+  <li>Press <kbd>X</kbd> — replaces <code>Schemaa</code> with <code>Schema</code>. The secondary selection (<code>Schema</code>) <em>also</em> gets updated to point to its new location.</li>
+</ol>
+
+<p>Note the difference from <kbd>R</kbd>: <kbd>X</kbd> copies the <em>content</em> of the current region <em>into</em> the secondary selection's location. Nothing comes back to where your cursor is.</p>
+
+<h3>Pattern 3 — Replace region with kill-ring (<kbd>x</kbd> → move → select → <kbd>;</kbd>)</h3>
+
+<p>This one doesn't use the secondary selection at all — it uses your existing kill-ring. You probably use <code>C-w</code> + <code>C-y</code> today. The meow version is cleaner:</p>
+
+<ol class="drill">
+  <li>Select the text you want to copy. Press <kbd>x</kbd> (<code>meow-save</code> — copies to kill-ring without deleting).</li>
+  <li>Move to the target. Select what should be replaced.</li>
+  <li>Press <kbd>;</kbd> (<code>meow-replace</code>) — replaces the selection with the kill-ring top.</li>
+</ol>
+
+<div class="card">
+  <p><strong>vs vanilla:</strong> <code>M-w</code> then navigate then <code>C-w</code> then <code>C-y</code> is 4 operations. <kbd>x</kbd> → select → <kbd>;</kbd> is 3, and the "select first" step means you always know exactly what gets replaced before you replace it.</p>
+</div>
+
+<h2>Mental model summary</h2>
+
+<table class="verb-table">
+  <thead>
+    <tr><th>I want to…</th><th>Keystrokes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Swap A and B in-place</td><td>select A → <kbd>G</kbd> → select B → <kbd>R</kbd></td></tr>
+    <tr><td>Replace B with A (A stays)</td><td>select A → <kbd>G</kbd> → select B → <kbd>X</kbd></td></tr>
+    <tr><td>Replace B with copied text</td><td>select A → <kbd>x</kbd> → select B → <kbd>;</kbd></td></tr>
+  </tbody>
+</table>
+
+<!-- ─── QUIZ ─────────────────────────────────────────── -->
+<section class="quiz">
+  <h2>Retrieval check</h2>
+  <p style="color:var(--muted);font-size:0.93rem;margin-top:0;">Answer from memory. No peeking at the table above.</p>
+
+  <div id="quiz-container"></div>
+  <p class="score-line" id="score" style="display:none"></p>
+</section>
+
+<section style="margin-top:2.4rem">
+  <h2>Practice in a real buffer</h2>
+  <p>Open any Elixir file you've been working on and try each pattern once:</p>
+  <ol>
+    <li>Find two arguments you could swap. Use <kbd>G</kbd> → <kbd>R</kbd>.</li>
+    <li>Find a repeated identifier where one is a typo or wrong name. Use <kbd>G</kbd> → <kbd>X</kbd>.</li>
+    <li>Copy a module name or variable with <kbd>x</kbd>, then use <kbd>;</kbd> to stamp it somewhere else.</li>
+  </ol>
+  <p>The goal isn't to do this in production code — just find any pair and try the motion once.</p>
+</section>
+
+<div class="ask-prompt">
+  <strong>Ask your teacher anything.</strong> If a pattern didn't work, if the secondary selection highlight disappeared before you could use it, or if you're unsure what <code>meow-pop-grab</code> does — just ask. That's what I'm here for.
+</div>
+
+<div class="lesson-nav">
+  <span>← <a href="0003-beacon.html">Lesson 0003: Beacon</a></span>
+  <span><a href="../reference/four-selection-families.html">Reference: Four Selection Families</a> →</span>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "You want to swap `:ok` and `:error` in `{:ok, :error}`. Which key saves the first grab?",
+    options: [
+      { text: "G — meow-grab", correct: true,  why: "G saves the current selection as a secondary selection without changing the text." },
+      { text: "X — meow-sync-grab", correct: false, why: "X replaces the secondary selection's text. You haven't set a secondary selection yet here." },
+      { text: "R — meow-swap-grab", correct: false, why: "R needs a secondary selection already set. It swaps — it doesn't do the initial grab." },
+      { text: "x — meow-save", correct: false, why: "x copies to the kill-ring. That's for the replace-with-copy pattern, not for swap." },
+    ]
+  },
+  {
+    q: "You grabbed `:key` with G. Now you've selected `:value`. What happens when you press R?",
+    options: [
+      { text: "`:key` and `:value` exchange places", correct: true,  why: "meow-swap-grab swaps the text of the two regions atomically." },
+      { text: "`:value` is deleted and `:key` appears", correct: false, why: "That would be X (sync-grab), which replaces the secondary selection's content." },
+      { text: "`:key` is copied to the kill-ring", correct: false, why: "G already saved the secondary selection. R swaps both — nothing goes to the kill-ring." },
+      { text: "The secondary selection is cancelled", correct: false, why: "Cancelling would be meow-pop-grab. R performs the swap." },
+    ]
+  },
+  {
+    q: "Which verb replaces a selection with the top of the kill-ring — no secondary selection needed?",
+    options: [
+      { text: "; — meow-replace", correct: true,  why: "meow-replace pastes from the kill-ring onto the current region, same family as C-w/C-y but selection-first." },
+      { text: "y — meow-yank", correct: false, why: "meow-yank inserts at point without replacing a selection. It doesn't consume the current region." },
+      { text: "X — meow-sync-grab", correct: false, why: "X works with the secondary selection. The kill-ring is not involved." },
+      { text: "R — meow-swap-grab", correct: false, why: "R works with the secondary selection. The kill-ring is not involved." },
+    ]
+  },
+  {
+    q: "You grab region A with G, then select region B and press X. What is the result?",
+    options: [
+      { text: "Region A gets B's text; cursor stays at B", correct: true,  why: "meow-sync-grab copies the current region's content into the secondary selection's location. Your cursor doesn't move." },
+      { text: "Region B gets A's text; region A stays unchanged", correct: false, why: "That's what R (swap-grab) does to region B — but X goes the other direction: B's text goes to A's location." },
+      { text: "Both A and B are replaced by the kill-ring top", correct: false, why: "Neither G nor X touches the kill-ring." },
+      { text: "A and B exchange places, cursor jumps to A", correct: false, why: "Exchanging is R (swap). X is a one-directional copy into the secondary selection." },
+    ]
+  },
+];
+
+let answered = 0;
+const total = questions.length;
+
+const container = document.getElementById('quiz-container');
+
+questions.forEach((q, qi) => {
+  const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+  const div = document.createElement('div');
+  div.className = 'question';
+  div.innerHTML = `<p>${qi + 1}. ${q.q}</p><div class="options" id="opts-${qi}"></div><p class="feedback" id="fb-${qi}"></p>`;
+  container.appendChild(div);
+
+  const optsEl = div.querySelector(`#opts-${qi}`);
+  const fbEl   = div.querySelector(`#fb-${qi}`);
+
+  shuffled.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt.text;
+    btn.addEventListener('click', () => {
+      if (optsEl.querySelector('.correct, .wrong')) return; // already answered
+      optsEl.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+      if (opt.correct) {
+        btn.classList.add('correct');
+        fbEl.textContent = '✓ ' + opt.why;
+        answered++;
+      } else {
+        btn.classList.add('wrong');
+        fbEl.textContent = '✗ ' + opt.why;
+        // reveal correct
+        optsEl.querySelectorAll('.option-btn').forEach(b => {
+          const found = shuffled.find(o => o.text === b.textContent);
+          if (found && found.correct) b.classList.add('correct');
+        });
+      }
+      if (answered + (total - qi - 1) <= total || document.querySelectorAll('.correct, .wrong').length === total) {
+        // show score after all answered
+        const allDone = document.querySelectorAll('.question').length === document.querySelectorAll('.correct, .wrong').length;
+      }
+      checkDone();
+    });
+    optsEl.appendChild(btn);
+  });
+});
+
+function checkDone() {
+  const allAnswered = document.querySelectorAll('.option-btn.correct, .option-btn.wrong').length >= total;
+  if (allAnswered) {
+    const correct = document.querySelectorAll('.option-btn.correct').length;
+    const scoreEl = document.getElementById('score');
+    scoreEl.style.display = '';
+    scoreEl.textContent = `Score: ${correct} / ${total}` + (correct === total ? ' — flawless.' : ' — review the explanations above, then try again in a real buffer.');
+  }
+}
+</script>
+
+</body>
+</html>

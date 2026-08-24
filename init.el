@@ -140,26 +140,6 @@
 
 (defvar rock/fontname "Sarasa Mono J Nerd Font")
 (defvar rock/fontname-variable "Sarasa UI J Nerd Font")
-(defun rock/set-font (fontsize)
-  (set-face-attribute 'default nil
-                      :family rock/fontname
-                      :height fontsize
-                      :weight 'normal
-                      :width 'normal)
-
-  (set-face-attribute 'fixed-pitch nil :family rock/fontname :height 1.0)
-  (set-face-attribute 'variable-pitch nil :family rock/fontname-variable :height 1.0)
-
-  (set-face-attribute 'mode-line nil :family rock/fontname :height 130))
-
-
-(defun set-interview-fontsize ()
-  (interactive)
-  (rock/set-font 190))
-
-(defun set-default-fontsize ()
-  (interactive)
-  (rock/set-font 140))
 
 (defvar rock/delete-trailing-whitespace-excluded-modes
   '(makefile-mode markdown-mode org-mode)
@@ -282,9 +262,6 @@
   (repeat-mode 1)
   (prefer-coding-system 'utf-8)
   (fringe-mode '(8 . 8))
-  (when (and (window-system) (font-exists-p rock/fontname))
-    (set-frame-font rock/fontname)
-    (set-default-fontsize))
   (global-rock-delete-trailing-whitespace-mode 1)
   (global-unset-key (kbd "C-h"))
   (global-unset-key (kbd "C-t"))
@@ -475,35 +452,79 @@ The DWIM behaviour of this command is as follows:
 
 ;; theme
 
-(use-package doom-themes
+;; (use-package doom-themes
+;;   :if (rock/feature-p "gui")
+;;   :ensure t
+;;   :custom
+;;   ;; Global settings (defaults)
+;;   (doom-themes-enable-bold t)   ; if nil, bold is universally disabled
+;;   (doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;   :config
+;;   ;; disable all existing themes
+;;   (mapc #'disable-theme custom-enabled-themes)
+;;   (load-theme 'doom-laserwave t)
+;;   ;; (load-theme 'doom-nord t)
+;;   ;; (load-theme 'doom-one t)
+
+;;   ;; Enable flashing mode-line on errors
+;;   (doom-themes-visual-bell-config)
+;;   ;; Enable custom neotree theme (nerd-icons must be installed!)
+;;   (doom-themes-neotree-config)
+;;   ;; Corrects (and improves) org-mode's native fontification.
+;;   (doom-themes-org-config))
+
+(use-package kusanagi-theme
   :if (rock/feature-p "gui")
-  :ensure t
-  :custom
-  ;; Global settings (defaults)
-  (doom-themes-enable-bold t)   ; if nil, bold is universally disabled
-  (doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  :ensure (:host github :repo "LionyxML/kusanagi-theme")
   :config
-  ;; disable all existing themes
-  (mapc #'disable-theme custom-enabled-themes)
-  (load-theme 'doom-laserwave t)
-  ;; (load-theme 'doom-nord t)
-  ;; (load-theme 'doom-one t)
+  (load-theme 'kusanagi t))
 
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; Enable custom neotree theme (nerd-icons must be installed!)
-  (doom-themes-neotree-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
-
-(use-package solaire-mode
+(use-package dimmer
   :ensure t
-  :disabled t
   :config
-  (solaire-global-mode +1))
+  (dimmer-configure-org)
+  (dimmer-configure-magit)
+  (dimmer-configure-posframe)
+  (dimmer-mode t))
+
+(use-package breadcrumb
+  :ensure (breadcrumb :host github :repo "joaotavora/breadcrumb"))
 
 (use-package mood-line
   :ensure t
+  :after (breadcrumb)
+  :init
+  ;; Replace the plain buffer-name segment with breadcrumb's project crumbs
+  ;; (project-relative path to the current file), falling back to the buffer
+  ;; name for non-file buffers. Defined in :init so the format constant exists
+  ;; before :custom runs.
+  (defun rock/mood-line-segment-breadcrumb ()
+    "Display `breadcrumb-project-crumbs' as a mood-line segment."
+    (let ((crumbs (and (fboundp 'breadcrumb-project-crumbs)
+                       (ignore-errors (breadcrumb-project-crumbs)))))
+      (if (and crumbs (not (string-empty-p crumbs)))
+          crumbs
+        (format-mode-line "%b" 'mood-line-buffer-name))))
+
+  (with-eval-after-load 'mood-line
+    (defconst rock/mood-line-format-breadcrumb
+      (mood-line-defformat
+       :left
+       (((mood-line-segment-modal)                  . " ")
+        ((or (mood-line-segment-buffer-status) " ") . " ")
+        ((rock/mood-line-segment-breadcrumb)        . "  ")
+        ((mood-line-segment-anzu)                   . "  ")
+        ((mood-line-segment-multiple-cursors)       . "  ")
+        ((mood-line-segment-cursor-position)        . " ")
+        (mood-line-segment-scroll))
+       :right
+       (((mood-line-segment-vc)         . "  ")
+        ((mood-line-segment-major-mode) . "  ")
+        ((mood-line-segment-misc-info)  . "  ")
+        ((mood-line-segment-checker)    . "  ")
+        ((mood-line-segment-process)    . "  ")))
+      "Mood-line format that swaps the buffer-name segment for breadcrumb crumbs.")
+    (setq mood-line-format rock/mood-line-format-breadcrumb))
   :config
   (mood-line-mode)
 
@@ -512,7 +533,6 @@ The DWIM behaviour of this command is as follows:
   ;; Use pretty Fira Code-compatible glyphs
   :custom
   ;; Can't use :setopt
-  (mood-line-format mood-line-format-default)
   (mood-line-glyph-alist mood-line-glyphs-fira-code))
 
 (use-package spacious-padding
@@ -529,6 +549,106 @@ The DWIM behaviour of this command is as follows:
          :fringe-width 8))
   :config
   (spacious-padding-mode +1))
+
+(use-package fontaine
+  :if (rock/feature-p "gui")
+  :ensure t
+  :demand t
+  :setopt
+  (fontaine-latest-state-file (locate-user-emacs-file "fontaine-latest-state.eld"))
+  (fontaine-presets
+   `((small
+      :default-family ,rock/fontname
+      :default-height 120
+      :variable-pitch-family ,rock/fontname-variable)
+     (regular
+      :default-height 140) ; like this it uses all the fallback values and is named `regular'
+     (medium
+      :default-weight semilight
+      :default-height 160
+      :bold-weight extrabold)
+     (large
+      :inherit medium
+      :default-height 180)
+     (presentation
+      :default-height 200)
+     (t
+      ;; I keep all properties for didactic purposes, but most can be
+      ;; omitted.  See the fontaine manual for the technicalities:
+      ;; <https://protesilaos.com/emacs/fontaine>.
+      :default-family ,rock/fontname
+      :default-weight regular
+      :default-height 140
+
+      :fixed-pitch-family nil ; falls back to :default-family
+      :fixed-pitch-weight nil ; falls back to :default-weight
+      :fixed-pitch-height 1.0
+
+      :fixed-pitch-serif-family nil ; falls back to :default-family
+      :fixed-pitch-serif-weight nil ; falls back to :default-weight
+      :fixed-pitch-serif-height 1.0
+
+      :variable-pitch-family ,rock/fontname-variable
+      :variable-pitch-weight nil
+      :variable-pitch-height 1.0
+
+      :mode-line-active-family nil ; falls back to :default-family
+      :mode-line-active-weight nil ; falls back to :default-weight
+      :mode-line-active-height 0.9
+
+      :mode-line-inactive-family nil ; falls back to :default-family
+      :mode-line-inactive-weight nil ; falls back to :default-weight
+      :mode-line-inactive-height 0.9
+
+      :header-line-family nil ; falls back to :default-family
+      :header-line-weight nil ; falls back to :default-weight
+      :header-line-height 0.9
+
+      :line-number-family nil ; falls back to :default-family
+      :line-number-weight nil ; falls back to :default-weight
+      :line-number-height 1.0
+
+      :tab-bar-family nil ; falls back to :default-family
+      :tab-bar-weight nil ; falls back to :default-weight
+      :tab-bar-height 1.0
+
+      :tab-line-family nil ; falls back to :default-family
+      :tab-line-weight nil ; falls back to :default-weight
+      :tab-line-height 1.0
+
+      :bold-family nil ; use whatever the underlying face has
+      :bold-weight bold
+
+      :italic-family nil
+      :italic-slant italic
+
+      :line-spacing nil)))
+
+  :bind
+  ("C-c C-f" . fontaine-set-preset)
+  :config
+  ;; Set the last preset or fall back to desired style from `fontaine-presets'
+  ;; (the `regular' in this case).
+  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
+
+  ;; Persist the latest font preset when closing/starting Emacs and
+  ;; while switching between themes.
+  (fontaine-mode 1))
+
+;; (use-package lin
+;;   :ensure t
+;;   :setopt
+;;   (lin-face 'lin-magenta) ; check docstring for alternative styles
+
+;;   :config
+;;   (lin-global-mode 1))
+
+(use-package show-font
+  :ensure t
+  ;; :bind
+  ;; (("C-c s f" . show-font-select-preview)
+  ;;  ("C-c s t" . show-font-tabulated))
+  )
 
 (defun rock/treesit-parser-for-lang-mode (lang-mode-symbol)
     (when (and (treesit-available-p)
@@ -972,7 +1092,6 @@ The DWIM behaviour of this command is as follows:
   :config
   (direnv-mode))
 
-
 ;; language modes
 ;;(use-package erlang
 ;;  :ensure (erlang :host github :repo "erlang/otp" :branch "master" :files ("lib/tools/emacs/*.el"))
@@ -991,6 +1110,8 @@ The DWIM behaviour of this command is as follows:
 (use-package json-mode :ensure t)
 
 (use-package markdown-mode :ensure t)
+
+(use-package mark-graf :ensure t)
 
 (use-package graphql-mode :ensure t)
 
@@ -1039,6 +1160,40 @@ The DWIM behaviour of this command is as follows:
   (:map vterm-mode-map
         ("C-y" . vterm-yank)))
 
+(use-package ghostel
+  :bind (("C-x m" . ghostel)
+         :map ghostel-semi-char-mode-map
+         ("C-s"  . consult-line)
+         ("M-<backspace>" . ghostel-backward-kill-word)
+         ;; ;; I'm used to go up/down the shell history with M-n/p from eshell
+         ;; ;; Simulate this behavior in ghostel by sending C-p and C-n
+         ("M-p" . (lambda () (interactive) (ghostel-send-key "p" "ctrl")))
+         ("M-n" . (lambda () (interactive) (ghostel-send-key "n" "ctrl")))
+         :map project-prefix-map
+         ("m" . ghostel-project)
+         ("M" . ghostel-project-list-buffers))
+  :config
+  (defun ghostel-send-C-k-and-kill ()
+    "Send `C-k' to ghostel.
+Like normal Emacs `C-k'.  Kill to end of line and put content in kill-ring."
+    (interactive)
+    (kill-ring-save (point) (line-end-position))
+    (ghostel-send-key "k" "ctrl"))
+
+  (add-to-list 'project-switch-commands '(ghostel-project "Ghostel") t)
+  (add-to-list 'project-switch-commands '(ghostel-project-list-buffers "Ghostel buffers") t)
+  (add-to-list 'ghostel-eval-cmds '("magit-status-setup-buffer" magit-status-setup-buffer)))
+
+(use-package ghostel-compile
+  :ensure nil
+  :after ghostel
+  :hook (elpaca-after-init . ghostel-compile-global-mode))
+
+(use-package ghostel-comint
+  :ensure nil
+  :after ghostel
+  :hook (elpaca-after-init . ghostel-comint-global-mode))
+
 (use-package comment-dwim-2
   :bind
   ("M-;" . comment-dwim-2))
@@ -1047,13 +1202,39 @@ The DWIM behaviour of this command is as follows:
 
 (use-package kitty-graphics
   :ensure (kitty-graphics :host github :repo "cashmeredev/kitty-graphics.el" :files ("*.el"))
-  :hook (tty-setup . kitty-graphics-mode))
+  :if (not (display-graphic-p))
+  :config
+  (setq kitty-gfx-enable-video t)
+  (kitty-graphics-setup))
 
 (use-package kkp
   :ensure t
   :demand t
   :config
   ;; (setq kkp-alt-modifier 'alt) ;; use this if you want to map the Alt keyboard modifier to Alt in Emacs (and not to Meta)
+
+  ;; Tell Kitty this window is running an editor so `--when-focus-on
+  ;; var:in_editor` conditional maps kick in and Kitty stops grabbing
+  ;; keys we need (C-S-h, C-S-s, etc.).
+  ;; MQ== is base64 for "1"; omitting the value clears the variable.
+  (defun rock/kitty-set-user-var (name &optional value)
+    "Set (or clear) a Kitty user variable via OSC 1337."
+    (when (not (display-graphic-p))
+      (send-string-to-terminal
+       (if value
+           (format "\e]1337;SetUserVar=%s=%s\e\\" name (base64-encode-string value t))
+         (format "\e]1337;SetUserVar=%s\e\\" name)))))
+
+  (defun rock/kitty-set-in-editor ()
+    (rock/kitty-set-user-var "in_editor" "1"))
+  (defun rock/kitty-clear-in-editor ()
+    (rock/kitty-set-user-var "in_editor"))
+
+  (add-hook 'after-init-hook  #'rock/kitty-set-in-editor)
+  (add-hook 'kill-emacs-hook  #'rock/kitty-clear-in-editor)
+  ;; Set immediately if we're already past init (e.g. Elpaca deferred load).
+  (when (not (display-graphic-p))
+    (rock/kitty-set-in-editor))
 
   ;; meow-esc-mode wraps input-decode-map's ESC entry with a menu-item
   ;; :filter, making ESC no longer a simple prefix key. When kkp's async
@@ -1087,6 +1268,11 @@ The DWIM behaviour of this command is as follows:
   :config
   (xclip-mode 1))
 
+(use-package olivetti
+  :hook ((markdown-mode org-mode text-mode) . olivetti-mode)
+  :custom
+  (olivetti-body-width 90))
+
 ;; (use-package shipit
 ;;   :ensure (:host github :repo "Daskeladden/shipit" :files ("lisp/*.el"))
 ;;   :after (magit marginalia)
@@ -1108,14 +1294,28 @@ The DWIM behaviour of this command is as follows:
 ;;   :bind (:map ewm-mode-map
 ;;          ("s-d" . consult-buffer)))
 
+;; websocket is required
+(use-package websocket
+  :ensure t)
+
 ;; EXTERNAL settings except meow
+
+;; track-changes is a dependency of org 10.0-pre and also a built-in in
+;; Emacs 30. Activate elpaca's version first so it wins on load-path before
+;; org loads.
+(use-package track-changes :ensure (:source gnu-elpa) :demand t)
+(elpaca-wait)
 
 (when (rock/feature-p "org")
   (require 'org-settings))
+
 (require 'treesit-settings)
+
 (when (rock/feature-p "lsp")
   (require 'eglot-settings))
+
 (when (rock/feature-p "ai")
   (require 'agent-settings))
+
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
