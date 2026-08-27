@@ -184,59 +184,73 @@
 (use-package emacs :ensure nil
   :init
   (setopt use-short-answers t
-        scroll-conservatively 101
-        confirm-kill-emacs 'yes-or-no-p
-        help-window-select t
-        backup-by-copying t
-        backup-directory-alist `(("." . ,(expand-file-name "backups/" user-emacs-directory)))
-        custom-file (expand-file-name "custom.el" user-emacs-directory)
-        delete-old-versions t
-        kept-new-versions 6
-        kept-old-versions 2
-        version-control t
-        create-lockfiles nil
-        enable-recursive-minibuffers t
-        desktop-save-mode nil
-        initial-scratch-message nil
-        initial-major-mode 'text-mode
-        ;; nil: let Emacs show *scratch* naturally (splash suppressed by inhibit-startup-screen).
-        ;; Setting this to t caused a two-panel split when opening `emacs -nw file`
-        ;; because Emacs would display both *scratch* and the file.
-        initial-buffer-choice nil
-        inhibit-splash-screen t
-        inhibit-startup-screen t
-        inhibit-startup-message t
-        isearch-lazy-count t
-        custom-safe-themes t
-        ring-bell-function #'ignore
-        find-file-visit-truename t
-        user-full-name "Rock Neurotiko"
-        user-mail-address (concat "miguelglafuente" "@" "gmail" ".com")
-        frame-title-format (concat "%b - " invocation-name "@" (system-name))
-        text-mode-ispell-word-completion nil
-        read-extended-command-predicate #'command-completion-default-include-p
-        show-paren-style 'mixed
-        window-combination-resize t
+          scroll-conservatively 30
+          scroll-margin 0
+          scroll-preserve-screen-position t
+          hscroll-margin 2
+          hscroll-step 1
+          ;; Move point to the buffer boundary before signaling a scrolling error.
+          scroll-error-top-bottom t
+          ;; Avoid fontifying unfontified text while scrolling rapidly.
+          fast-but-imprecise-scrolling t
+          auto-window-vscroll nil
+          redisplay-skip-fontification-on-input t
+          confirm-kill-emacs 'yes-or-no-p
+          kill-region-dwim 'emacs-word
+          help-window-select t
+          backup-by-copying t
+          backup-directory-alist `(("." . ,(expand-file-name "backups/" user-emacs-directory)))
+          custom-file (expand-file-name "custom.el" user-emacs-directory)
+          delete-old-versions t
+          kept-new-versions 6
+          kept-old-versions 2
+          version-control t
+          create-lockfiles nil
+          enable-recursive-minibuffers t
+          desktop-save-mode nil
+          initial-scratch-message nil
+          initial-major-mode 'text-mode
+          ;; nil: let Emacs show *scratch* naturally (splash suppressed by inhibit-startup-screen).
+          ;; Setting this to t caused a two-panel split when opening `emacs -nw file`
+          ;; because Emacs would display both *scratch* and the file.
+          initial-buffer-choice nil
+          inhibit-splash-screen t
+          inhibit-startup-screen t
+          inhibit-startup-message t
+          isearch-lazy-count t
+          isearch-allow-scroll 'unlimited
+          custom-safe-themes t
+          ring-bell-function #'ignore
+          find-file-visit-truename t
+          user-full-name "Rock Neurotiko"
+          user-mail-address (concat "miguelglafuente" "@" "gmail" ".com")
+          frame-title-format (concat "%b - " invocation-name "@" (system-name))
+          text-mode-ispell-word-completion nil
+          read-extended-command-predicate #'command-completion-default-include-p
+          show-paren-style 'mixed
+          window-combination-resize t
 
-        completions-detailed t
-        tab-always-indent 'complete
-        completion-auto-help 'always
-        completions-group t
-        completion-auto-select 'second-tab
+          completions-detailed t
+          tab-always-indent 'complete
+          completion-auto-help 'always
+          completions-group t
+          completion-auto-select 'second-tab
 
-        mouse-wheel-tilt-scroll t
-        mouse-wheel-flip-direction t
+          mouse-wheel-tilt-scroll t
+          mouse-wheel-flip-direction t
 
-        ;; Disable cursor in non-selected windows and highlighting of non-selected windows. This is a personal preference that can be changed later if desired.
-        highlight-nonselected-windows nil
+          ;; Disable cursor in non-selected windows and highlighting of non-selected windows. This is a personal preference that can be changed later if desired.
+          highlight-nonselected-windows nil
 
-        ;; killring settings https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/
-        save-interprogram-paste-before-kill t
-        kill-do-not-save-duplicates t
+          ;; killring settings https://emacsredux.com/blog/2026/04/07/stealing-from-the-best-emacs-configs/
+          save-interprogram-paste-before-kill t
+          kill-do-not-save-duplicates t
 
-        ffap-machine-p-known 'reject
-        set-mark-command-repeat-pop t
-        )
+          ffap-machine-p-known 'reject
+          set-mark-command-repeat-pop t
+
+          delete-pair-push-mark t
+          )
 
   :config
   (setq-default truncate-lines t
@@ -245,6 +259,12 @@
                 fill-column 80
                 tab-width 4
                 cursor-in-non-selected-windows nil
+                ;; Provide a "stick-to-edge" scrolling experience.
+                scroll-up-aggressively 0.01
+                scroll-down-aggressively 0.01
+                ;; Auto-scroll to bottom only when you type, not when background output arrives.
+                comint-scroll-to-bottom-on-input t
+                comint-scroll-to-bottom-on-output nil
                 )
 
   (add-hook 'after-save-hook
@@ -265,6 +285,9 @@
   (advice-add 'save-place-find-file-hook :after
             (lambda (&rest _)
               (when buffer-file-name (ignore-errors (recenter)))))
+  ;; Emacs 31: also save places periodically instead of only at exit, so a
+  ;; crash or kill -9 doesn't lose recent cursor positions.
+  (setopt save-place-autosave-interval (* 60 5))
 
   ;; https://emacsredux.com/blog/2026/04/04/repeat-mode/
   ;; `repeat-mode' allows you to repeat certain commands by pressing the last key again.  For example, if you press `C-u C-SPC' to pop the mark, you can then press `C-SPC' repeatedly to keep popping the mark.
@@ -350,11 +373,14 @@
 
   (global-set-key (kbd "C-x 1") #'toggle-delete-other-windows))
 
+;; Emacs 31's window-x.el finally ships the real thing these bindings were
+;; standing in for: full window *layout* rotation (not just swapping which
+;; buffer sits in which window).
 (when (>= emacs-major-version 31)
   (use-package window :ensure nil
     :bind
-    ("C-x C-0" . rotate-windows-back)
-    ("C-x C-1" . rotate-windows))
+    ("C-x C-0" . window-layout-rotate-anticlockwise)
+    ("C-x C-1" . window-layout-rotate-clockwise))
   )
 
 (use-package recentf :ensure nil
@@ -487,6 +513,14 @@ The DWIM behaviour of this command is as follows:
   :ensure (:host github :repo "LionyxML/kusanagi-theme")
   :config
   (load-theme 'kusanagi t))
+
+(use-package ultra-scroll
+  :ensure t
+  :setopt
+  (scroll-conservatively 3)
+  (scroll-margin 0)
+  :config
+  (ultra-scroll-mode 1))
 
 (use-package dimmer
   :ensure t
