@@ -21,7 +21,8 @@
 
 ;; MISC OPTIMIZATIONS ----
 ;;; optimizations (froom Doom's core.el). See that file for descriptions.
-(setq idle-update-delay 1.0)
+;; `idle-update-delay' is obsolete since 30.1; it now only governs which-func.
+(setq which-func-update-delay 1.0)
 
 ;; Disabling bidi (bidirectional editing stuff)
 (setq-default bidi-display-reordering 'left-to-right

@@ -43,6 +43,24 @@
 
 ;; Setup elpaca
 
+;; Elpaca computes `elpaca-core-date' from its own table of Emacs release
+;; dates and falls back to `emacs-build-time'.  On Emacs 31.1 that table
+;; still stops at 30.2, and this build reports `emacs-build-time' as nil
+;; (reproducible builds clear it), so elpaca warns "Unable to determine
+;; elpaca-core-date" and falls back to -1 -- which makes every built-in
+;; package dependency check fail.  Seed the value first; `elpaca-core-date'
+;; is a plain `defvar', so the value set here wins.
+(unless (boundp 'elpaca-core-date)
+  (setq elpaca-core-date
+        (list (or (cdr (assoc emacs-version
+                              '(("31.1" . 20260824)) ; see etc/HISTORY
+                              #'string-prefix-p))
+                  (and emacs-build-time
+                       (string-to-number
+                        (format-time-string "%Y%m%d" emacs-build-time)))
+                  ;; Unknown newer Emacs: assume "today" rather than -1.
+                  (string-to-number (format-time-string "%Y%m%d"))))))
+
 (defvar elpaca-installer-version 0.12)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -145,32 +163,23 @@
   '(makefile-mode markdown-mode org-mode)
   "Major modes in which `delete-trailing-whitespace-mode' should not be enabled.")
 
-;; Define our own local minor mode for compatibility with Emacs <31
-(define-minor-mode rock-delete-trailing-whitespace-mode
-  "Minor mode to delete trailing whitespace on save."
-  :lighter ""
-  (if rock-delete-trailing-whitespace-mode
-      (add-hook 'before-save-hook #'delete-trailing-whitespace nil t)
-    (remove-hook 'before-save-hook #'delete-trailing-whitespace t)))
-
+;; Emacs 31 ships `delete-trailing-whitespace-mode', so the local shim this
+;; config used to define is gone.  The built-in one hooks
+;; `delete-trailing-whitespace-if-possible', which skips buffers where the
+;; deletion would be pointless or unsafe.
 (defun rock/enable-delete-trailing-whitespace ()
   "Enable `delete-trailing-whitespace-mode' unless excluded."
   (unless (apply #'derived-mode-p rock/delete-trailing-whitespace-excluded-modes)
-    (rock-delete-trailing-whitespace-mode 1)))
+    (delete-trailing-whitespace-mode 1)))
 
 (defun add-point-to-find-tag-marker-ring (&rest r)
   "Advising function to use `find-tag-marker-ring' (R ignored)."
   (xref-push-marker-stack))
 
-;;(define-globalized-minor-mode
-;;      global-rock-delete-trailing-whitespace-mode
-;;      delete-trailing-whitespace-mode
-;;      rock/enable-delete-trailing-whitespace)
-
- (define-globalized-minor-mode
-     global-rock-delete-trailing-whitespace-mode
-     rock-delete-trailing-whitespace-mode
-     rock/enable-delete-trailing-whitespace)
+(define-globalized-minor-mode
+  global-rock-delete-trailing-whitespace-mode
+  delete-trailing-whitespace-mode
+  rock/enable-delete-trailing-whitespace)
 
 (use-package emacs :ensure nil
   :init
@@ -416,7 +425,7 @@ then adds each function from the arguments one by one using add-hook."
   (defun rock/project-auto-register ()
     "Ensure the current buffer's directory is registered as a project."
     (when (buffer-file-name)
-      (when-let ((project (project-current nil)))
+      (when-let* ((project (project-current nil)))
         (project-remember-project project))))
 
   (add-hook 'find-file-hook #'rock/project-auto-register)
@@ -486,54 +495,6 @@ The DWIM behaviour of this command is as follows:
   (dimmer-configure-magit)
   (dimmer-configure-posframe)
   (dimmer-mode t))
-
-(use-package breadcrumb
-  :ensure (breadcrumb :host github :repo "joaotavora/breadcrumb"))
-
-(use-package mood-line
-  :ensure t
-  :after (breadcrumb)
-  :init
-  ;; Replace the plain buffer-name segment with breadcrumb's project crumbs
-  ;; (project-relative path to the current file), falling back to the buffer
-  ;; name for non-file buffers. Defined in :init so the format constant exists
-  ;; before :custom runs.
-  (defun rock/mood-line-segment-breadcrumb ()
-    "Display `breadcrumb-project-crumbs' as a mood-line segment."
-    (let ((crumbs (and (fboundp 'breadcrumb-project-crumbs)
-                       (ignore-errors (breadcrumb-project-crumbs)))))
-      (if (and crumbs (not (string-empty-p crumbs)))
-          crumbs
-        (format-mode-line "%b" 'mood-line-buffer-name))))
-
-  (with-eval-after-load 'mood-line
-    (defconst rock/mood-line-format-breadcrumb
-      (mood-line-defformat
-       :left
-       (((mood-line-segment-modal)                  . " ")
-        ((or (mood-line-segment-buffer-status) " ") . " ")
-        ((rock/mood-line-segment-breadcrumb)        . "  ")
-        ((mood-line-segment-anzu)                   . "  ")
-        ((mood-line-segment-multiple-cursors)       . "  ")
-        ((mood-line-segment-cursor-position)        . " ")
-        (mood-line-segment-scroll))
-       :right
-       (((mood-line-segment-vc)         . "  ")
-        ((mood-line-segment-major-mode) . "  ")
-        ((mood-line-segment-misc-info)  . "  ")
-        ((mood-line-segment-checker)    . "  ")
-        ((mood-line-segment-process)    . "  ")))
-      "Mood-line format that swaps the buffer-name segment for breadcrumb crumbs.")
-    (setq mood-line-format rock/mood-line-format-breadcrumb))
-  :config
-  (mood-line-mode)
-
-  ;; (custom-set-faces '(mood-line-unimportant ((t (:inherit shadow :weight normal)))))
-
-  ;; Use pretty Fira Code-compatible glyphs
-  :custom
-  ;; Can't use :setopt
-  (mood-line-glyph-alist mood-line-glyphs-fira-code))
 
 (use-package spacious-padding
   :if (rock/feature-p "gui")
@@ -1056,6 +1017,9 @@ The DWIM behaviour of this command is as follows:
   (custom-set-variables
    '(anzu-mode-lighter "")
    '(anzu-replace-to-string-separator " => ")
+   ;; The match counter is rendered by the sleek-modeline `anzu' segment, so
+   ;; anzu must not push its own indicator onto `mode-line-format' as well.
+   '(anzu-cons-mode-line-p nil)
    )
   (require 'anzu-fixes)
   )
@@ -1109,7 +1073,16 @@ The DWIM behaviour of this command is as follows:
 
 (use-package json-mode :ensure t)
 
-(use-package markdown-mode :ensure t)
+
+(use-package markdown-ts-mode
+  :ensure nil
+  :if (>= emacs-major-version 31)
+  :mode ("\\.md\\'" "\\.mdx\\'" "\\.markdown\\'")
+  :config
+  (require 'markdown-ts-mode-x))
+
+(use-package markdown-mode :ensure t
+  :if (< emacs-major-version 31))
 
 (use-package mark-graf :ensure t)
 
@@ -1300,16 +1273,12 @@ Like normal Emacs `C-k'.  Kill to end of line and put content in kill-ring."
 
 ;; EXTERNAL settings except meow
 
-;; track-changes is a dependency of org 10.0-pre and also a built-in in
-;; Emacs 30. Activate elpaca's version first so it wins on load-path before
-;; org loads.
-(use-package track-changes :ensure (:source gnu-elpa) :demand t)
-(elpaca-wait)
-
 (when (rock/feature-p "org")
   (require 'org-settings))
 
 (require 'treesit-settings)
+
+(require 'modeline-settings)
 
 (when (rock/feature-p "lsp")
   (require 'eglot-settings))

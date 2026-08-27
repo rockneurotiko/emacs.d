@@ -1,4 +1,4 @@
-;; -*- lexical-binding: nil; -*-
+;;; org-settings.el --- Org-mode configuration -*- lexical-binding: t; -*-
 
 (defconst rock--todo-colors
   '(("TODO"        . "red")
@@ -156,9 +156,13 @@ Pure: builds the string and opens nothing, so it is safe to test."
   (unless (file-exists-p org-directory)
     (make-directory org-directory t))
 
-  (defun rock--org-autodone (n-done n-not-done)
+  (defun rock--org-autodone (_n-done n-not-done)
     "Switch entry to DONE when all subentries are done, to TODO otherwise."
-    (let (org-log-done org-log-states)   ; turn off logging
+    ;; NOTE: the Org manual's version of this snippet also binds
+    ;; `org-log-states', which is not an Org variable and never has been, so
+    ;; it is dropped here -- under lexical binding it would just be an inert
+    ;; unused local.
+    (let (org-log-done)                  ; turn off logging
       (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
   :custom
@@ -356,7 +360,13 @@ Pure: builds the string and opens nothing, so it is safe to test."
   ;; (org-download-method 'attach)
   (org-download-method 'directory))
 
+;; Declared so the `let' below is a dynamic binding of org-roam's defcustom
+;; even when this file is byte-compiled before org-roam is loaded.
+(defvar org-roam-capture-templates)
+
 (defun org-roam-node-insert-immediate (arg &rest args)
+  "Insert a link to a node, finishing the capture immediately.
+ARG and ARGS are passed through to `org-roam-node-insert'."
   (interactive "P")
   (let ((args (cons arg args))
         (org-roam-capture-templates (list (append (car org-roam-capture-templates) '(:immediate-finish t)))))

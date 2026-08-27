@@ -1,3 +1,5 @@
+;;; agent-settings.el --- AI coding agent integrations -*- lexical-binding: t; -*-
+
 ;; (use-package track-changes
 ;;   :ensure (:source gnu-elpa))
 
