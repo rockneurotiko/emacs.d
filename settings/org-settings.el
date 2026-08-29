@@ -378,6 +378,7 @@ ARG and ARGS are passed through to `org-roam-node-insert'."
 
   :setopt
   (org-roam-directory (file-truename (file-name-concat org-directory "roam")))
+  (org-tracker-directory (file-truename (file-name-concat org-directory "roam/tracker")))
   (org-roam-completion-everywhere t)
   (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:30}" 'face 'org-tag)))
 
